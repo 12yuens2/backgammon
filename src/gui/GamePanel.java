@@ -9,6 +9,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.MouseInfo;
 import java.awt.Point;
+import java.awt.event.MouseListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -28,17 +29,24 @@ public class GamePanel extends JPanel {
 		// 
 		//
 		//
-		//
+		//	
+
 		
-		c.gridy=1;
+		c.gridy=2;
 		//bottom
+		c.gridx=13;
+//		c.weightx=1.6;
+		this.add(new EndPanel(colNum, false),c);
+		c.weightx=0.8;
+		colNum++;
+		
 		for (int i = 12; i > 6; i--){
 			c.gridx=i;
 			this.add(new ColumnPanel(colNum, true),c);
 			colNum++;
 		}
 		c.gridx = 6;
-		this.add(new WoodPanel(),c);
+		this.add(new WoodPanel(Column.WOOD_BLACK,false),c);
 		for (int i = 5; i >= 0; i--){
 			c.gridx=i;
 			this.add(new ColumnPanel(colNum, true),c);
@@ -52,12 +60,27 @@ public class GamePanel extends JPanel {
 			colNum++;
 		}
 		c.gridx = 6;
-		this.add(new WoodPanel(),c);
+		this.add(new WoodPanel(Column.WOOD_WHITE,true),c);
 		for (int i = 7; i <= 12; i++){
 			c.gridx=i;
 			this.add(new ColumnPanel(colNum, false),c);
 			colNum++;
 		}
+		c.gridx=13;
+//		c.weightx=1.6;
+		this.add(new EndPanel(colNum, true),c);
+		c.weightx=0.8;
+		
+		//middle
+		c.gridy=1;
+		c.gridx=2;
+		c.gridwidth=2;
+		c.weighty=0.1;
+		this.add(new DicePanel(Column.BLACK),c);
+
+		c.gridx=9;
+		this.add(new DicePanel(Column.WHITE),c);
+		
 	}
 	
 	public void paintComponent(Graphics g){

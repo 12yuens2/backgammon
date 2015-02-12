@@ -14,13 +14,16 @@ import javax.swing.JLabel;
 public class ColumnPanel extends JLabel {
 	Column column;
 	boolean faceDown;
-	private static final int size = 50;
+	protected static final int size = 50;
 
 	public ColumnPanel(int i, boolean faceDown){
 		super();
 		this.column = Column.find(i);
+		this.column.panel = this;
 		this.faceDown = faceDown;
 		this.addMouseListener(new BackGammonListener(this));
+		this.addMouseMotionListener(new PaintMouseMotionListener(this));
+		this.addMouseListener(new PaintMouseListener(this));
 	}
 
 	public void paintComponent(Graphics g){
@@ -33,6 +36,10 @@ public class ColumnPanel extends JLabel {
 			g.setColor(Color.LIGHT_GRAY);
 		}
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		if (column.isHighlighted){
+			g.setColor(new Color(1.0f, 1.0f, 1.0f, 0.6f));
+			g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		}
 		for (int i = 0; i < column.getPieces().size(); i++){
 			if (column.getPieces().get(i).getColor() == Piece.WHITE){
 				g.setColor(Color.white);
@@ -45,12 +52,8 @@ public class ColumnPanel extends JLabel {
 			} else {
 				y = i*size;
 			}
-		//	if (this.column.isSelected() && i == column.getPieces().size()-1){
-				//?? render on mouse
-		//	} else {
-				g.fillOval(0, y, size, size);
-		//	}
-		}
+			g.fillOval(0, y, size, size);
+		} 
 	}
 
 	public boolean isSelected() {
@@ -59,6 +62,7 @@ public class ColumnPanel extends JLabel {
 
 	public void unSelect() {
 		column.unSelect();
+		
 	}
 
 	public void select() {
@@ -81,30 +85,27 @@ class BackGammonListener implements MouseListener{
 		} else {
 			panel.select();
 		}
+		panel.repaint();
 
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		panel.repaint();
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		panel.repaint();
 	}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		panel.repaint();
 	}
 
 	@Override
 	public void mouseExited(MouseEvent e) {
-		// TODO Auto-generated method stub
-
+		panel.repaint();
 	}
 }
