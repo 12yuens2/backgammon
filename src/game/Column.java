@@ -2,6 +2,7 @@ package game;
 
 import gui.ColumnPanel;
 
+import java.awt.Color;
 import java.util.ArrayList;
 
 public class Column {
@@ -153,10 +154,14 @@ public class Column {
 	}
 	
 	public boolean isForwardMove(){
+		
+		
 		return (
-				(Column.selectedColumn.getColor() == WHITE && this.number > Column.selectedColumn.number) ||
-				(Column.selectedColumn.getColor() == BLACK && this.number < Column.selectedColumn.number) ||
-				(Column.selectedColumn.isWoodColumn())
+				((this.getNumber() == 25 || this.getNumber() == 0) && this.canBearOff() || (this.getNumber() != 25 && this.getNumber() != 0)) && (					
+					(Column.selectedColumn.getColor() == WHITE && this.number > Column.selectedColumn.number) ||
+					(Column.selectedColumn.getColor() == BLACK && this.number < Column.selectedColumn.number) ||
+					(Column.selectedColumn.isWoodColumn())
+				)
 		);
 	}
 		
@@ -167,6 +172,34 @@ public class Column {
 			}
 		}
 		return false;
+	}
+	
+	public boolean canBearOff(){
+		boolean canBearOff = true;
+		if (Column.selectedColumn.getColor() == Column.BLACK){
+			for (Column c : Column.getAll()){
+				if (c.getNumber() >= 7 && c.getColor() == Column.BLACK){
+					canBearOff = false;
+				}
+			}
+			for (Column w : Column.woodColumns){
+				if (w.getColor() == Column.BLACK){
+					canBearOff = false;
+				}
+			}
+		} else {
+			for (Column c : Column.getAll()){
+				if (c.getNumber() <= 18 && c.getColor() == Column.WHITE){
+					canBearOff = false;
+				}
+			}
+			for (Column w : Column.woodColumns){
+				if (w.getColor() == Column.WHITE){
+					canBearOff = false;
+				}
+			}
+		}
+		return canBearOff;
 	}
 	
 	public boolean isValidMove(){
