@@ -18,7 +18,7 @@ import javax.swing.JPanel;
 public class GamePanel extends JPanel {
 	public GamePanel(){
 		
-		int colNum = 1;
+		int colNum = 0;
 		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();

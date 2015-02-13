@@ -37,7 +37,7 @@ public class ColumnPanel extends JLabel {
 		}
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		if (column.isHighlighted){
-			g.setColor(new Color(1.0f, 1.0f, 1.0f, 0.6f));
+			g.setColor(new Color(0.1f, 0.1f, 1.0f, 0.9f));
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		}
 		for (int i = 0; i < column.getPieces().size(); i++){

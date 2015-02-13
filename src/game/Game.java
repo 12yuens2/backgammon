@@ -26,4 +26,5 @@ public class Game {
 		gameWindow.repaint();
 		Move.rollDice();
 	}
+
 }
