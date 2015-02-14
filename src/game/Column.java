@@ -7,17 +7,17 @@ import java.util.ArrayList;
 
 public class Column {
 
-	public static final int EMPTY = -1;
-	public static final int BLACK = 1;
-	public static final int WHITE = 0;
+	public static final int EMPTY = 0;
+	public static final int BLACK = -1;
+	public static final int WHITE = 1;
 
-	public static final int WOOD_WHITE = -2;
-	public static final int WOOD_BLACK = -3;
+	public static final int WOOD_WHITE = -200;
+	public static final int WOOD_BLACK = -300;
 
 	private static Column[] columns = new Column[26];
-	private static Column[] woodColumns = new Column[2]; // 0 - black, 1 - white
+	public static Column[] woodColumns = new Column[2]; // 0 - black, 1 - white
 
-	private static Column selectedColumn;
+	public static Column selectedColumn;
 
 	ArrayList<Piece> pieces;
 	int number;
@@ -43,6 +43,7 @@ public class Column {
 			woodColumns[0] = new Column(Column.WOOD_BLACK);
 			woodColumns[1] = new Column(Column.WOOD_WHITE);
 		}
+		
 
 		columns[1].addPiece(Piece.WHITE);
 		columns[1].addPiece(Piece.WHITE);
@@ -226,7 +227,6 @@ public class Column {
 				}	
 
 				int moveUsed = this.getMoveNumber();
-				System.out.println("moving piece");
 				this.addPiece(Column.selectedColumn.RemovePiece());
 				Column.selectedColumn.unSelect();
 				
@@ -248,7 +248,7 @@ public class Column {
 		}
 	}
 
-	private boolean isWoodColumn() {
+	public boolean isWoodColumn() {
 		for (Column c: Column.woodColumns){
 			if (this.equals(c)){
 				return true;

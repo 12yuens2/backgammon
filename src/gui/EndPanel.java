@@ -15,6 +15,12 @@ public class EndPanel extends ColumnPanel {
 		g.setColor(Color.GRAY);
 		
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		
+		if (this.column.isHighlighted){
+			g.setColor(new Color(0.8f,0.8f,0.0f,0.5f));
+			g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		}
+		
 		for (int i = 0; i < column.getPieces().size(); i++){
 			if (column.getPieces().get(i).getColor() == Piece.WHITE){
 				g.setColor(Color.white);
