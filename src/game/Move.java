@@ -21,9 +21,9 @@ public class Move {
 		dice[0] = random.nextInt(5)+ 1;
 		dice[1] = random.nextInt(5)+ 1;
 		
-		System.out.print("Dice 1:");
+//		System.out.print("Dice 1:");
 //		dice[0] = input.nextInt();
-		System.out.print("Dice 2:");
+//		System.out.print("Dice 2:");
 	//	dice[1] = input.nextInt();
 		
 		if (dice[0] == dice[1]){
@@ -31,7 +31,7 @@ public class Move {
 			doubles[1] = dice[1];
 		}
 		
-		System.out.println(dice[0] + " " + dice[1] + " (" + doubles[0] + " " + doubles[1] + ")");
+//		System.out.println(dice[0] + " " + dice[1] + " (" + doubles[0] + " " + doubles[1] + ")");
 	}
 
 	public static void consumeMove(int moveUsed) {
@@ -71,7 +71,7 @@ public class Move {
 			}
 		}
 		Column.selectedColumn = null;
-		System.out.println(hasMoves);
+//		System.out.println(hasMoves);
 		return hasMoves;
 	}
 	
@@ -111,7 +111,6 @@ public class Move {
 					int x = c.getNumber() + move*c.getColor();
 					if (x >= 0 && x < Column.getAll().length){
 						if (Column.find(c.getNumber() + move*c.getColor()).isValidMove()){
-							System.out.println("WOOD IS :::::::::::::" + c.getNumber());
 							Integer[] tempMove = {c.number,x};
 							moves.add(tempMove);
 						}						
@@ -121,7 +120,7 @@ public class Move {
 		}
 		
 		for (Integer[] move : moves){
-			System.out.println(" " + move[0] + " , " + move[1]);
+//			System.out.println(" " + move[0] + " , " + move[1]);
 		}
 		
 		return moves;

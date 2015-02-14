@@ -6,6 +6,7 @@ import gui.Window;
 public class Game {
 
 	public static int turn = Column.BLACK;
+	public static int turnNumber = 0;
 	public static Window gameWindow;
 	public static final int PIECE_NUMBER = 15;
 	public static int winner;
@@ -13,32 +14,41 @@ public class Game {
 
 	public static void main(String[] args) {
 
-		Homura homuraChan = new Homura();
-
+		Homura homuraChanWhite = new Homura();
+		Homura homuraChanBlack = new Homura();
+		
 		Game.gameOver = false;
 
 		Column.init();
 		gameWindow = new Window();
 		Game.changeTurn();
 		int gamesPlayed = 0;
-		while (gamesPlayed < 100){
+		while (gamesPlayed < 1000){
 			while (!Game.gameOver){
-				homuraChan.makeRandomMove();
-				try {
-					Thread.sleep(5);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+				homuraChanWhite.makeRandomMove();
+				if (!Game.gameOver){
+					homuraChanBlack.makeRandomMove();					
 				}
 			}
 
 			System.out.println("Homura wins.");
+			
+			if (Game.winner == Column.BLACK){
+				homuraChanBlack.addWinData();
+				homuraChanWhite.addLoseData();
+			} else {
+				homuraChanBlack.addLoseData();
+				homuraChanWhite.addWinData();
+			}
+			
 			gamesPlayed++;
+			System.out.println(gamesPlayed);
 			Game.reset();
 		}
 	}
 
 	public static void changeTurn() {
+		Game.turnNumber++;
 		if (!Game.gameOver){
 			if(Column.getAll()[0].getPieces().size() == Game.PIECE_NUMBER){
 				Game.winner = Column.BLACK;
@@ -65,6 +75,7 @@ public class Game {
 		Column.init();
 		gameWindow.dispose();
 		gameWindow = new Window();
+		turnNumber = 0;
 		changeTurn();
 	}
 
