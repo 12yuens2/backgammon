@@ -1,5 +1,6 @@
 package game;
 
+import ai.AI;
 import ai.homura.Homura;
 import gui.Window;
 
@@ -17,7 +18,7 @@ public class Game {
 	public static void main(String[] args) {
 
 		Homura homuraChanWhite = new Homura();
-		Homura homuraChanBlack = new Homura();
+		AI randomChan = new AI();
 		
 		Game.gameOver = false;
 
@@ -25,22 +26,22 @@ public class Game {
 		gameWindow = new Window();
 		Game.changeTurn();
 		int gamesPlayed = 0;
-		while (gamesPlayed < 1500){
+		while (gamesPlayed < 100000){
 			while (!Game.gameOver){
 				while (Game.turn == Column.WHITE && !Game.gameOver){
 					homuraChanWhite.makeRandomMove();					
 				}
 				while (Game.turn == Column.BLACK && !Game.gameOver){
-					homuraChanBlack.makeRandomMove();					
+					randomChan.makeRandomMove();					
 				}
 			}
 			
 			if (Game.winner == Column.BLACK){
-				homuraChanBlack.addWinData();
+
 				homuraChanWhite.addLoseData();
 				Game.blackwins++;
 			} else {
-				homuraChanBlack.addLoseData();
+
 				homuraChanWhite.addWinData();
 				Game.whitewins++;
 			}

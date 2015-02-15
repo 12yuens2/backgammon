@@ -9,10 +9,11 @@ import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Random;
 
+import ai.AI;
 import game.Game;
 import game.Move;
 
-public class Homura {
+public class Homura extends AI {
 	
 	private final String timelinePath = "src/ai/homura/timeline.bgdata";
 	
