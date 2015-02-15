@@ -26,6 +26,7 @@ public class Timeline implements Serializable {
 			if (!moveExists){
 				move.setWins(1);
 				timelineMoves.add(move);
+				System.out.println("Homura chan learned a new move.");
 			}
 		}
 	}
@@ -42,6 +43,7 @@ public class Timeline implements Serializable {
 			if (!moveExists){
 				move.setLoses(1);
 				timelineMoves.add(move);
+				System.out.println("Homura chan learned a new move.");
 			}
 		}		
 	}

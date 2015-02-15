@@ -7,6 +7,8 @@ public class Game {
 
 	public static int turn = Column.BLACK;
 	public static int turnNumber = 0;
+	public static int blackwins = 0;
+	public static int whitewins = 0;
 	public static Window gameWindow;
 	public static final int PIECE_NUMBER = 15;
 	public static int winner;
@@ -23,28 +25,34 @@ public class Game {
 		gameWindow = new Window();
 		Game.changeTurn();
 		int gamesPlayed = 0;
-		while (gamesPlayed < 1000){
+		while (gamesPlayed < 1500){
 			while (!Game.gameOver){
-				homuraChanWhite.makeRandomMove();
-				if (!Game.gameOver){
+				while (Game.turn == Column.WHITE && !Game.gameOver){
+					homuraChanWhite.makeRandomMove();					
+				}
+				while (Game.turn == Column.BLACK && !Game.gameOver){
 					homuraChanBlack.makeRandomMove();					
 				}
 			}
-
-			System.out.println("Homura wins.");
 			
 			if (Game.winner == Column.BLACK){
 				homuraChanBlack.addWinData();
 				homuraChanWhite.addLoseData();
+				Game.blackwins++;
 			} else {
 				homuraChanBlack.addLoseData();
 				homuraChanWhite.addWinData();
+				Game.whitewins++;
 			}
 			
 			gamesPlayed++;
-			System.out.println(gamesPlayed);
+			System.out.println("Game number: " + gamesPlayed);
 			Game.reset();
 		}
+		
+		System.out.println("Black won: " + blackwins);
+		System.out.println("White won: " + whitewins);
+		
 	}
 
 	public static void changeTurn() {
@@ -53,6 +61,7 @@ public class Game {
 			if(Column.getAll()[0].getPieces().size() == Game.PIECE_NUMBER){
 				Game.winner = Column.BLACK;
 				Game.gameOver = true;
+				System.out.println("Black wins");
 
 			} else if (Column.getAll()[25].getPieces().size() == Game.PIECE_NUMBER) {
 				Game.winner = Column.WHITE;

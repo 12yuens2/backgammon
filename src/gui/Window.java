@@ -17,7 +17,7 @@ public class Window extends JFrame {
 				
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.pack();
-		this.setVisible(true);
+		this.setVisible(false);
 
 		
 	}

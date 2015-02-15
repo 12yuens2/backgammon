@@ -40,7 +40,7 @@ public class Homura {
 		}
 		
 		for (TimelineMove t : timeline.timelineMoves){
-			System.out.println(t.getFrom() + " > " + t.getTo() + " T:" + t.getTurn() + " W: " + t.getWins() + " L: " + t.getLoses() );
+//			System.out.println(t.getFrom() + " > " + t.getTo() + " T:" + t.getTurn() + " W: " + t.getWins() + " L: " + t.getLoses() );
 		}
 //		System.exit(0);
 	}
@@ -65,13 +65,13 @@ public class Homura {
 			for (TimelineMove m : knownMoves){
 
 				if (m.getValue() > bestValue){
-					System.out.println(m.getValue());
+//					System.out.println(m.getValue());
 					bestValue = m.getValue();
 					bestMove = m;
 				}
 			}
 			
-			System.out.println(bestMove.getTurn());
+//			System.out.println(bestMove.getTurn());
 			Integer[] chosenKnownMove = {bestMove.getTo(),bestMove.getFrom()};
 			Move.executeMove(chosenKnownMove);
 		} else {
