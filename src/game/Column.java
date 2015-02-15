@@ -11,8 +11,8 @@ public class Column {
 	public static final int BLACK = -1;
 	public static final int WHITE = 1;
 
-	public static final int WOOD_WHITE = -200;
-	public static final int WOOD_BLACK = -300;
+	public static final int WOOD_WHITE = 26;
+	public static final int WOOD_BLACK = 27;
 
 	private static Column[] columns = new Column[26];
 	public static Column[] woodColumns = new Column[2]; // 0 - black, 1 - white
@@ -94,13 +94,16 @@ public class Column {
 	}
 
 	public boolean RemovePiece(){
-		boolean b = this.pieces.get(0).getColor();
-		this.pieces.remove(this.pieces.get(0));
-		return b;
+		if (this.pieces.size() > 0){
+			boolean b = this.pieces.get(0).getColor();
+			this.pieces.remove(this.pieces.get(0));
+			return b;			
+		}
+		return false;
 	}
 
 	public static Column find(int i) {
-		if (i >= 0){
+		if (i >= 0 && i < columns.length){
 			return columns[i];			
 		} else if (i == Column.WOOD_BLACK){
 			return woodColumns[0];

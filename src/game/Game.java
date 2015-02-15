@@ -1,6 +1,7 @@
 package game;
 
 import ai.AI;
+import ai.aoi.Aoi;
 import ai.homura.Homura;
 import gui.Window;
 
@@ -19,20 +20,21 @@ public class Game {
 
 		Homura homuraChanWhite = new Homura();
 		AI randomChan = new AI();
-		
+		Aoi aoiChan = new Aoi();
 		Game.gameOver = false;
 
 		Column.init();
 		gameWindow = new Window();
 		Game.changeTurn();
 		int gamesPlayed = 0;
-		while (gamesPlayed < 100000){
+		while (gamesPlayed < 100){
 			while (!Game.gameOver){
 				while (Game.turn == Column.WHITE && !Game.gameOver){
-					homuraChanWhite.makeRandomMove();					
-				}
-				while (Game.turn == Column.BLACK && !Game.gameOver){
 					randomChan.makeRandomMove();					
+				}
+				
+				while (Game.turn == Column.BLACK && !Game.gameOver){
+					aoiChan.evaluateBoard();					
 				}
 			}
 			
@@ -53,6 +55,7 @@ public class Game {
 		
 		System.out.println("Black won: " + blackwins);
 		System.out.println("White won: " + whitewins);
+		System.exit(0);
 		
 	}
 
