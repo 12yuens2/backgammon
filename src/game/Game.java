@@ -16,7 +16,7 @@ public class Game {
 	public static int winner;
 	public static boolean gameOver;
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws InterruptedException {
 
 		Homura homuraChanWhite = new Homura();
 		AI randomChan = new AI();
@@ -30,14 +30,20 @@ public class Game {
 		while (gamesPlayed < 100){
 			while (!Game.gameOver){
 				while (Game.turn == Column.WHITE && !Game.gameOver){
-					randomChan.makeRandomMove();					
+					randomChan.makeRandomMove();
+					gameWindow.repaint();
+					Thread.sleep(400);
 				}
-				
+
+
+
 				while (Game.turn == Column.BLACK && !Game.gameOver){
-					aoiChan.evaluateBoard();					
+					aoiChan.evaluateBoard();
+					gameWindow.repaint();
+					Thread.sleep(500);
 				}
 			}
-			
+
 			if (Game.winner == Column.BLACK){
 
 				homuraChanWhite.addLoseData();
@@ -47,16 +53,16 @@ public class Game {
 				homuraChanWhite.addWinData();
 				Game.whitewins++;
 			}
-			
+
 			gamesPlayed++;
 			System.out.println("Game number: " + gamesPlayed);
 			Game.reset();
 		}
-		
+
 		System.out.println("Black won: " + blackwins);
 		System.out.println("White won: " + whitewins);
 		System.exit(0);
-		
+
 	}
 
 	public static void changeTurn() {
@@ -82,7 +88,7 @@ public class Game {
 			}			
 		}
 	}
-	
+
 	public static void reset(){
 		gameOver = false;
 		Column.init();

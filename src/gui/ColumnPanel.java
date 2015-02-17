@@ -49,10 +49,20 @@ public class ColumnPanel extends JLabel {
 			int y = 0;
 			if (this.faceDown){
 				y = this.getHeight()-(i+1)*size;
+				if ( y < 0){
+					if (y - size < 0){
+						y = (int) ( this.getHeight() - size*((i+1)%(this.getHeight()/(size))) - size*Math.pow(0.5, (int) (i/(this.getHeight()/size))) );
+					}
+				}
 			} else {
 				y = i*size;
+				if (y + size >  this.getHeight()){
+					y = (int) ( size*(i%(this.getHeight()/(size))) + size*Math.pow(0.5, (int) (i/(this.getHeight()/size))) );
+				}
 			}
 			g.fillOval(0, y, size, size);
+			g.setColor(Color.gray);
+			g.drawOval(0, y, size, size);
 		} 
 	}
 

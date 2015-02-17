@@ -11,8 +11,8 @@ public class Aoi extends AI{
 	
 	public static final int SINGLE_SAME_PIECE_VALUE = -10;
 	public static final int SINGLE_DIFF_PIECE_VALUE = -100;
-	public static final int PAIR_VALUE = 50;
-	public static final int GREATER_THAN_PAIR_VALUE = 25;
+	public static final int PAIR_VALUE = 25;
+	public static final int GREATER_THAN_PAIR_VALUE = 10;
 	public static final int END_VALUE = 75;
 	public static final int WOOD_VALUE = -50;
 	
@@ -27,7 +27,7 @@ public class Aoi extends AI{
 		int[] boardState = new int[Column.getAll().length + 2];
 		for (Column c: Column.getAll()) {
 			
-			boardState[c.getNumber()] = c.getNumber()*c.getColor();
+			boardState[c.getNumber()] = c.getPieces().size()*c.getNumber()*c.getColor()*25;
 			
 			if (c.getPieces().size() == 1 && c.getColor() == Game.turn) {
 				boardState[c.getNumber()] += SINGLE_SAME_PIECE_VALUE; 

@@ -69,7 +69,7 @@ public class Column {
 		columns[6].addPiece(Piece.BLACK);
 		columns[6].addPiece(Piece.BLACK);
 		columns[6].addPiece(Piece.BLACK);
-
+		
 		columns[8].addPiece(Piece.BLACK);
 		columns[8].addPiece(Piece.BLACK);
 		columns[8].addPiece(Piece.BLACK);
@@ -174,10 +174,37 @@ public class Column {
 			if (move == this.getMoveNumber()){
 				return true;
 			}
+			if (this.canBearOff() && this.hasToBearOff()){
+				return true;
+			}
 		}
 		return false;
 	}
 	
+	private boolean hasToBearOff() {
+		if (this.getColor() == Column.WHITE){
+			for (int i = 19; i < this.getNumber(); i++){
+				if (Column.find(i).matchesColor()){
+					if (!Column.find(i).isEmpty()){
+						return false;
+					}
+				}
+			}
+			return true;
+		} else if (this.getColor() == Column.BLACK){
+			for (int i = 6; i > this.getNumber(); i--){
+				if (Column.find(i).matchesColor()){
+					if (!Column.find(i).isEmpty()){
+						return false;
+					}
+				}
+			}
+			return true;
+		} else {
+			return false;
+		}
+	}
+
 	public boolean canBearOff(){
 		boolean canBearOff = true;
 		if (Column.selectedColumn.getColor() == Column.BLACK){
@@ -214,7 +241,13 @@ public class Column {
 	}
 	
 	public int getMoveNumber(){
-			return Math.abs(Column.selectedColumn.getNumber() - this.getNumber());
+		if (Column.selectedColumn == Column.find(WOOD_BLACK)){
+			return 25 - this.getNumber();
+		} else if (Column.selectedColumn == Column.find(WOOD_WHITE)){
+			return this.getNumber();
+		} else {
+			return Math.abs(Column.selectedColumn.getNumber() - this.getNumber());			
+		}
 	}
 	
 	public void select(){
