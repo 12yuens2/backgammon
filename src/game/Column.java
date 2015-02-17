@@ -44,7 +44,15 @@ public class Column {
 			woodColumns[1] = new Column(Column.WOOD_WHITE);
 		}
 		
-
+		//testing
+		columns[23].addPiece(Piece.WHITE);
+		columns[22].addPiece(Piece.WHITE);
+		columns[21].addPiece(Piece.WHITE);
+		
+		columns[1].addPiece(Piece.BLACK);
+		columns[2].addPiece(Piece.BLACK);
+		columns[3].addPiece(Piece.BLACK);
+		/*
 		columns[1].addPiece(Piece.WHITE);
 		columns[1].addPiece(Piece.WHITE);
 
@@ -82,7 +90,7 @@ public class Column {
 
 		columns[24].addPiece(Piece.BLACK);
 		columns[24].addPiece(Piece.BLACK);
-
+*/
 	}
 
 	public ArrayList<Piece> getPieces(){
@@ -171,10 +179,10 @@ public class Column {
 		
 	public boolean isLegalMove(){
 		for (int move : Move.dice){
-			if (move == this.getMoveNumber()){
+			if (this.canBearOff() && this.hasToBearOff()){
 				return true;
 			}
-			if (this.canBearOff() && this.hasToBearOff()){
+			if (move == this.getMoveNumber()){
 				return true;
 			}
 		}
@@ -182,27 +190,19 @@ public class Column {
 	}
 	
 	private boolean hasToBearOff() {
-		if (this.getColor() == Column.WHITE){
-			for (int i = 19; i < this.getNumber(); i++){
-				if (Column.find(i).matchesColor()){
-					if (!Column.find(i).isEmpty()){
-						return false;
-					}
+		System.out.println(this.getNumber());
+		if (this.getNumber() == 0){
+			if (Column.selectedColumn.getNumber() > Math.max(Move.dice[0], Move.dice[1])){
+				for (int i = 6; i < Column.selectedColumn.getNumber();i--){
+					return true;
 				}
 			}
-			return true;
-		} else if (this.getColor() == Column.BLACK){
-			for (int i = 6; i > this.getNumber(); i--){
-				if (Column.find(i).matchesColor()){
-					if (!Column.find(i).isEmpty()){
-						return false;
-					}
-				}
-			}
+		} else if (this.getNumber() == 25){
 			return true;
 		} else {
 			return false;
 		}
+		return false;
 	}
 
 	public boolean canBearOff(){

@@ -30,17 +30,17 @@ public class Game {
 		while (gamesPlayed < 100){
 			while (!Game.gameOver){
 				while (Game.turn == Column.WHITE && !Game.gameOver){
-					randomChan.makeRandomMove();
+			//		randomChan.makeRandomMove();
 					gameWindow.repaint();
-					Thread.sleep(400);
+					Thread.sleep(40);
 				}
 
 
 
 				while (Game.turn == Column.BLACK && !Game.gameOver){
-					aoiChan.evaluateBoard();
+			//		aoiChan.evaluateBoard();
 					gameWindow.repaint();
-					Thread.sleep(500);
+					Thread.sleep(40);
 				}
 			}
 

@@ -52,7 +52,7 @@ public class Move {
 		if (!Move.checkMoves()){
 			Game.changeTurn();
 		}
-		System.out.println(dice[0] + " " + dice[1] + " (" + doubles[0] + " " + doubles[1] + ")");
+//		System.out.println(dice[0] + " " + dice[1] + " (" + doubles[0] + " " + doubles[1] + ")");
 		if (dice[0] == 0 && dice[1] == 0){
 			Game.changeTurn();
 		}
