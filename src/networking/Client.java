@@ -12,31 +12,23 @@ public class Client extends Network {
 		Socket call = new Socket("pc2-042-l", Server.port);
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in),Numbers.bufferSize);
 
+		init(call);
 		
 		socketInput = call.getInputStream();
 		socketOutput = call.getOutputStream();
 		
-		if(!handshake(call)){
+		if(!handshake()){
 			System.out.println("Handshake failed :(");
 			System.exit(-1);
 		} else {
 			System.out.println("Handshake succeeded! :)");
 		}
 		
-		call.setSoTimeout(Numbers.soTimeout);
-		String message;
-		boolean quit = false;
-		
-		while (!quit){
-			System.out.println(readLine());
-			if (in.ready()){
-				writeLine(in.readLine());
-			}
-		}
+		run();
 		
 	}
 	
-	public static boolean handshake(Socket other) throws IOException{
+	public static boolean handshake() throws IOException{
 		writeLine("hello");
 		if (readLine().equals("hello")){
 			writeLine("newgame");

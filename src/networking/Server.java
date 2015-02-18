@@ -26,37 +26,34 @@ public class Server extends Network {
 		System.out.println("Waiting for players...");
 		Socket clientSocket = serverSocket.accept();
 		
-		socketInput = clientSocket.getInputStream();
-		socketOutput = clientSocket.getOutputStream();
-
+		init(clientSocket);
+		
 		System.out.println("Found player!");
 		
+		if(!handshake()){
+			System.out.println("Handshake failed :(");
+			System.exit(-1);
+		} else {
+			System.out.println("Handshake succeeded! :)");
+		}
+		
+		run();
+		
+		
+	}
+
+	public static boolean handshake() throws IOException{
 		if (readLine().equals("hello")){
 			writeLine("hello");
 			if (readLine().equals("newgame")){
 				if (!isPlaying){
 					writeLine("ready");
+					return true;
 				} else {
 					writeLine("reject");
 				}
 			}
 		}
-		
-		
-		
-		clientSocket.setSoTimeout(Numbers.soTimeout);
-		BufferedReader in = new BufferedReader(new InputStreamReader(System.in),Numbers.bufferSize);
-
-		
-		String message;
-		boolean quit = false;
-		
-		while (!quit){
-			System.out.println(readLine());
-			if (in.ready()){
-				writeLine(in.readLine());				
-			}
-		}
+		return false;
 	}
-
 }
