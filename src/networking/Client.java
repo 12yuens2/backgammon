@@ -24,9 +24,11 @@ public class Client extends Network {
 		String message;
 		boolean quit = false;
 		
-		while (!( message = in.nextLine()).equals("quit")){
+		while (!quit){
 			System.out.println(readLine());
-			writeLine(message);
+			if (in.hasNext()){
+				writeLine(in.nextLine());				
+			}
 		}
 		
 	}

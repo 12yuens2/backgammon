@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.net.SocketTimeoutException;
 
 public abstract class Network {
 	public static final int port = 40013;
@@ -31,13 +32,16 @@ public abstract class Network {
 
 	public static String readLine() throws IOException {
 		String line = null;
-
-		byte buffer[] = new byte[Numbers.bufferSize];
-		int l = socketInput.read(buffer);
-		if (l > 0) {
-			line = new String(buffer, 0, l);
+		try{
+			byte buffer[] = new byte[Numbers.bufferSize];
+			int l = socketInput.read(buffer);
+			if (l > 0) {
+				line = new String(buffer, 0, l);
+			}
+		} catch (SocketTimeoutException e) {
+			//ignore :)
 		}
-
 		return line;
+		
 	}
 }

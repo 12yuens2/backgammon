@@ -40,14 +40,20 @@ public class Server extends Network {
 			}
 		}
 		
+		
+		
 		clientSocket.setSoTimeout(Numbers.soTimeout);
 		Scanner in = new Scanner(System.in);
 
 		
 		String message;
-		while (!( message = in.nextLine()).equals("quit")){
-			writeLine(message);
+		boolean quit = false;
+		
+		while (!quit){
 			System.out.println(readLine());
+			if (in.hasNext()){
+				writeLine(in.nextLine());				
+			}
 		}
 	}
 
