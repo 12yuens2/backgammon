@@ -15,6 +15,8 @@ public class Server extends Network {
 	
 	public static void main(String[] args) throws IOException, InterruptedException{
 		ServerSocket serverSocket = new ServerSocket(port);
+
+		
 		InetAddress h = InetAddress.getLocalHost();
 		String s = h.getCanonicalHostName();
 		System.out.println("host: " + h.getByName(s));
@@ -24,7 +26,7 @@ public class Server extends Network {
 		
 		socketInput = clientSocket.getInputStream();
 		socketOutput = clientSocket.getOutputStream();
-		
+
 		System.out.println("Found player!");
 		
 		if (readLine().equals("hello")){
@@ -38,9 +40,7 @@ public class Server extends Network {
 			}
 		}
 		
-		
-		
-		
+		clientSocket.setSoTimeout(Numbers.soTimeout);
 		Scanner in = new Scanner(System.in);
 
 		

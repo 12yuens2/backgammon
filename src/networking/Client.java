@@ -20,9 +20,13 @@ public class Client extends Network {
 			System.out.println("Handshake succeeded! :)");
 		}
 		
+		call.setSoTimeout(Numbers.soTimeout);
 		String message;
+		boolean quit = false;
+		
 		while (!( message = in.nextLine()).equals("quit")){
-			call.getOutputStream().write(55);
+			System.out.println(readLine());
+			writeLine(message);
 		}
 		
 	}
