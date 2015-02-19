@@ -95,7 +95,7 @@ public class Homura extends AI {
 		this.saveTimeline();		
 	}
 
-	private void saveTimeline() {
+	public void saveTimeline() {
 		try {
 			FileOutputStream fout = new FileOutputStream(timelinePath);
 			ObjectOutputStream out = new ObjectOutputStream(fout);
