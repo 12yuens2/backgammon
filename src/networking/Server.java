@@ -11,12 +11,11 @@ public class Server extends Network {
 	private static boolean isPlaying;
 	
 	public static void main(String[] args) throws IOException, InterruptedException{
-		start();
+		start(Server.port);
 	}
 
-	public static void start() throws IOException{
-		ServerSocket serverSocket = new ServerSocket(port);
-
+	public static void start(int portNumber) throws IOException{
+		ServerSocket serverSocket = new ServerSocket(portNumber);
 		
 		InetAddress h = InetAddress.getLocalHost();
 		String s = h.getCanonicalHostName();

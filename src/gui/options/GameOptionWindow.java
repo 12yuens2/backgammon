@@ -18,12 +18,15 @@ import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
 
 public class GameOptionWindow extends JFrame {
+	public static GameOptionWindow optionsMenu;
 	static final String LOCAL = "Versus local player";
 	static final String LOCAL_AI = "Versus local AI";
 	static final String ONLINE = "Versus online player";
 
 	public GameOptionWindow(){
-		this.setPreferredSize(new Dimension(500,500));
+		super("CS1006 Backgammon Options");
+		optionsMenu = this;
+		this.setPreferredSize(new Dimension(500,300));
 
 		JPanel localPanel = new LocalPanel();
 		JPanel AIPanel = new AIPanel();
@@ -33,7 +36,7 @@ public class GameOptionWindow extends JFrame {
 		cards.add(localPanel,LOCAL);
 		cards.add(AIPanel,LOCAL_AI);
 		cards.add(OnlinePanel,ONLINE);
-		
+
 		this.add(cards);
 		this.pack();
 		this.setVisible(true);

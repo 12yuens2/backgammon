@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import networking.Network;
+
 public class NetworkPanel extends JPanel {
 	
 	static final String[] aiNames = {"Random-chan", "Homura-chan", "Aoi-chan"};
@@ -28,6 +30,8 @@ public class NetworkPanel extends JPanel {
 		//Online Panel
 		startServerButton = new JRadioButton("Start a Sever");
 		this.add(startServerButton);
+		JLabel hostnameLbl = new JLabel("Your host name is: " + Network.getHostName());
+		this.add(hostnameLbl);
 		joinServerButton = new JRadioButton("Connect to a Sever");
 		this.add(joinServerButton);
 		joinServerButton.setSelected(true);
@@ -83,12 +87,17 @@ public class NetworkPanel extends JPanel {
 				} else {
 					aiType = -1;
 				}
-				
-				int port = Integer.parseInt(portNumber.getText());
+				int port = 0;
+				String name = hostName.getText();
+				try{
+					port = Integer.parseInt(portNumber.getText());	
+				} catch (NumberFormatException err){
+					System.err.println("Invalid port number.");
+				}
 				if (joinServerButton.isSelected()){
 					Game.startNetworkGame(aiType, port);
 				} else {
-					Game.joinNetworkGame(aiType, port, hostName);
+					Game.joinNetworkGame(aiType, port, name);
 				}
 			}
 

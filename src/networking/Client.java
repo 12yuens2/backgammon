@@ -6,11 +6,11 @@ import java.net.UnknownHostException;
 
 public class Client extends Network {
 	public static void main(String[] args) throws UnknownHostException, IOException{
-		start();
+		start("pc2-042-l", Server.port);
 	}
 	
-	public static void start() throws UnknownHostException, IOException{
-		Socket call = new Socket("pc2-042-l", Server.port);
+	public static void start(String hostname, int portNumber) throws UnknownHostException, IOException{
+		Socket call = new Socket(hostname, portNumber);
 
 		init(call);
 		

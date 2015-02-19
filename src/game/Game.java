@@ -12,6 +12,7 @@ import ai.aoi.Aoi;
 import ai.homura.Homura;
 import gui.game.Window;
 import gui.options.AIPanel;
+import gui.options.GameOptionWindow;
 
 public class Game {
 
@@ -33,7 +34,9 @@ public class Game {
 	public static boolean blackIsNetwork;
 	
 	public static AI whiteAI, blackAI;
-	
+	public static final long sleepTime = 40;
+	public static int gamesPlayed = 0;
+	public static int maxGames = 5;
 	
 	public static void main(String[] args) throws InterruptedException {
 
@@ -47,7 +50,7 @@ public class Game {
 		
 		while (true){
 			while (!hasStarted){
-				Thread.sleep(100);
+				Thread.sleep(sleepTime*2);
 			}
 			System.out.println("starting game...");
 			while (!gameOver){
@@ -56,10 +59,10 @@ public class Game {
 						
 					} else {
 						if (whiteIsHuman){
-							Thread.sleep(40);
+							Thread.sleep(sleepTime);
 						} else {
 							whiteAI.makeRandomMove();
-							Thread.sleep(120);
+							Thread.sleep(sleepTime*3);
 						}						
 					}
 					gameWindow.repaint();
@@ -69,71 +72,44 @@ public class Game {
 						
 					} else {
 						if (blackIsHuman){
-							Thread.sleep(40);
+							Thread.sleep(sleepTime);
 						} else {
 							blackAI.makeRandomMove();
-							Thread.sleep(120);
+							Thread.sleep(sleepTime*3);
 						}
 					}
 					gameWindow.repaint();
 				}
 			}
-			hasStarted = false;
-		}
-		/*
-		Game.changeTurn();
-		int gamesPlayed = 0;
-		while (gamesPlayed < 100){
-			while (!Game.gameOver){
-				while (Game.turn == Column.WHITE && !Game.gameOver){
-			//		randomChan.makeRandomMove();
-					gameWindow.repaint();
-					Thread.sleep(40);
-				}
-
-
-
-				while (Game.turn == Column.BLACK && !Game.gameOver){
-			//		aoiChan.evaluateBoard();
-					gameWindow.repaint();
-					Thread.sleep(40);
-				}
-			}
-
-			if (Game.winner == Column.BLACK){
-
-				homuraChanWhite.addLoseData();
-				Game.blackwins++;
+			if (winner == Column.BLACK){
+				System.out.println("Black wins");
+				blackwins++;
 			} else {
-
-				homuraChanWhite.addWinData();
-				Game.whitewins++;
+				System.out.println("White wins");
+				whitewins++;
 			}
-
 			gamesPlayed++;
-			System.out.println("Game number: " + gamesPlayed);
+			if (gamesPlayed >= maxGames){
+				System.out.println("Black won: " + blackwins);
+				System.out.println("White won: " + whitewins);
+				System.exit(0);
+			}
 			Game.reset();
 		}
 
-		System.out.println("Black won: " + blackwins);
-		System.out.println("White won: " + whitewins);
-		System.exit(0);
-*/
 	}
 
 	public static void changeTurn() {
-		System.out.println("Changing turn...");
+//		System.out.println("Changing turn...");
 		Game.turnNumber++;
 		if (!Game.gameOver){
 			if(Column.getAll()[0].getPieces().size() == Game.PIECE_NUMBER){
 				Game.winner = Column.BLACK;
 				Game.gameOver = true;
-				System.out.println("Black wins");
 
 			} else if (Column.getAll()[25].getPieces().size() == Game.PIECE_NUMBER) {
 				Game.winner = Column.WHITE;
 				Game.gameOver = true;
-				System.out.println("White wins");
 			}
 
 			Game.turn = (Game.turn == Column.BLACK) ? Column.WHITE : Column.BLACK;
@@ -148,11 +124,9 @@ public class Game {
 
 	public static void reset(){
 		gameOver = false;
+		hasStarted = false;
 		Column.init();
-		gameWindow.dispose();
-		gameWindow = new Window();
 		turnNumber = 0;
-		changeTurn();
 	}
 
 	public static void startGame(){
@@ -160,6 +134,7 @@ public class Game {
 		Game.hasStarted = true;
 		Game.turn = Column.WHITE;
 		Move.rollDice();
+		GameOptionWindow.optionsMenu.dispose();
 		gameWindow.repaint();
 	}
 
@@ -175,53 +150,52 @@ public class Game {
 			whiteIsHuman = true;
 			blackIsHuman = false;
 			
-			switch(AIType){
-				case AIPanel.AoiIndex :
-					blackAI = new Aoi();
-					break;
-				case AIPanel.HomuraIndex :
-					blackAI = new Homura();
-					break;
-				case AIPanel.RandomIndex :
-					blackAI = new AI();
-					break;
-			}
+			makeAI(AIType, blackAI);
 			
 		} else {
 			whiteIsHuman = false;
 			blackIsHuman = true;
 			
-			switch(AIType){
-				case AIPanel.AoiIndex :
-					whiteAI = new Aoi();
-					break;
-				case AIPanel.HomuraIndex :
-					whiteAI = new Homura();
-					break;
-				case AIPanel.RandomIndex :
-					whiteAI = new AI();
-					break;
-			}
+			makeAI(AIType,whiteAI);
+			
 		}
 		startGame();
 	}
 
 	public static void startNetworkGame(int aiType, int port) {
 		//stuff here
+		blackIsNetwork = true;
+		if (aiType != -1){	
+			whiteIsHuman = false;
+			makeAI(aiType,whiteAI);
+		} else {
+			whiteIsHuman = true;	
+		}
+		
 		
 		try {
-			Server.start();
+			Server.start(port);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		startGame();
 	}
 
-	public static void joinNetworkGame(int aiType, int port, JTextField hostName) {
+	public static void joinNetworkGame(int aiType, int port, String hostName) {
 		//stuff here
+		//WHITE IS SERVER, BLACK IS CLIENT
+		whiteIsNetwork = true;
+		if (aiType != -1){
+			blackIsHuman = false;
+			makeAI(aiType,blackAI);
+		} else {
+			blackIsHuman = true;
+		}
 		
 		try {
-			Client.start();
+			Client.start(hostName, port);
 		} catch (UnknownHostException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -229,36 +203,32 @@ public class Game {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		startGame();
 	}
 
 	public static void startLocalAIGame(int AIType1, int AIType2) {
 		whiteIsHuman = false;
 		blackIsHuman = false;
 		
-		switch(AIType1){
-			case AIPanel.AoiIndex :
-				whiteAI = new Aoi();
-				break;
-			case AIPanel.HomuraIndex :
-				whiteAI = new Homura();
-				break;
-			case AIPanel.RandomIndex :
-				whiteAI = new AI();
-				break;
-		}
-
-		switch(AIType2){
-			case AIPanel.AoiIndex :
-				blackAI = new Aoi();
-				break;
-			case AIPanel.HomuraIndex :
-				blackAI = new Homura();
-				break;
-			case AIPanel.RandomIndex :
-				blackAI = new AI();
-				break;		
-		}
+		makeAI(AIType1,whiteAI);
+		makeAI(AIType2,blackAI);
+		
 		startGame();
 	}
 
+	public static void makeAI(int type, AI ai){
+		switch(type){
+		case AIPanel.AoiIndex:
+			ai = new Aoi();
+			break;
+		case AIPanel.HomuraIndex:
+			ai = new Homura();
+			break;
+		case AIPanel.RandomIndex:
+			ai = new AI();
+			break;
+		}
+	}
+	
 }
