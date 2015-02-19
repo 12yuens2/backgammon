@@ -1,16 +1,35 @@
 package ai.homura;
 
+import game.Column;
+import game.Piece;
+
 import java.io.Serializable;
 
 public class TimelineMove implements Serializable {
-	private int turn;
+	private int[] boardState;
+	//private int turn;
 	private int from;
 	private int to;
 	private int wins;
 	private int loses;
 	private double value;
-	public TimelineMove(int turn, int from, int to) {
-		this.turn = turn;
+	
+	public static int[] makeBoardState(Column[] columns) {
+		int[] boardState = new int[columns.length];
+		for (int i=0; i<columns.length; i++) {
+			if (columns[i].isEmpty()) {
+				boardState[i] = 0;
+			} else if (columns[i].getColor() == Column.BLACK) {
+				boardState[i] = columns[i].getPieces().size()*Column.BLACK;
+			} else if (columns[i].getColor() == Column.WHITE) {
+				boardState[i] = columns[i].getPieces().size()*Column.WHITE;
+			}
+		}
+		return boardState;	
+	}
+	
+	public TimelineMove(Column[] boardState, int from, int to) {
+		this.boardState = makeBoardState(boardState);
 		this.from = from;
 		this.to = to;
 		this.wins = 0;
@@ -18,12 +37,12 @@ public class TimelineMove implements Serializable {
 		this.value = 0.0;
 	}
 	
-	private void addWin(){
+	public void addWin(){
 		this.wins++;
 		this.calculateValue();
 	}
 	
-	private void addLoss(){
+	public void addLoss(){
 		this.loses++;
 		this.calculateValue();
 	}
@@ -37,12 +56,8 @@ public class TimelineMove implements Serializable {
 		return this.value;
 	}
 
-	public int getTurn() {
-		return turn;
-	}
-
-	public void setTurn(int turn) {
-		this.turn = turn;
+	public int[] getBoardState() {
+		return boardState;
 	}
 
 	public int getFrom() {

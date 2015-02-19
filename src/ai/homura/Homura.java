@@ -7,9 +7,11 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Random;
 
 import ai.AI;
+import game.Column;
 import game.Game;
 import game.Move;
 
@@ -41,7 +43,7 @@ public class Homura extends AI {
 		}
 		
 		for (TimelineMove t : timeline.timelineMoves){
-//			System.out.println(t.getFrom() + " > " + t.getTo() + " T:" + t.getTurn() + " W: " + t.getWins() + " L: " + t.getLoses() );
+//			System.out.println(t.getFrom() + " > " + t.getTo() + " BS:" + t.getBoardState() + " W: " + t.getWins() + " L: " + t.getLoses() );
 		}
 //		System.exit(0);
 	}
@@ -53,7 +55,7 @@ public class Homura extends AI {
 		ArrayList<TimelineMove> knownMoves = new ArrayList<>();
 		for (TimelineMove m : this.timeline.timelineMoves){
 			for (Integer[] move : moves){
-				if (m.getTurn() == Game.turn && m.getFrom() == move[1] && m.getTo() == move[0]){
+				if (Arrays.equals(m.getBoardState(), TimelineMove.makeBoardState(Column.getAll())) && m.getFrom() == move[1] && m.getTo() == move[0]){
 					knownMoves.add(m);
 				}
 			}
@@ -75,9 +77,10 @@ public class Homura extends AI {
 //			System.out.println(bestMove.getTurn());
 			Integer[] chosenKnownMove = {bestMove.getTo(),bestMove.getFrom()};
 			Move.executeMove(chosenKnownMove);
+			System.out.println("using known move");
 		} else {
 			int chosenMove = generator.nextInt(moves.size());
-			gameMoves.add(new TimelineMove(Game.turnNumber,moves.get(chosenMove)[0],moves.get(chosenMove)[1]));
+			gameMoves.add(new TimelineMove(Column.getAll(),moves.get(chosenMove)[0],moves.get(chosenMove)[1]));
 			Move.executeMove(moves.get(chosenMove));			
 		}
 	}
@@ -109,4 +112,6 @@ public class Homura extends AI {
 			this.gameMoves = new ArrayList<>();
 		}
 	}
+	
+
 }

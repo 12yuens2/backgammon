@@ -1,7 +1,11 @@
 package ai.homura;
 
+import game.Column;
+import game.Game;
+
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Timeline implements Serializable {
 	ArrayList<TimelineMove> timelineMoves;
@@ -18,15 +22,15 @@ public class Timeline implements Serializable {
 		for (TimelineMove move : gameMoves){
 			boolean moveExists = false;
 			for (TimelineMove savedMove : timelineMoves){
-				if (move.getTurn() == savedMove.getTurn() && move.getFrom() == savedMove.getFrom() && move.getTo() == savedMove.getTo()){
+				if (Arrays.equals(move.getBoardState(), savedMove.getBoardState()) && move.getFrom() == savedMove.getFrom() && move.getTo() == savedMove.getTo()){
 					moveExists = true;
-					savedMove.setWins(savedMove.getWins() + 1);
+					savedMove.addWin();
 				}
 			}
 			if (!moveExists){
 				move.setWins(1);
 				timelineMoves.add(move);
-				System.out.println("Homura chan learned a new move.");
+				//System.out.println("Homura chan learned a new move.");
 			}
 		}
 	}
@@ -35,16 +39,17 @@ public class Timeline implements Serializable {
 		for (TimelineMove move : gameMoves){
 			boolean moveExists = false;
 			for (TimelineMove savedMove : timelineMoves){
-				if (move.getTurn() == savedMove.getTurn() && move.getFrom() == savedMove.getFrom() && move.getTo() == savedMove.getTo()){
+				if (Arrays.equals(move.getBoardState(), savedMove.getBoardState()) && move.getFrom() == savedMove.getFrom() && move.getTo() == savedMove.getTo()){
 					moveExists = true;
-					savedMove.setLoses(savedMove.getLoses() + 1);
+					savedMove.addLoss();
 				}
 			}
 			if (!moveExists){
 				move.setLoses(1);
 				timelineMoves.add(move);
-				System.out.println("Homura chan learned a new move.");
+				//System.out.println("Homura chan learned a new move.");
 			}
 		}		
 	}
+	
 }
