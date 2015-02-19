@@ -6,6 +6,10 @@ import java.net.UnknownHostException;
 
 public class Client extends Network {
 	public static void main(String[] args) throws UnknownHostException, IOException{
+		start();
+	}
+	
+	public static void start() throws UnknownHostException, IOException{
 		Socket call = new Socket("pc2-042-l", Server.port);
 
 		init(call);
@@ -17,8 +21,7 @@ public class Client extends Network {
 			System.out.println("Handshake succeeded! :)");
 		}
 		
-		run();
-		
+		run();		
 	}
 	
 	public static boolean handshake() throws IOException{

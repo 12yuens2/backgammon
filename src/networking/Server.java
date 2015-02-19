@@ -11,6 +11,10 @@ public class Server extends Network {
 	private static boolean isPlaying;
 	
 	public static void main(String[] args) throws IOException, InterruptedException{
+		start();
+	}
+
+	public static void start() throws IOException{
 		ServerSocket serverSocket = new ServerSocket(port);
 
 		
@@ -34,9 +38,9 @@ public class Server extends Network {
 		
 		run();
 		
-		
+				
 	}
-
+	
 	public static boolean handshake() throws IOException{
 		if (readLine().equals("hello")){
 			writeLine("hello");

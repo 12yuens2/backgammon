@@ -1,4 +1,6 @@
-package gui;
+package gui.game;
+
+import gui.options.GameMenu;
 
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
@@ -13,8 +15,11 @@ public class Window extends JFrame {
 		super("CS 1006 Backgammon");
 		GamePanel panel = new GamePanel();
 		this.add(panel);
+		
+		GameMenu menu = new GameMenu();
+		this.setJMenuBar(menu);		
 		this.setPreferredSize(new Dimension(800,800) );
-				
+
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);

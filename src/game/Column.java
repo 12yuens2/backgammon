@@ -1,6 +1,6 @@
 package game;
 
-import gui.ColumnPanel;
+import gui.game.ColumnPanel;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -43,56 +43,51 @@ public class Column {
 			woodColumns[0] = new Column(Column.WOOD_BLACK);
 			woodColumns[1] = new Column(Column.WOOD_WHITE);
 		}
-		
-		//testing
-		columns[23].addPiece(Piece.WHITE);
-		columns[22].addPiece(Piece.WHITE);
-		columns[21].addPiece(Piece.WHITE);
-		
-		columns[1].addPiece(Piece.BLACK);
-		columns[2].addPiece(Piece.BLACK);
-		columns[3].addPiece(Piece.BLACK);
-		/*
-		columns[1].addPiece(Piece.WHITE);
-		columns[1].addPiece(Piece.WHITE);
-
-		columns[12].addPiece(Piece.WHITE);
-		columns[12].addPiece(Piece.WHITE);
-		columns[12].addPiece(Piece.WHITE);
-		columns[12].addPiece(Piece.WHITE);
-		columns[12].addPiece(Piece.WHITE);
-
-		columns[17].addPiece(Piece.WHITE);
-		columns[17].addPiece(Piece.WHITE);
-		columns[17].addPiece(Piece.WHITE);
-
-		columns[19].addPiece(Piece.WHITE);
-		columns[19].addPiece(Piece.WHITE);
-		columns[19].addPiece(Piece.WHITE);
-		columns[19].addPiece(Piece.WHITE);
-		columns[19].addPiece(Piece.WHITE);
-
-		columns[6].addPiece(Piece.BLACK);
-		columns[6].addPiece(Piece.BLACK);
-		columns[6].addPiece(Piece.BLACK);
-		columns[6].addPiece(Piece.BLACK);
-		columns[6].addPiece(Piece.BLACK);
-		
-		columns[8].addPiece(Piece.BLACK);
-		columns[8].addPiece(Piece.BLACK);
-		columns[8].addPiece(Piece.BLACK);
-
-		columns[13].addPiece(Piece.BLACK);
-		columns[13].addPiece(Piece.BLACK);
-		columns[13].addPiece(Piece.BLACK);
-		columns[13].addPiece(Piece.BLACK);
-		columns[13].addPiece(Piece.BLACK);
-
-		columns[24].addPiece(Piece.BLACK);
-		columns[24].addPiece(Piece.BLACK);
-*/
 	}
 
+	public static void addPieces(){
+		//testing
+
+		columns[1].addPiece(Piece.WHITE);
+		columns[1].addPiece(Piece.WHITE);
+
+		columns[12].addPiece(Piece.WHITE);
+		columns[12].addPiece(Piece.WHITE);
+		columns[12].addPiece(Piece.WHITE);
+		columns[12].addPiece(Piece.WHITE);
+		columns[12].addPiece(Piece.WHITE);
+
+		columns[17].addPiece(Piece.WHITE);
+		columns[17].addPiece(Piece.WHITE);
+		columns[17].addPiece(Piece.WHITE);
+
+		columns[19].addPiece(Piece.WHITE);
+		columns[19].addPiece(Piece.WHITE);
+		columns[19].addPiece(Piece.WHITE);
+		columns[19].addPiece(Piece.WHITE);
+		columns[19].addPiece(Piece.WHITE);
+
+		columns[6].addPiece(Piece.BLACK);
+		columns[6].addPiece(Piece.BLACK);
+		columns[6].addPiece(Piece.BLACK);
+		columns[6].addPiece(Piece.BLACK);
+		columns[6].addPiece(Piece.BLACK);
+		
+		columns[8].addPiece(Piece.BLACK);
+		columns[8].addPiece(Piece.BLACK);
+		columns[8].addPiece(Piece.BLACK);
+
+		columns[13].addPiece(Piece.BLACK);
+		columns[13].addPiece(Piece.BLACK);
+		columns[13].addPiece(Piece.BLACK);
+		columns[13].addPiece(Piece.BLACK);
+		columns[13].addPiece(Piece.BLACK);
+
+		columns[24].addPiece(Piece.BLACK);
+		columns[24].addPiece(Piece.BLACK);
+
+	}
+	
 	public ArrayList<Piece> getPieces(){
 		return pieces;
 	}
@@ -179,9 +174,6 @@ public class Column {
 		
 	public boolean isLegalMove(){
 		for (int move : Move.dice){
-			if (this.canBearOff() && this.hasToBearOff()){
-				return true;
-			}
 			if (move == this.getMoveNumber()){
 				return true;
 			}
