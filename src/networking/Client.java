@@ -21,7 +21,7 @@ public class Client extends Network {
 			System.out.println("Handshake succeeded! :)");
 		}
 		
-		run();		
+		isActive = true;
 	}
 	
 	public static boolean handshake() throws IOException{

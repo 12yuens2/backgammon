@@ -94,7 +94,7 @@ public class NetworkPanel extends JPanel {
 				} catch (NumberFormatException err){
 					System.err.println("Invalid port number.");
 				}
-				if (joinServerButton.isSelected()){
+				if (startServerButton.isSelected()){
 					Game.startNetworkGame(aiType, port);
 				} else {
 					Game.joinNetworkGame(aiType, port, name);

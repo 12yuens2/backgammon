@@ -5,13 +5,21 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Move {
-	private String message;
+	public static String message = " ";
 
 	public static int[] dice = {0,0};
 	public static int[] doubles = {0,0};
 	private static Random random = new Random();
 	private static Scanner input = new Scanner(System.in);
 	
+	public static void setDice(int[] dices){
+		dice = dices;
+		
+		if (dice[0] == dice[1]){
+			doubles[0] = dice[0];
+			doubles[1] = dice[1];
+		}
+	}
 	
 	public static void rollDice() {
 		
@@ -20,7 +28,7 @@ public class Move {
 		
 		dice[0] = random.nextInt(5)+ 1;
 		dice[1] = random.nextInt(5)+ 1;
-		
+		message = " " + dice[0] + "-" + dice[1] + ":";
 //		System.out.print("Dice 1:");
 //		dice[0] = input.nextInt();
 //		System.out.print("Dice 2:");
@@ -127,7 +135,11 @@ public class Move {
 		return moves;
 	}
 
-	public static void executeMove(Integer[] move) {
+	public static void executeMove(Integer[] move){
+		executeMove(move, false);
+	}
+	
+	public static void executeMove(Integer[] move, boolean share) {
 		//assume valid move is passed here
 		if (isCaptureMove(move)){
 			if (Column.find(move[1]).getColor() == Column.WHITE){
@@ -138,11 +150,24 @@ public class Move {
 		}
 
 		Column.find(move[1]).addPiece(Column.find(move[0]).RemovePiece());
+		if (share){
+			message = message + "(" + move[0] + "|" + move[1] + "),";
+		}
 		Move.consumeMove(Math.abs(move[1] - move[0]));
+
 	}
 	
 	public static boolean isCaptureMove(Integer[] move){
 		return ((!(Column.find(move[0]).getColor() == Column.find(move[1]).getColor()) && Column.find(move[1]).getPieces().size() == 1));
+	}
+
+	public static void executeMove(int[] moves) {
+		Integer[] newMoves = new Integer[moves.length];
+		int i = 0;
+		for (int m : moves) {
+		    newMoves[i++] = Integer.valueOf(m);
+		}
+		executeMove(newMoves);
 	}
 	
 	

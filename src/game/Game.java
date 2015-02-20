@@ -6,6 +6,7 @@ import java.net.UnknownHostException;
 import javax.swing.JTextField;
 
 import networking.Client;
+import networking.Network;
 import networking.Server;
 import ai.AI;
 import ai.aoi.Aoi;
@@ -38,13 +39,9 @@ public class Game {
 	public static int gamesPlayed = 0;
 	public static int maxGames = 5;
 	
-	public static void main(String[] args) throws InterruptedException {
+	public static void main(String[] args) throws InterruptedException, IOException {
 
-		Homura homuraChanWhite = new Homura();
-		AI randomChan = new AI();
-		Aoi aoiChan = new Aoi();
 		Game.gameOver = false;
-
 		Column.init();
 		gameWindow = new Window();
 		
@@ -56,7 +53,7 @@ public class Game {
 			while (!gameOver){
 				while (Game.turn == Column.WHITE && !Game.gameOver){
 					if (whiteIsNetwork){
-						
+						Network.run();
 					} else {
 						if (whiteIsHuman){
 							Thread.sleep(sleepTime);
@@ -69,7 +66,7 @@ public class Game {
 				}
 				while (Game.turn == Column.BLACK && !Game.gameOver){
 					if (blackIsNetwork){
-						
+						Network.run();
 					} else {
 						if (blackIsHuman){
 							Thread.sleep(sleepTime);
@@ -101,6 +98,8 @@ public class Game {
 
 	public static void changeTurn() {
 //		System.out.println("Changing turn...");
+		Move.message = Move.message.substring(0, Move.message.length() - 1) + ";";
+		Network.addText(Move.message);
 		Game.turnNumber++;
 		if (!Game.gameOver){
 			if(Column.getAll()[0].getPieces().size() == Game.PIECE_NUMBER){
@@ -117,6 +116,7 @@ public class Game {
 			Move.rollDice();
 			Move.getValidMoves();
 			if (!Move.checkMoves()){
+				Move.message = Move.message + "(-1|-1);";
 				Game.changeTurn();
 			}			
 		}

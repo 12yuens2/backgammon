@@ -1,5 +1,7 @@
 package networking;
 
+import game.Move;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -22,31 +24,62 @@ public abstract class Network {
 	protected static InputStream socketInput;
 	protected static OutputStream socketOutput;
 
+	public static boolean isActive;
+	
+	static String sendingText;
+	static String recievedText;
+	
 	private static BufferedReader in = new BufferedReader(new InputStreamReader(System.in),Network.bufferSize);
 
 	public static void init(Socket s) throws IOException{
 		s.setSoTimeout(Network.soTimeout);
+		s.setTcpNoDelay(true);
 		socketInput = s.getInputStream();
 		socketOutput = s.getOutputStream();
 
 	}
 
-	protected static void run() throws IOException {
-		boolean quit = false;
-		String sendingText;
-		String recievedText;
-		while (!quit){
+	public static void addText(String s){
+		sendingText = s;
+	}
+	
+	public static void processText(String s){
+		String processedText = s
+				.replaceAll(":",",")
+				.replaceAll("[\\(\\)]","")
+				.replaceAll("-", "|");
+		String[] turn = s.split(",");
+		int[][] turnInts = new int[turn.length][2];
+		for (int i = 0; i < turn.length; i++){
+			try {
+				turnInts[i][0] = Integer.parseInt(turn[0].split("|")[0]);
+				turnInts[i][1] = Integer.parseInt(turn[0].split("|")[1]);				
+			} catch (NumberFormatException e){
+				System.out.println("Badly formatted turn string :(");
+			}
+		}
+		Move.setDice(turnInts[0]);
+		for (int i = 1; i < turnInts.length; i++){
+			Move.executeMove(turnInts[i]);
+		}
+	}
+	
+	public static void run() throws IOException {
+		if (isActive){
 			recievedText = readLine();
-			if (in.ready()){
-				sendingText = in.readLine();
+			if (sendingText != null){
 				writeLine(sendingText);
+				sendingText = null;
 			}
 			if (recievedText != null){
-				System.out.println(recievedText);
-			}
+				System.out.println("NEW MOVE RECIEVED: \n" + recievedText);
+				processText(recievedText);
+			}			
 		}
 	}
 
+	
+	
 	public static void writeLine(String line) {
 		if (line == null || line.length() < 0){
 			return;
