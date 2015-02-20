@@ -63,6 +63,7 @@ public class Move {
 		}
 		if (share){
 			message = message + "(" + start + "|" + end + "),";
+			System.out.println(message);
 		}		
 		if (!Move.checkMoves()){
 			Game.changeTurn();
@@ -99,6 +100,7 @@ public class Move {
 	}
 	
 	public static boolean checkMoves(){
+		Column temp = Column.selectedColumn;
 		boolean hasMoves = false;
 		for (Column c: Column.getAll()){
 			if (hasValidMoves(c)){
@@ -111,6 +113,9 @@ public class Move {
 			}
 		}
 		Column.selectedColumn = null;
+		if (temp != null){
+			Column.selectedColumn = temp;
+		}
 //		System.out.println(hasMoves);
 		return hasMoves;
 	}

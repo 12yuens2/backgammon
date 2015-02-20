@@ -256,9 +256,10 @@ public class Column {
 
 				int moveUsed = this.getMoveNumber();
 				this.addPiece(Column.selectedColumn.RemovePiece());
+
+				Move.consumeMove(Column.selectedColumn.getNumber(),this.getNumber());
 				Column.selectedColumn.unSelect();
-				
-				Move.consumeMove(Column.selectedColumn.getMoveNumber(),this.getMoveNumber());
+
 			}
 
 		} else if (Column.selectedColumn == null && this.hasPieces() && Game.turn == this.getColor()){
