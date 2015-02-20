@@ -63,7 +63,7 @@ public abstract class Network {
 		}
 		Move.setDice(turnInts[0]);
 		for (int i = 1; i < turnInts.length; i++){
-			Move.consumeMove(turnInts[i][0], turnInts[i][1], false);
+			Move.executeMove(turnInts[i]);
 		}
 	}
 	

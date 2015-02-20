@@ -188,7 +188,7 @@ public class Move {
 
 		Column.find(move[1]).addPiece(Column.find(move[0]).RemovePiece());
 
-		Move.consumeMove(Math.abs(move[1] - move[0]));
+		Move.consumeMove(move[0],move[1],share);
 
 	}
 	
@@ -202,6 +202,6 @@ public class Move {
 		for (int m : moves) {
 		    newMoves[i++] = Integer.valueOf(m);
 		}
-		executeMove(newMoves);
+		executeMove(newMoves,false);
 	}	
 }
