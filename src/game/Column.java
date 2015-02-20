@@ -258,8 +258,10 @@ public class Column {
 					this.addPiece(Column.selectedColumn.RemovePiece());
 
 					Move.consumeMove(Column.selectedColumn.getNumber(),this.getNumber());
-					Column.selectedColumn.unSelect();
-
+					if (Column.selectedColumn != null){
+						Column.selectedColumn.unSelect();
+					}
+					
 				}
 
 			} else if (Column.selectedColumn == null && this.hasPieces() && Game.turn == this.getColor()){
@@ -299,10 +301,16 @@ public class Column {
 	}
 
 	public void unSelect() {
-		panel.repaint();
-		Column.setUnHighlighted();
-		this.isSelected = false;
+		for (Column c : Column.getAll()){
+			c.isSelected = false;
+			c.isHighlighted = false;
+		}
+		for (Column c : Column.woodColumns){
+			c.isSelected = false;
+			c.isHighlighted = false;
+		}
 		Column.selectedColumn = null;
+		Game.gameWindow.repaint();
 	}
 
 	private static void setUnHighlighted() {

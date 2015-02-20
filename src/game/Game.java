@@ -54,6 +54,7 @@ public class Game {
 				while (Game.turn == Column.WHITE && !Game.gameOver){
 					if (whiteIsNetwork){
 						Network.run();
+						Thread.sleep(sleepTime);
 					} else {
 						if (whiteIsHuman){
 							Thread.sleep(sleepTime);
@@ -67,6 +68,7 @@ public class Game {
 				while (Game.turn == Column.BLACK && !Game.gameOver){
 					if (blackIsNetwork){
 						Network.run();
+						Thread.sleep(sleepTime);
 					} else {
 						if (blackIsHuman){
 							Thread.sleep(sleepTime);
@@ -113,6 +115,12 @@ public class Game {
 			}
 			System.out.println("Changing turn...");
 			Game.turn = (Game.turn == Column.BLACK) ? Column.WHITE : Column.BLACK;
+			if (Game.turn == Column.BLACK){
+				System.out.println("It is now black's turn");				
+			} else {
+				System.out.println("It is now white's turn");
+			}
+
 			gameWindow.repaint();
 			Move.rollDice();
 			Move.getValidMoves();
