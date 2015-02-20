@@ -159,13 +159,13 @@ public class Game {
 			whiteIsHuman = true;
 			blackIsHuman = false;
 			
-			makeAI(AIType, blackAI);
+			blackAI = makeAI(AIType);
 			
 		} else {
 			whiteIsHuman = false;
 			blackIsHuman = true;
 			
-			makeAI(AIType,whiteAI);
+			whiteAI = makeAI(AIType);
 			
 		}
 		startGame();
@@ -176,7 +176,7 @@ public class Game {
 		blackIsNetwork = true;
 		if (aiType != -1){	
 			whiteIsHuman = false;
-			makeAI(aiType,whiteAI);
+			whiteAI = makeAI(aiType);
 		} else {
 			whiteIsHuman = true;	
 		}
@@ -198,7 +198,7 @@ public class Game {
 		whiteIsNetwork = true;
 		if (aiType != -1){
 			blackIsHuman = false;
-			makeAI(aiType,blackAI);
+			blackAI = makeAI(aiType);
 		} else {
 			blackIsHuman = true;
 		}
@@ -220,24 +220,22 @@ public class Game {
 		whiteIsHuman = false;
 		blackIsHuman = false;
 		
-		makeAI(AIType1,whiteAI);
-		makeAI(AIType2,blackAI);
+		whiteAI = makeAI(AIType1);
+		blackAI = makeAI(AIType2);
 		
 		startGame();
 	}
 
-	public static void makeAI(int type, AI ai){
+	public static AI makeAI(int type){
 		switch(type){
 		case AIPanel.AoiIndex:
-			ai = new Aoi();
-			break;
+			return new Aoi();
 		case AIPanel.HomuraIndex:
-			ai = new Homura();
-			break;
+			return new Homura();
 		case AIPanel.RandomIndex:
-			ai = new AI();
-			break;
+			return new AI();
 		}
+		return null;
 	}
 	
 }
