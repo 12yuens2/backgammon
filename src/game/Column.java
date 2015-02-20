@@ -246,6 +246,7 @@ public class Column {
 		Game.gameWindow.repaint();
 			if (Column.selectedColumn != this && Column.selectedColumn != null && Game.turn == Column.selectedColumn.getColor() ){
 				if (this.isValidMove()){
+					System.out.println("Clicked on valid move...");
 					if (this.isCapturable() && !this.matchesColor()){
 						if (this.getColor() == Column.BLACK){
 							Column.find(Column.WOOD_BLACK).addPiece(this.RemovePiece());
@@ -259,27 +260,30 @@ public class Column {
 
 					Move.consumeMove(Column.selectedColumn.getNumber(),this.getNumber());
 					if (Column.selectedColumn != null){
+						System.out.println("Unselecting everything...");
 						Column.selectedColumn.unSelect();
 					}
-					
+					return;
 				}
 
 			} else if (Column.selectedColumn == null && this.hasPieces() && Game.turn == this.getColor()){
+				System.out.println("Clicked on appropriate color");
 				if (
 						(this.getColor() == Column.BLACK && Game.blackIsHuman) ||
 						(this.getColor() == Column.WHITE && Game.whiteIsHuman)
-						){
+				){
+					System.out.println("Selecting color");
 					Column.selectedColumn = this;
 					this.isSelected = true;
-					Column.setHighlighted();					
+					Column.setHighlighted();
 				} else {
-					System.out.println("You can't move because you're an AI");
+					System.out.println("Failed to select color");
 				}
-
 			}
 	}
 
 	private static void setHighlighted() {
+		System.out.println("Setting highlighted...");
 		for (Column c: Column.getAll()){
 			if (c.isValidMove()){
 				c.isHighlighted = true;
@@ -301,6 +305,7 @@ public class Column {
 	}
 
 	public void unSelect() {
+		System.out.println("Unselecting...");
 		for (Column c : Column.getAll()){
 			c.isSelected = false;
 			c.isHighlighted = false;
