@@ -97,7 +97,8 @@ public class Game {
 	}
 
 	public static void changeTurn() {
-//		System.out.println("Changing turn...");
+
+		Column.selectedColumn = null;
 		Move.message = Move.message.substring(0, Move.message.length() - 1) + ";";
 		Network.addText(Move.message);
 		Game.turnNumber++;
@@ -110,7 +111,7 @@ public class Game {
 				Game.winner = Column.WHITE;
 				Game.gameOver = true;
 			}
-
+			System.out.println("Changing turn...");
 			Game.turn = (Game.turn == Column.BLACK) ? Column.WHITE : Column.BLACK;
 			gameWindow.repaint();
 			Move.rollDice();

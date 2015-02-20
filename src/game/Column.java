@@ -270,9 +270,11 @@ public class Column {
 					Column.selectedColumn = this;
 					this.isSelected = true;
 					Column.setHighlighted();					
+				} else {
+					System.out.println("You can't move because you're an AI");
 				}
 
-			}			
+			}
 	}
 
 	private static void setHighlighted() {

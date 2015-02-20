@@ -46,16 +46,17 @@ public abstract class Network {
 	public static void processText(String s){
 		String processedText = s
 				.replaceAll(":",",")
-				.replaceAll("(","")
-				.replaceAll(")","")
-				.replaceAll("-", "|")
+				.replaceAll(";","")
+				.replaceAll("\\(","")
+				.replaceAll("\\)","")
+				.replaceAll("\\-", "|")
 				.trim();
 		String[] turn = processedText.split(",");
 		int[][] turnInts = new int[turn.length][2];
 		for (int i = 0; i < turn.length; i++){
 			try {
-				turnInts[i][0] = Integer.parseInt(turn[0].split("|")[0]);
-				turnInts[i][1] = Integer.parseInt(turn[0].split("|")[1]);				
+				turnInts[i][0] = Integer.parseInt(turn[i].split("\\|")[0]);
+				turnInts[i][1] = Integer.parseInt(turn[i].split("\\|")[1]);				
 			} catch (NumberFormatException e){
 				System.out.println("Badly formatted turn string :(");
 			}

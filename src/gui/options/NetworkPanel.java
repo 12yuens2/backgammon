@@ -67,7 +67,7 @@ public class NetworkPanel extends JPanel {
 		this.add(playAsHuman);
 		JRadioButton sendAI = new JRadioButton("Send an AI:");
 		this.add(sendAI);
-		sendAI.setSelected(true);
+		playAsHuman.setSelected(true);
 		
 		ButtonGroup group1 = new ButtonGroup();
 		group1.add(playAsHuman);
