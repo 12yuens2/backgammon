@@ -279,6 +279,8 @@ public class Column {
 				} else {
 					System.out.println("Failed to select color");
 				}
+			} else {
+				Column.selectedColumn = null;
 			}
 	}
 
