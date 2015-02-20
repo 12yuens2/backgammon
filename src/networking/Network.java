@@ -46,9 +46,11 @@ public abstract class Network {
 	public static void processText(String s){
 		String processedText = s
 				.replaceAll(":",",")
-				.replaceAll("[\\(\\)]","")
-				.replaceAll("-", "|");
-		String[] turn = s.split(",");
+				.replaceAll("(","")
+				.replaceAll(")","")
+				.replaceAll("-", "|")
+				.trim();
+		String[] turn = processedText.split(",");
 		int[][] turnInts = new int[turn.length][2];
 		for (int i = 0; i < turn.length; i++){
 			try {

@@ -244,28 +244,31 @@ public class Column {
 	
 	public void select(){
 		Game.gameWindow.repaint();
-		if (Column.selectedColumn != this && Column.selectedColumn != null && Game.turn == Column.selectedColumn.getColor() ){
-			if (this.isValidMove()){
-				if (this.isCapturable() && !this.matchesColor()){
-					if (this.getColor() == Column.BLACK){
-						Column.find(Column.WOOD_BLACK).addPiece(this.RemovePiece());
-					} else {
-						Column.find(Column.WOOD_WHITE).addPiece(this.RemovePiece());
-					}
-				}	
+		if ( (Column.selectedColumn.getColor() == Column.BLACK && Game.blackIsHuman) ||
+				(Column.selectedColumn.getColor() == Column.WHITE && Game.whiteIsHuman)){
+			if (Column.selectedColumn != this && Column.selectedColumn != null && Game.turn == Column.selectedColumn.getColor() ){
+				if (this.isValidMove()){
+					if (this.isCapturable() && !this.matchesColor()){
+						if (this.getColor() == Column.BLACK){
+							Column.find(Column.WOOD_BLACK).addPiece(this.RemovePiece());
+						} else {
+							Column.find(Column.WOOD_WHITE).addPiece(this.RemovePiece());
+						}
+					}	
 
-				int moveUsed = this.getMoveNumber();
-				this.addPiece(Column.selectedColumn.RemovePiece());
+					int moveUsed = this.getMoveNumber();
+					this.addPiece(Column.selectedColumn.RemovePiece());
 
-				Move.consumeMove(Column.selectedColumn.getNumber(),this.getNumber());
-				Column.selectedColumn.unSelect();
+					Move.consumeMove(Column.selectedColumn.getNumber(),this.getNumber());
+					Column.selectedColumn.unSelect();
 
-			}
+				}
 
-		} else if (Column.selectedColumn == null && this.hasPieces() && Game.turn == this.getColor()){
-			Column.selectedColumn = this;
-			this.isSelected = true;
-			Column.setHighlighted();
+			} else if (Column.selectedColumn == null && this.hasPieces() && Game.turn == this.getColor()){
+				Column.selectedColumn = this;
+				this.isSelected = true;
+				Column.setHighlighted();
+			}			
 		}
 	}
 
