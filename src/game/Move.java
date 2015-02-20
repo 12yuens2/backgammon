@@ -42,6 +42,38 @@ public class Move {
 //		System.out.println(dice[0] + " " + dice[1] + " (" + doubles[0] + " " + doubles[1] + ")");
 	}
 
+	public static void consumeMove(int start, int end){
+		consumeMove(start,end,true);
+	}
+	
+	public static void consumeMove(int start, int end, boolean share) {
+		int moveUsed = Math.abs(end - start);
+		for (int i = 0; i < dice.length; i++){
+			if (dice[i] == moveUsed){
+				dice[i] = 0;
+				for (int j = 0; j < doubles.length; j++){
+					if (doubles[i] != 0){
+						dice[i] = doubles[i];
+						doubles[i] = 0;
+						break;
+					}
+				}
+				break;
+			}
+		}
+		if (share){
+			message = message + "(" + start + "|" + end + "),";
+		}		
+		if (!Move.checkMoves()){
+			Game.changeTurn();
+		}
+//		System.out.println(dice[0] + " " + dice[1] + " (" + doubles[0] + " " + doubles[1] + ")");
+		if (dice[0] == 0 && dice[1] == 0){
+			Game.changeTurn();
+		}
+
+	}
+	
 	public static void consumeMove(int moveUsed) {
 		for (int i = 0; i < dice.length; i++){
 			if (dice[i] == moveUsed){
@@ -136,7 +168,7 @@ public class Move {
 	}
 
 	public static void executeMove(Integer[] move){
-		executeMove(move, false);
+		executeMove(move, true);
 	}
 	
 	public static void executeMove(Integer[] move, boolean share) {
@@ -150,9 +182,7 @@ public class Move {
 		}
 
 		Column.find(move[1]).addPiece(Column.find(move[0]).RemovePiece());
-		if (share){
-			message = message + "(" + move[0] + "|" + move[1] + "),";
-		}
+
 		Move.consumeMove(Math.abs(move[1] - move[0]));
 
 	}
@@ -168,7 +198,5 @@ public class Move {
 		    newMoves[i++] = Integer.valueOf(m);
 		}
 		executeMove(newMoves);
-	}
-	
-	
+	}	
 }

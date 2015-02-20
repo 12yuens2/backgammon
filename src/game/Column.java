@@ -258,7 +258,7 @@ public class Column {
 				this.addPiece(Column.selectedColumn.RemovePiece());
 				Column.selectedColumn.unSelect();
 				
-				Move.consumeMove(moveUsed);
+				Move.consumeMove(Column.selectedColumn.getMoveNumber(),this.getMoveNumber());
 			}
 
 		} else if (Column.selectedColumn == null && this.hasPieces() && Game.turn == this.getColor()){
