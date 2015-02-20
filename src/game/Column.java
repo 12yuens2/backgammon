@@ -244,8 +244,6 @@ public class Column {
 	
 	public void select(){
 		Game.gameWindow.repaint();
-		if ( (Column.selectedColumn.getColor() == Column.BLACK && Game.blackIsHuman) ||
-				(Column.selectedColumn.getColor() == Column.WHITE && Game.whiteIsHuman)){
 			if (Column.selectedColumn != this && Column.selectedColumn != null && Game.turn == Column.selectedColumn.getColor() ){
 				if (this.isValidMove()){
 					if (this.isCapturable() && !this.matchesColor()){
@@ -265,11 +263,16 @@ public class Column {
 				}
 
 			} else if (Column.selectedColumn == null && this.hasPieces() && Game.turn == this.getColor()){
-				Column.selectedColumn = this;
-				this.isSelected = true;
-				Column.setHighlighted();
+				if (
+						(this.getColor() == Column.BLACK && Game.blackIsHuman) ||
+						(this.getColor() == Column.WHITE && Game.whiteIsHuman)
+						){
+					Column.selectedColumn = this;
+					this.isSelected = true;
+					Column.setHighlighted();					
+				}
+
 			}			
-		}
 	}
 
 	private static void setHighlighted() {
