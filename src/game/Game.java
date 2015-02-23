@@ -231,14 +231,11 @@ public class Game {
 		AI ai = null;
 		switch(type){
 		case AIPanel.AoiIndex:
-			ai = new Aoi();
-			break;
+			return new Aoi();
 		case AIPanel.HomuraIndex:
-			ai = new Homura();
-			break;
+			return new Homura();
 		case AIPanel.RandomIndex:
-			ai = new AI();
-			break;
+			return new AI();
 		}
 		return ai;
 	}
