@@ -14,8 +14,9 @@ import ai.AI;
 import game.Column;
 import game.Game;
 import game.Move;
+import game.PossibleMove;
 
-public class Homura extends AI {
+public class Homura implements AI {
 	
 	private final String timelinePath = "src/ai/homura/timeline.bgdata";
 	
@@ -48,14 +49,13 @@ public class Homura extends AI {
 //		System.exit(0);
 	}
 	
-	public void makeRandomMove(){
-		ArrayList<Integer[]> moves = Move.getValidMoves();
-//		System.out.println(moves.size());
-		
+
+	public void makeMove(){
+
 		ArrayList<TimelineMove> knownMoves = new ArrayList<>();
 		for (TimelineMove m : this.timeline.timelineMoves){
-			for (Integer[] move : moves){
-				if (Arrays.equals(m.getBoardState(), TimelineMove.makeBoardState(Column.getAll())) && m.getFrom() == move[1] && m.getTo() == move[0]){
+			for (PossibleMove move : Move.possibleMoves){
+				if (Arrays.equals(m.getBoardState(), TimelineMove.makeBoardState(Column.getAll())) && m.getFrom() == move.getFrom() && m.getTo() == move.getTo()){
 					knownMoves.add(m);
 				}
 			}
@@ -75,13 +75,14 @@ public class Homura extends AI {
 			}
 			
 //			System.out.println(bestMove.getTurn());
-			Integer[] chosenKnownMove = {bestMove.getTo(),bestMove.getFrom()};
-			Move.executeMove(chosenKnownMove);
+			PossibleMove chosenKnownMove = Move.find(bestMove.getFrom(),bestMove.getTo());
+			Move.executeMove(chosenKnownMove,true);
 			System.out.println("using known move");
 		} else {
-			int chosenMove = generator.nextInt(moves.size());
-			gameMoves.add(new TimelineMove(Column.getAll(),moves.get(chosenMove)[0],moves.get(chosenMove)[1]));
-			Move.executeMove(moves.get(chosenMove));			
+			int chosenMove = generator.nextInt(Move.possibleMoves.size());
+			PossibleMove move = Move.possibleMoves.get(chosenMove);
+			gameMoves.add(new TimelineMove(Column.getAll(),move.getFrom(),move.getTo()));
+			Move.executeMove(move,true);			
 		}
 	}
 

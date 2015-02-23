@@ -1,26 +1,23 @@
 package ai.aoi;
 
+import game.PossibleMove;
+
 public class PossibleBoard {
 
 	private int[] boardState;
-	private Integer[] moves;
+	private PossibleMove move;
 	
 	public int[] getBoardState() {
 		return boardState;
 	}
-	public void setBoardState(int[] boardState) {
-		this.boardState = boardState;
-	}
-	public Integer[] getMoves() {
-		return moves;
-	}
-	public void setMoves(Integer[] moves) {
-		this.moves = moves;
+	
+	public PossibleMove getMove(){
+		return move;
 	}
 	
-	public PossibleBoard(int[] boardState, Integer[] move) {
-		this.boardState = boardState;
-		this.moves = move;
+	public PossibleBoard(int[] board, PossibleMove move) {
+		this.boardState = board;
+		this.move = move;
 	}
 	public int getValue() {
 		int value = 0;

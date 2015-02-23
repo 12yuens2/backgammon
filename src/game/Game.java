@@ -11,6 +11,7 @@ import networking.Server;
 import ai.AI;
 import ai.aoi.Aoi;
 import ai.homura.Homura;
+import ai.random.RandomAI;
 import gui.game.Window;
 import gui.options.AIPanel;
 import gui.options.GameOptionWindow;
@@ -59,7 +60,7 @@ public class Game {
 						if (whiteIsHuman){
 							Thread.sleep(sleepTime);
 						} else {
-							whiteAI.makeRandomMove();
+							whiteAI.makeMove();
 							Thread.sleep(sleepTime*3);
 						}						
 					}
@@ -73,7 +74,7 @@ public class Game {
 						if (blackIsHuman){
 							Thread.sleep(sleepTime);
 						} else {
-							blackAI.makeRandomMove();
+							blackAI.makeMove();
 							Thread.sleep(sleepTime*3);
 						}
 					}
@@ -124,8 +125,8 @@ public class Game {
 
 			gameWindow.repaint();
 			Move.rollDice();
-			Move.getValidMoves();
-			if (!Move.checkMoves()){
+			Move.setPossibleMoves();
+			if (Move.possibleMoves.isEmpty()){
 				Move.message = Move.message + "(-1|-1);";
 				Game.changeTurn();
 			}
@@ -238,7 +239,7 @@ public class Game {
 		case AIPanel.HomuraIndex:
 			return new Homura();
 		case AIPanel.RandomIndex:
-			return new AI();
+			return new RandomAI();
 		}
 		return ai;
 	}

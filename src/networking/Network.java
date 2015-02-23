@@ -1,6 +1,7 @@
 package networking;
 
 import game.Move;
+import game.PossibleMove;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -63,7 +64,8 @@ public abstract class Network {
 		}
 		Move.setDice(turnInts[0]);
 		for (int i = 1; i < turnInts.length; i++){
-			Move.executeMove(turnInts[i]);
+			PossibleMove move = Move.find(turnInts[i][0],turnInts[i][1]);
+			Move.executeMove(move, false);
 		}
 	}
 	
@@ -118,13 +120,14 @@ public abstract class Network {
 	}
 	
 	public static String getHostName(){
-		InetAddress h;
+		return "testing";
+/*		InetAddress h;
 		try {
 			h = InetAddress.getLocalHost();
 			String s = h.getCanonicalHostName();
 			return ("" + InetAddress.getByName(s));
 		} catch (UnknownHostException e) {
 			return "???";
-		}
+		} */
 	}
 }

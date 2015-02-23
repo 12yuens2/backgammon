@@ -105,6 +105,20 @@ public class Column {
 		return false;
 	}
 
+	public static Column findFrom(PossibleMove move){
+		if (move.getFrom() == 0){
+			return woodColumns[1];
+		} else if (move.getFrom() == 25){
+			return woodColumns[0];
+		} else {
+			return columns[move.getFrom()];
+		}
+	}
+	
+	public static Column findTo(PossibleMove move){
+		return columns[move.getTo()];
+	}
+	
 	public static Column find(int i) {
 		if (i >= 0 && i < columns.length){
 			return columns[i];			

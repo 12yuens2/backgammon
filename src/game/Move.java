@@ -2,7 +2,6 @@ package game;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Move {
 	public static String message = " ";
@@ -23,6 +22,8 @@ public class Move {
 			doubles[0] = 0;
 			doubles[1] = 0;
 		}
+		
+		Move.setPossibleMoves();
 	}
 
 	public static void rollDice() {
@@ -33,10 +34,6 @@ public class Move {
 		dice[0] = random.nextInt(5)+ 1;
 		dice[1] = random.nextInt(5)+ 1;
 		message = " " + dice[0] + "-" + dice[1] + ":";
-		//		System.out.print("Dice 1:");
-		//		dice[0] = input.nextInt();
-		//		System.out.print("Dice 2:");
-		//		dice[1] = input.nextInt();
 
 		if (dice[0] == dice[1]){
 			doubles[0] = dice[0];
@@ -45,87 +42,7 @@ public class Move {
 		Move.setPossibleMoves();
 		//		System.out.println(dice[0] + " " + dice[1] + " (" + doubles[0] + " " + doubles[1] + ")");
 	}
-
-	public static void consumeMove(int start, int end){
-		consumeMove(start,end,true);
-	}
-
-	public static void consumeMove(int start, int end, boolean share) {
-		//		System.out.println(end);
-		//		System.out.println(start);
-		int moveUsed = Math.abs(end - start);
-		for (int i = 0; i < dice.length; i++){
-			if (dice[i] == moveUsed){
-				dice[i] = 0;
-				for (int j = 0; j < doubles.length; j++){
-					if (doubles[i] != 0){
-						dice[i] = doubles[i];
-						doubles[i] = 0;
-						break;
-					}
-				}
-				break;
-			}
-		}
-		if (share){
-			message = message + "(" + start + "|" + end + "),";
-			//			System.out.println(message);
-		}		
-		if (!Move.checkMoves()){
-			Game.changeTurn();
-		}
-		//		System.out.println(dice[0] + " " + dice[1] + " (" + doubles[0] + " " + doubles[1] + ")");
-		if (dice[0] == 0 && dice[1] == 0){
-			Game.changeTurn();
-		}
-
-	}
-
-	public static void consumeMove(int moveUsed) {
-		for (int i = 0; i < dice.length; i++){
-			if (dice[i] == moveUsed){
-				dice[i] = 0;
-				for (int j = 0; j < doubles.length; j++){
-					if (doubles[i] != 0){
-						dice[i] = doubles[i];
-						doubles[i] = 0;
-						break;
-					}
-				}
-				break;
-			}
-		}
-
-		if (!Move.checkMoves()){
-			Game.changeTurn();
-		}
-		//		System.out.println(dice[0] + " " + dice[1] + " (" + doubles[0] + " " + doubles[1] + ")");
-		if (dice[0] == 0 && dice[1] == 0){
-			Game.changeTurn();
-		}
-	}
-
-	public static boolean checkMoves(){
-		Column temp = Column.selectedColumn;
-		boolean hasMoves = false;
-		for (Column c: Column.getAll()){
-			if (hasValidMoves(c)){
-				hasMoves = true;
-			}
-		}
-		for (Column c: Column.woodColumns){
-			if (hasValidMoves(c)){
-				hasMoves = true;
-			}
-		}
-		Column.selectedColumn = null;
-		if (temp != null){
-			Column.selectedColumn = temp;
-		}
-		//		System.out.println(hasMoves);
-		return hasMoves;
-	}
-
+	
 	public static boolean hasValidMoves(Column c){
 		if (c.getColor() == Game.turn){
 			Column.selectedColumn = c;
@@ -199,107 +116,20 @@ public class Move {
 			System.out.println("" + move.getFrom() + " >> " + move.getTo() + " using " + move.getDiceUsed() + ".");
 		}
 	}
-
-	public static ArrayList<Integer[]> getValidMoves(){
-		ArrayList<Integer[]> moves = new ArrayList<>();
-
-		for (Column c : Column.woodColumns){
-			if (hasValidMoves(c)){
-				for (int move : Move.dice){
-					int x = c.getNumber() + move*c.getColor();
-					if (x >= 0 && x < Column.getAll().length){
-						if (Column.find(c.getNumber() + move*c.getColor()).isValidMove()){
-							Integer[] tempMove = {c.number,x};
-							moves.add(tempMove);
-						}						
-					}
-				}
-			}
-		}
-
-		if (moves.isEmpty()){
-
-			for (Column c: Column.getAll()){
-				if (hasValidMoves(c)){
-					for (int move : Move.dice){
-						int x = c.getNumber() + move*c.getColor();
-						if (x >= 0 && x < Column.getAll().length){
-							if (Column.find(c.getNumber() + move*c.getColor()).isValidMove() ){
-								Integer[] tempMove = {c.getNumber(),x};
-								moves.add(tempMove);
-							}
-						}
-
-						if (c.getColor() == Column.BLACK){
-							if (x < 0 && Column.canBearOff() ){
-								if (c.hasToBearOff()){
-									Integer[] tempMove = {c.getNumber(),0};
-									moves.add(tempMove);																			
-								}
-							}
-						}  else {
-							if (x > Column.getAll().length ){
-								if (c.hasToBearOff()){
-									Integer[] tempMove = {c.getNumber(),25};
-									moves.add(tempMove);																			
-								}
-							}								
-						}
-
-					}
-				}
-			}			
-		}
-
-		return moves;
-	}
-
-	public static void executeMove(Integer[] move){
-		executeMove(move, true);
-	}
-
-	public static void executeMove(Integer[] move, boolean share) {
-		//assume valid move is passed here
-		if (isCaptureMove(move)){
-			if (Column.find(move[1]).getColor() == Column.WHITE){
-				Column.find(Column.WOOD_WHITE).addPiece(Column.find(move[1]).RemovePiece());
-			} else {
-				Column.find(Column.WOOD_BLACK).addPiece(Column.find(move[1]).RemovePiece());
-			}
-		}
-
-		Column.find(move[1]).addPiece(Column.find(move[0]).RemovePiece());
-
-		Move.consumeMove(move[0],move[1],share);
-
-	}
-
-	public static boolean isCaptureMove(Integer[] move){
-		//		System.out.println("__________________________________________");
-		//		System.out.println(" " + move[0] + " , " + move[1]);
-		return ((!(Column.find(move[0]).getColor() == Column.find(move[1]).getColor()) && Column.find(move[1]).getPieces().size() == 1));
-	}
-
-	public static void executeMove(int[] moves) {
-		Integer[] newMoves = new Integer[moves.length];
-		int i = 0;
-		for (int m : moves) {
-			newMoves[i++] = Integer.valueOf(m);
-		}
-		executeMove(newMoves,false);
-	}
-
+	
 	public static void executeMove(PossibleMove move, boolean shareToNetwork) {
 		//assume valid move is passed here
-		if (isCaptureMove(move)){
-			if (Column.find(move.getTo()).getColor() == Column.WHITE){
-				Column.find(Column.WOOD_WHITE).addPiece(Column.find(move.getTo()).RemovePiece());
-			} else {
-				Column.find(Column.WOOD_BLACK).addPiece(Column.find(move.getTo()).RemovePiece());
+		Column from = Column.findFrom(move);
+		Column to = Column.findTo(move);
+		if (to.getPieces().size() == 1){
+			if (from.getColor() == Column.WHITE && to.getColor() == Column.BLACK){
+				Column.find(Column.WOOD_BLACK).addPiece(to.RemovePiece());
+			} else if (from.getColor() == Column.BLACK && to.getColor() == Column.WHITE) {
+				Column.find(Column.WOOD_WHITE).addPiece(to.RemovePiece());
 			}
 		}
 
-		Column.find(move.getTo()).addPiece(Column.find(move.getFrom()).RemovePiece());
+		to.addPiece(from.RemovePiece());
 
 		Move.consumeMove(move,shareToNetwork);		
 	}
@@ -328,7 +158,12 @@ public class Move {
 		}
 	}
 
-	private static boolean isCaptureMove(PossibleMove move) {
-		return ((!(Column.find(move.getFrom()).getColor() == Column.find(move.getTo()).getColor()) && Column.find(move.getTo()).getPieces().size() == 1));
-	}	
+	public static PossibleMove find(int from, int to) {
+		for (PossibleMove move : possibleMoves){
+			if (move.getFrom() == from && move.getTo() == to){
+				return move;
+			}
+		}
+		return null;
+	}
 }

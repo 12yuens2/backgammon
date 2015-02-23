@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import game.Column;
 import game.Game;
 import game.Move;
+import game.PossibleMove;
 import ai.AI;
 
-public class Aoi extends AI{
+public class Aoi implements AI{
 	
 	public static final int SINGLE_SAME_PIECE_VALUE = -10;
 	public static final int SINGLE_DIFF_PIECE_VALUE = -100;
@@ -21,6 +22,27 @@ public class Aoi extends AI{
 	
 	public Aoi(){
 		
+	}
+
+	public void makeMove() {
+		
+		currentBoard = getBoardState();
+		possibleBoards = new ArrayList<>();
+		
+		for (PossibleMove move : Move.possibleMoves) {
+			int[] board = getNewBoardState(move);
+			possibleBoards.add(new PossibleBoard(board, move));
+		}
+		
+		PossibleBoard bestBoard = null;
+		int bestBoardValue = Integer.MIN_VALUE;
+		for (PossibleBoard board: possibleBoards) {
+			if (board.getValue() > bestBoardValue) {
+				bestBoardValue = board.getValue();
+				bestBoard = board;
+			}
+		}
+		Move.executeMove(bestBoard.getMove(),true);
 	}
 	
 	public int[] getBoardState() {
@@ -53,71 +75,51 @@ public class Aoi extends AI{
 		return boardState;
 	}
 
-	public void evaluateBoard() {
-		
-		currentBoard = getBoardState();
-		possibleBoards = new ArrayList<>();
-		
-		for (Integer[] move: Move.getValidMoves()) {
-			int[] board = getNewBoardState(move);
-			possibleBoards.add(new PossibleBoard(board, move));
-		}
-		
-		PossibleBoard bestBoard = null;
-		int bestBoardValue = Integer.MIN_VALUE;
-		for (PossibleBoard board: possibleBoards) {
-			if (board.getValue() > bestBoardValue) {
-				bestBoardValue = board.getValue();
-				bestBoard = board;
-			}
-		}
-		//System.out.println("" + bestBoard.getMoves()[0] + " , " + bestBoard.getMoves()[1]);
-		Move.executeMove(bestBoard.getMoves());
-	}
-
-	private int[] getNewBoardState(Integer[] move) {
+	private int[] getNewBoardState(PossibleMove move) {
 		int[] newBoard = currentBoard.clone();
 		
-		Column.selectedColumn = Column.find(move[1]);
+		int fromIndex = move.getFrom();
+		int toIndex = move.getTo();
+		
+		Column.selectedColumn = Column.find(fromIndex);
 		
 		if (Column.selectedColumn.isWoodColumn()){
-			newBoard[move[1]] -= WOOD_VALUE;
+			newBoard[fromIndex] -= WOOD_VALUE;
 		} else {
 			//change FROM column value
 			if (Column.selectedColumn.getPieces().size() == 1){
 				//lone piece moving somewhere
-				newBoard[move[1]] -= SINGLE_SAME_PIECE_VALUE;				
+				newBoard[fromIndex] -= SINGLE_SAME_PIECE_VALUE;				
 			}
 			if (Column.selectedColumn.getPieces().size() == 2){
-				newBoard[move[1]] -= PAIR_VALUE;
-				newBoard[move[1]] += SINGLE_SAME_PIECE_VALUE;
+				newBoard[fromIndex] -= PAIR_VALUE;
+				newBoard[fromIndex] += SINGLE_SAME_PIECE_VALUE;
 			}
 			if (Column.selectedColumn.getPieces().size() == 3){
-				newBoard[move[1]] -= GREATER_THAN_PAIR_VALUE;
-				newBoard[move[1]] += PAIR_VALUE;
+				newBoard[fromIndex] -= GREATER_THAN_PAIR_VALUE;
+				newBoard[fromIndex] += PAIR_VALUE;
 			}			
 		}		
 		
 		//change TO column value
-		if (Column.find(move[0]).getPieces().size() == 0){
+		if (Column.find(toIndex).getPieces().size() == 0){
 			//lone piece moving somewhere
-			newBoard[move[0]] += SINGLE_SAME_PIECE_VALUE;				
+			newBoard[toIndex] += SINGLE_SAME_PIECE_VALUE;				
 		}
-		if (Column.find(move[0]).getPieces().size() == 1){
-			if (Column.find(move[0]).getColor() != Game.turn){
-				newBoard[move[0]] -= SINGLE_DIFF_PIECE_VALUE;
+		if (Column.find(toIndex).getPieces().size() == 1){
+			if (Column.find(toIndex).getColor() != Game.turn){
+				newBoard[toIndex] -= SINGLE_DIFF_PIECE_VALUE;
 			} else {
-				newBoard[move[0]] += PAIR_VALUE;
-				newBoard[move[0]] -= SINGLE_SAME_PIECE_VALUE;				
+				newBoard[toIndex] += PAIR_VALUE;
+				newBoard[toIndex] -= SINGLE_SAME_PIECE_VALUE;				
 			}
 		}
-		if (Column.find(move[0]).getPieces().size() == 2){
-			newBoard[move[0]] += GREATER_THAN_PAIR_VALUE;
-			newBoard[move[0]] -= PAIR_VALUE;
+		if (Column.find(toIndex).getPieces().size() == 2){
+			newBoard[toIndex] += GREATER_THAN_PAIR_VALUE;
+			newBoard[toIndex] -= PAIR_VALUE;
 		}			
 		
 		Column.selectedColumn = null;
 		return newBoard;
 	}
-
 }
