@@ -178,7 +178,7 @@ public class Column {
 		
 		
 		return (
-				((this.getNumber() == 25 || this.getNumber() == 0) && this.canBearOff() || (this.getNumber() != 25 && this.getNumber() != 0)) && (					
+				((this.getNumber() == 25 || this.getNumber() == 0) && Column.canBearOff() || (this.getNumber() != 25 && this.getNumber() != 0)) && (					
 					(Column.selectedColumn.getColor() == WHITE && this.number > Column.selectedColumn.number) ||
 					(Column.selectedColumn.getColor() == BLACK && this.number < Column.selectedColumn.number) ||
 					(Column.selectedColumn.isWoodColumn())
@@ -196,7 +196,6 @@ public class Column {
 	}
 	
 	boolean hasToBearOff() {
-		System.out.println("Checking for pieces at a further left position.");
 		if (this.getColor() == Column.BLACK){
 			for (int i = 6; i > this.getNumber(); i--){
 				if (Column.find(i).hasPieces() && Column.find(i).matchesColor()){
@@ -210,7 +209,6 @@ public class Column {
 				}
 			}			
 		}
-		System.out.println("has to bear off...");
 		return true;
 	}
 

@@ -52,18 +52,20 @@ public class Move {
 					if (Column.find(c.getNumber() + move*c.getColor()).isValidMove()){
 						return true;
 					}
-					if( Column.canBearOff()){
-						if (c.getColor() == Column.BLACK){
-							if (c.getNumber() < move){
-								return true;
-							}
-						} else if (c.getColor() == Column.WHITE){
-							if (c.getNumber() > 25 - move){
-								return true;
-							}
+				}
+				
+				if( Column.canBearOff()){
+					if (c.getColor() == Column.BLACK){
+						if (c.getNumber() < move){
+							return true;
+						}
+					} else if (c.getColor() == Column.WHITE){
+						if (c.getNumber() > 25 - move){
+							return true;
 						}
 					}
 				}
+				
 			}
 			Column.selectedColumn = null;
 		}
@@ -85,35 +87,43 @@ public class Move {
 				}
 			}
 		}
-		if (!possibleMoves.isEmpty()) { return; }
-		
-		for (Column c: Column.getAll()){
-			if (hasValidMoves(c)){
-				for (int move : Move.dice){
-					int x = c.getNumber() + move*c.getColor();
-					if (x >= 0 && x < Column.getAll().length){
-						if (Column.find(c.getNumber() + move*c.getColor()).isValidMove() ){
-							possibleMoves.add(new PossibleMove(x,c.getNumber(),move));
+		if (possibleMoves.isEmpty()) {
+			for (Column c: Column.getAll()){
+				if (hasValidMoves(c)){
+					for (int move : Move.dice){
+						int x = c.getNumber() + move*c.getColor();
+						if (x >= 0 && x < Column.getAll().length){
+							if (Column.find(c.getNumber() + move*c.getColor()).isValidMove() ){
+								possibleMoves.add(new PossibleMove(x,c.getNumber(),move));
+							}
 						}
-					}
 
-					if (c.getColor() == Column.BLACK){
-						if (x < 0 && Column.canBearOff() && c.hasToBearOff() ){
-							possibleMoves.add(new PossibleMove(0,c.getNumber(),move));
+						if (c.getColor() == Column.BLACK){
+							if (x < 0 && Column.canBearOff() && c.hasToBearOff() ){
+								if (c.getNumber() != 0){
+									possibleMoves.add(new PossibleMove(0,c.getNumber(),move));									
+								}
+							}
 						}
-					}  else {
-						if (x > Column.getAll().length && Column.canBearOff() && c.hasToBearOff() ){
-							possibleMoves.add(new PossibleMove(25, c.getNumber(), move));
-						}								
-					}
+						
+						if (c.getColor() == Column.WHITE) {
+							if (x > 25 && Column.canBearOff() && c.hasToBearOff() ){
+								if (c.getNumber() != 25) {
+									possibleMoves.add(new PossibleMove(25, c.getNumber(), move));									
+								}
+							}								
+						}
 
+					}
 				}
-			}
+			}			
 		}
 
-		System.out.println("Possible moves:");
-		for (PossibleMove move : possibleMoves){
-			System.out.println("" + move.getFrom() + " >> " + move.getTo() + " using " + move.getDiceUsed() + ".");
+		if (!possibleMoves.isEmpty()){
+			System.out.println("Possible moves:");
+			for (PossibleMove move : possibleMoves){
+				System.out.println("" + move.getFrom() + " >> " + move.getTo() + " using " + move.getDiceUsed() + ".");
+			}			
 		}
 	}
 	

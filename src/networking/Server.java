@@ -7,19 +7,19 @@ import java.net.Socket;
 
 public class Server extends Network {
 	public static final int port = 40013;
-	private static final int sleepTime = 200;
 	private static boolean isPlaying;
+	private static ServerSocket serverSocket;
 	
 	public static void main(String[] args) throws IOException, InterruptedException{
 		start(Server.port);
 	}
 
 	public static void start(int portNumber) throws IOException{
-		ServerSocket serverSocket = new ServerSocket(portNumber);
+		serverSocket = new ServerSocket(portNumber);
 		
 		InetAddress h = InetAddress.getLocalHost();
 		String s = h.getCanonicalHostName();
-		System.out.println("host: " + h.getByName(s));
+		System.out.println("host: " + InetAddress.getByName(s));
 
 		System.out.println("Waiting for players...");
 		Socket clientSocket = serverSocket.accept();
@@ -52,4 +52,5 @@ public class Server extends Network {
 		}
 		return false;
 	}
+
 }

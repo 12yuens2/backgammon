@@ -15,7 +15,7 @@ import javax.swing.JRadioButton;
 public class AIPanel extends JPanel {
 	
 	private static JRadioButton whiteButton, blackButton, observerButton;
-	private static JComboBox aiList1, aiList2;
+	private static JComboBox<String> aiList1, aiList2;
 	
 	static final String[] aiNames = {"Random-chan", "Homura-chan", "Aoi-chan"};
 	public static final int RandomIndex = 0;
@@ -25,13 +25,13 @@ public class AIPanel extends JPanel {
 	public AIPanel(){
 		JLabel l1 = new JLabel("Choose AI to play against:");
 		this.add(l1);
-		aiList1 = new JComboBox(aiNames);
+		aiList1 = new JComboBox<String>(aiNames);
 		this.add(aiList1);
 		aiList1.setSelectedIndex(0);
 		aiList1.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				JComboBox cb = (JComboBox)e.getSource();
+				JComboBox<String> cb = (JComboBox<String>)e.getSource();
 				int n = cb.getSelectedIndex();
 				System.out.println(n);
 				//change image?
@@ -39,13 +39,13 @@ public class AIPanel extends JPanel {
 		});
 		JLabel l2 = new JLabel("Choose second AI to play against (Only for observe mode):");
 		this.add(l2);
-		aiList2 = new JComboBox(aiNames);
+		aiList2 = new JComboBox<String>(aiNames);
 		this.add(aiList2);
 		aiList2.setSelectedIndex(0);
 		aiList2.addActionListener(new ActionListener(){
 
 			public void actionPerformed(ActionEvent e) {
-				JComboBox cb = (JComboBox)e.getSource();
+				JComboBox<String> cb = (JComboBox<String>)e.getSource();
 				int n = cb.getSelectedIndex();
 				System.out.println(n);
 				//change image?

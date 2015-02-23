@@ -6,6 +6,10 @@ import game.Piece;
 import java.io.Serializable;
 
 public class TimelineMove implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int[] boardState;
 	//private int turn;
 	private int from;

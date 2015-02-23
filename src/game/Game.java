@@ -96,7 +96,7 @@ public class Game {
 			}
 			Game.reset();
 		}
-
+		
 	}
 
 	public static void changeTurn() {
@@ -138,18 +138,20 @@ public class Game {
 	public static void reset(){
 		gameOver = false;
 		hasStarted = false;
-		Column.init();
-		gameWindow.reset();
 		turnNumber = 0;
 	}
 
 	public static void startGame(){
+		Column.init();
+		gameWindow.reset();
 		Column.addPieces();
-		Game.hasStarted = true;
 		Game.turn = Column.WHITE;
 		Move.rollDice();
-		GameOptionWindow.optionsMenu.dispose();
+		if (GameOptionWindow.optionsMenu != null){
+			GameOptionWindow.optionsMenu.dispose();			
+		}
 		gameWindow.repaint();
+		Game.hasStarted = true;
 	}
 
 	public static void startLocalGame() {

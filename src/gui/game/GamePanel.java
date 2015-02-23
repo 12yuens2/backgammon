@@ -1,21 +1,20 @@
 package gui.game;
 
 import game.Column;
-import game.Game;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.MouseInfo;
-import java.awt.Point;
-import java.awt.event.MouseListener;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public GamePanel(){
 		
 		int colNum = 0;

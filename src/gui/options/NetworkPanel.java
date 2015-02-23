@@ -16,7 +16,7 @@ import javax.swing.JTextField;
 import networking.Network;
 
 public class NetworkPanel extends JPanel {
-	
+
 	static final String[] aiNames = {"Random-chan", "Homura-chan", "Aoi-chan"};
 	public static final int RandomIndex = 0;
 	public static final int HomuraIndex = 1;
@@ -50,7 +50,7 @@ public class NetworkPanel extends JPanel {
 		
 		JLabel l1 = new JLabel("Choose AI to send:");
 		this.add(l1);
-		aiList = new JComboBox(aiNames);
+		aiList = new JComboBox<String>(aiNames);
 		this.add(aiList);
 		aiList.setSelectedIndex(0);
 		aiList.addActionListener(new ActionListener(){
