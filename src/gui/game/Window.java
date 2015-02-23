@@ -11,9 +11,11 @@ import javax.swing.JComponent;
 import javax.swing.JFrame;
 
 public class Window extends JFrame {
+	GamePanel panel;
+	
 	public Window(){
 		super("CS 1006 Backgammon");
-		GamePanel panel = new GamePanel();
+		panel = new GamePanel();
 		this.add(panel);
 		
 		GameMenu menu = new GameMenu();
@@ -26,7 +28,14 @@ public class Window extends JFrame {
 
 		
 	}
-
+	
+	public void reset(){
+		this.remove(panel);
+		panel = new GamePanel();
+		this.add(panel);
+		this.pack();
+		this.repaint();
+	}
 }
 
 class PaintMouseListener implements MouseListener{

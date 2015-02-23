@@ -25,13 +25,7 @@ public class GamePanel extends JPanel {
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx=0.8;
 		c.weighty=0.8;
-		
-		// 
-		//
-		//
-		//	
-
-		
+				
 		c.gridy=2;
 		//bottom
 		c.gridx=13;
