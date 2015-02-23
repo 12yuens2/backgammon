@@ -181,23 +181,26 @@ public class Column {
 		return false;
 	}
 	
-	private boolean hasToBearOff() {
-		System.out.println(this.getNumber());
-		if (this.getNumber() == 0){
-			if (Column.selectedColumn.getNumber() > Math.max(Move.dice[0], Move.dice[1])){
-				for (int i = 6; i < Column.selectedColumn.getNumber();i--){
-					return true;
+	boolean hasToBearOff() {
+		System.out.println("Checking for pieces at a further left position.");
+		if (this.getColor() == Column.BLACK){
+			for (int i = 6; i > this.getNumber(); i--){
+				if (Column.find(i).hasPieces() && Column.find(i).matchesColor()){
+					return false;
 				}
 			}
-		} else if (this.getNumber() == 25){
-			return true;
 		} else {
-			return false;
+			for (int i = 19; i < this.getNumber(); i++){
+				if (Column.find(i).hasPieces() && Column.find(i).matchesColor()){
+					return false;
+				}
+			}			
 		}
-		return false;
+		System.out.println("has to bear off...");
+		return true;
 	}
 
-	public boolean canBearOff(){
+	public static boolean canBearOff(){
 		boolean canBearOff = true;
 		if (Column.selectedColumn.getColor() == Column.BLACK){
 			for (Column c : Column.getAll()){
@@ -244,7 +247,31 @@ public class Column {
 	
 	public void select(){
 		Game.gameWindow.repaint();
-			if (Column.selectedColumn != this && Column.selectedColumn != null && Game.turn == Column.selectedColumn.getColor() ){
+		if (Column.selectedColumn != null){
+			for (PossibleMove move : Move.possibleMoves){
+				if (this.getNumber() == move.getTo() && Column.selectedColumn.getNumber() == move.getFrom()){
+					Move.executeMove(move, true);
+					if (Column.selectedColumn != null){
+						Column.selectedColumn.unSelect();
+					}
+					return;
+				}
+			}
+			if (this.matchesColor()){
+				Column.selectedColumn.unSelect();
+				this.select();
+			}
+		} else {
+			for (PossibleMove move : Move.possibleMoves){
+				if (this.getNumber() == move.getFrom()){
+					Column.selectedColumn = this;
+					this.isSelected = true;
+					Column.setHighlighted(move.getFrom());
+				}
+			}			
+		}
+
+/*			if (Column.selectedColumn != this && Column.selectedColumn != null && Game.turn == Column.selectedColumn.getColor() ){
 				if (this.isValidMove()){
 					System.out.println("Clicked on valid move...");
 					if (this.isCapturable() && !this.matchesColor()){
@@ -272,30 +299,48 @@ public class Column {
 						(this.getColor() == Column.BLACK && Game.blackIsHuman) ||
 						(this.getColor() == Column.WHITE && Game.whiteIsHuman)
 				){
-					System.out.println("Selecting color");
-					Column.selectedColumn = this;
-					this.isSelected = true;
-					Column.setHighlighted();
+					if ( (this.isWoodColumn() && Column.hasWoodMoves()) || (!this.isWoodColumn() && !Column.hasWoodMoves() ) ) {
+						System.out.println("Selecting color");
+						Column.selectedColumn = this;
+						this.isSelected = true;
+						Column.setHighlighted();						
+					}
 				} else {
 					System.out.println("Failed to select color");
 				}
 			} else {
 				Column.selectedColumn = null;
-			}
+			} */
 	}
 
-	private static void setHighlighted() {
-		System.out.println("Setting highlighted...");
+	private static void setHighlighted(int from) {
+		for (Column c : Column.getAll()){
+			for (PossibleMove move : Move.possibleMoves){
+				if (c.getNumber() == move.getTo() && move.getFrom() == from){
+					c.isHighlighted = true;
+				}
+			}
+		}
+/*		System.out.println("Setting highlighted...");
 		for (Column c: Column.getAll()){
 			if (c.isValidMove()){
 				c.isHighlighted = true;
 			}
-		}
+		} */
 	}
 
 	public boolean isWoodColumn() {
 		for (Column c: Column.woodColumns){
 			if (this.equals(c)){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public static boolean hasWoodMoves() {
+		for (Column c: Column.woodColumns) {
+			if (Move.hasValidMoves(c)) {
 				return true;
 			}
 		}
@@ -307,7 +352,6 @@ public class Column {
 	}
 
 	public void unSelect() {
-		System.out.println("Unselecting...");
 		for (Column c : Column.getAll()){
 			c.isSelected = false;
 			c.isHighlighted = false;
@@ -320,8 +364,9 @@ public class Column {
 		Game.gameWindow.repaint();
 	}
 
-	private static void setUnHighlighted() {
+	public static void setUnHighlighted() {
 		for (Column c: Column.getAll()){
+			c.isSelected = false;
 			c.isHighlighted = false;
 			c.panel.repaint();
 		}

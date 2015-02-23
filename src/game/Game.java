@@ -35,7 +35,7 @@ public class Game {
 	public static boolean blackIsNetwork;
 	
 	public static AI whiteAI, blackAI;
-	public static final long sleepTime = 40;
+	public static final long sleepTime = 5;
 	public static int gamesPlayed = 0;
 	public static int maxGames = 5;
 	
@@ -102,6 +102,7 @@ public class Game {
 
 		Column.selectedColumn = null;
 		Move.message = Move.message.substring(0, Move.message.length() - 1) + ";";
+		System.out.println(Move.message);
 		Network.addText(Move.message);
 		Game.turnNumber++;
 		if (!Game.gameOver){
@@ -127,7 +128,9 @@ public class Game {
 			if (!Move.checkMoves()){
 				Move.message = Move.message + "(-1|-1);";
 				Game.changeTurn();
-			}			
+			}
+			Column.selectedColumn = null;
+			Column.setUnHighlighted();
 		}
 	}
 
