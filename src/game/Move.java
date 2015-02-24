@@ -12,7 +12,7 @@ public class Move {
 
 	public static ArrayList<PossibleMove> possibleMoves = new ArrayList<>();
 
-	public static void setDice(int[] dices){
+	public static void setDice(Board board, int[] dices){
 		dice = dices;
 
 		if (dice[0] == dice[1]){
@@ -23,10 +23,10 @@ public class Move {
 			doubles[1] = 0;
 		}
 		
-		Move.setPossibleMoves();
+		Move.setPossibleMoves(board);
 	}
 
-	public static void rollDice() {
+	public static void rollDice(Board board) {
 
 		doubles[0] = 0;
 		doubles[1] = 0;
@@ -39,22 +39,22 @@ public class Move {
 			doubles[0] = dice[0];
 			doubles[1] = dice[1];
 		}
-		Move.setPossibleMoves();
+		Move.setPossibleMoves(board);
 		//		System.out.println(dice[0] + " " + dice[1] + " (" + doubles[0] + " " + doubles[1] + ")");
 	}
 	
-	public static boolean hasValidMoves(Column c){
+	public static boolean hasValidMoves(Board board, Column c){
 		if (c.getColor() == Game.turn){
-			Column.selectedColumn = c;
+			board.setSelected(c);
 			for (int move : Move.dice){
 				int x = c.getNumber() + move*c.getColor();
-				if (x >= 0 && x < Column.getAll().length){
-					if (Column.find(c.getNumber() + move*c.getColor()).isValidMove()){
+				if (x >= 0 && x < board.getAll().length){
+					if (board.find(c.getNumber() + move*c.getColor()).isValidMove()){
 						return true;
 					}
 				}
 				
-				if( Column.canBearOff()){
+				if( board.canBearOff()){
 					if (c.getColor() == Column.BLACK){
 						if (c.getNumber() < move){
 							return true;
@@ -67,20 +67,20 @@ public class Move {
 				}
 				
 			}
-			Column.selectedColumn = null;
+			board.setSelected(null);	
 		}
 		return false;
 	}
 
 
-	public static void setPossibleMoves(){
+	public static void setPossibleMoves(Board board){
 		possibleMoves.clear();
-		for (Column c : Column.woodColumns){
-			if (hasValidMoves(c)){
+		for (Column c : board.woodColumns){
+			if (hasValidMoves(board, c)){
 				for (int move : Move.dice){
 					int x = c.getNumber() + move*c.getColor();
-					if (x >= 0 && x < Column.getAll().length){
-						if (Column.find(c.getNumber() + move*c.getColor()).isValidMove()){
+					if (x >= 0 && x < board.getAll().length){
+						if (board.find(c.getNumber() + move*c.getColor()).isValidMove()){
 							possibleMoves.add(new PossibleMove(x,c.getNumber(),move));
 						}						
 					}
@@ -88,18 +88,18 @@ public class Move {
 			}
 		}
 		if (possibleMoves.isEmpty()) {
-			for (Column c: Column.getAll()){
-				if (hasValidMoves(c)){
+			for (Column c: board.getAll()){
+				if (hasValidMoves(board, c)){
 					for (int move : Move.dice){
 						int x = c.getNumber() + move*c.getColor();
-						if (x >= 0 && x < Column.getAll().length){
-							if (Column.find(c.getNumber() + move*c.getColor()).isValidMove() ){
+						if (x >= 0 && x < board.getAll().length){
+							if (board.find(c.getNumber() + move*c.getColor()).isValidMove() ){
 								possibleMoves.add(new PossibleMove(x,c.getNumber(),move));
 							}
 						}
 
 						if (c.getColor() == Column.BLACK){
-							if (x < 0 && Column.canBearOff() && c.hasToBearOff() ){
+							if (x < 0 && board.canBearOff() && c.hasToBearOff() ){
 								if (c.getNumber() != 0){
 									possibleMoves.add(new PossibleMove(0,c.getNumber(),move));									
 								}
@@ -107,7 +107,7 @@ public class Move {
 						}
 						
 						if (c.getColor() == Column.WHITE) {
-							if (x > 25 && Column.canBearOff() && c.hasToBearOff() ){
+							if (x > 25 && board.canBearOff() && c.hasToBearOff() ){
 								if (c.getNumber() != 25) {
 									possibleMoves.add(new PossibleMove(25, c.getNumber(), move));									
 								}
@@ -127,24 +127,24 @@ public class Move {
 		} */
 	}
 	
-	public static void executeMove(PossibleMove move, boolean shareToNetwork) {
+	public static void executeMove(Board board, PossibleMove move, boolean shareToNetwork) {
 		//assume valid move is passed here
-		Column from = Column.findFrom(move);
-		Column to = Column.findTo(move);
+		Column from = board.findFrom(move);
+		Column to = board.findTo(move);
 		if (to.getPieces().size() == 1){
 			if (from.getColor() == Column.WHITE && to.getColor() == Column.BLACK){
-				Column.find(Column.WOOD_BLACK).addPiece(to.RemovePiece());
+				board.find(Board.WOOD_BLACK).addPiece(to.RemovePiece());
 			} else if (from.getColor() == Column.BLACK && to.getColor() == Column.WHITE) {
-				Column.find(Column.WOOD_WHITE).addPiece(to.RemovePiece());
+				board.find(Board.WOOD_WHITE).addPiece(to.RemovePiece());
 			}
 		}
 
 		to.addPiece(from.RemovePiece());
 
-		Move.consumeMove(move,shareToNetwork);		
+		Move.consumeMove(board, move,shareToNetwork);		
 	}
 
-	private static void consumeMove(PossibleMove move, boolean shareToNetwork) {
+	private static void consumeMove(Board board, PossibleMove move, boolean shareToNetwork) {
 		for (int i = 0; i < dice.length; i++){
 			if (dice[i] == move.getDiceUsed()){
 				dice[i] = 0;
@@ -161,7 +161,7 @@ public class Move {
 		if (shareToNetwork){
 			message = message + "(" + move.getFrom() + "|" + move.getTo() + "),";
 		}
-		Move.setPossibleMoves();
+		Move.setPossibleMoves(board);
 		
 		if (possibleMoves.isEmpty() || (dice[0] == 0 && dice[1] == 0 )){
 			Game.changeTurn();

@@ -42,12 +42,12 @@ public class Aoi implements AI{
 				bestBoard = board;
 			}
 		}
-		Move.executeMove(bestBoard.getMove(),true);
+		Move.executeMove(Game.gameBoard,bestBoard.getMove(),true);
 	}
 	
 	public int[] getBoardState() {
-		int[] boardState = new int[Column.getAll().length + 2];
-		for (Column c: Column.getAll()) {
+		int[] boardState = new int[Game.gameBoard.getAll().length + 2];
+		for (Column c: Game.gameBoard.getAll()) {
 			
 			boardState[c.getNumber()] = c.getPieces().size()*c.getNumber()*c.getColor()*25;
 			
@@ -68,8 +68,8 @@ public class Aoi implements AI{
 			}
 		}
 		for (int i = 0; i <=1; i++){
-			if (Column.woodColumns[i].hasPieces() && Column.woodColumns[i].getColor() == Game.turn){
-				boardState[Column.getAll().length + i] += WOOD_VALUE*Column.woodColumns[i].getPieces().size();
+			if (Game.gameBoard.woodColumns[i].hasPieces() && Game.gameBoard.woodColumns[i].getColor() == Game.turn){
+				boardState[Game.gameBoard.getAll().length + i] += WOOD_VALUE*Game.gameBoard.woodColumns[i].getPieces().size();
 			}
 		}
 		return boardState;
@@ -81,45 +81,45 @@ public class Aoi implements AI{
 		int fromIndex = move.getFrom();
 		int toIndex = move.getTo();
 		
-		Column.selectedColumn = Column.find(fromIndex);
+		Game.gameBoard.setSelected(Game.gameBoard.find(fromIndex));
 		
-		if (Column.selectedColumn.isWoodColumn()){
+		if (Game.gameBoard.getSelected().isWoodColumn()){
 			newBoard[fromIndex] -= WOOD_VALUE;
 		} else {
 			//change FROM column value
-			if (Column.selectedColumn.getPieces().size() == 1){
+			if (Game.gameBoard.getSelected().getPieces().size() == 1){
 				//lone piece moving somewhere
 				newBoard[fromIndex] -= SINGLE_SAME_PIECE_VALUE;				
 			}
-			if (Column.selectedColumn.getPieces().size() == 2){
+			if (Game.gameBoard.getSelected().getPieces().size() == 2){
 				newBoard[fromIndex] -= PAIR_VALUE;
 				newBoard[fromIndex] += SINGLE_SAME_PIECE_VALUE;
 			}
-			if (Column.selectedColumn.getPieces().size() == 3){
+			if (Game.gameBoard.getSelected().getPieces().size() == 3){
 				newBoard[fromIndex] -= GREATER_THAN_PAIR_VALUE;
 				newBoard[fromIndex] += PAIR_VALUE;
 			}			
 		}		
 		
 		//change TO column value
-		if (Column.find(toIndex).getPieces().size() == 0){
+		if (Game.gameBoard.find(toIndex).getPieces().size() == 0){
 			//lone piece moving somewhere
 			newBoard[toIndex] += SINGLE_SAME_PIECE_VALUE;				
 		}
-		if (Column.find(toIndex).getPieces().size() == 1){
-			if (Column.find(toIndex).getColor() != Game.turn){
+		if (Game.gameBoard.find(toIndex).getPieces().size() == 1){
+			if (Game.gameBoard.find(toIndex).getColor() != Game.turn){
 				newBoard[toIndex] -= SINGLE_DIFF_PIECE_VALUE;
 			} else {
 				newBoard[toIndex] += PAIR_VALUE;
 				newBoard[toIndex] -= SINGLE_SAME_PIECE_VALUE;				
 			}
 		}
-		if (Column.find(toIndex).getPieces().size() == 2){
+		if (Game.gameBoard.find(toIndex).getPieces().size() == 2){
 			newBoard[toIndex] += GREATER_THAN_PAIR_VALUE;
 			newBoard[toIndex] -= PAIR_VALUE;
 		}			
 		
-		Column.selectedColumn = null;
+		Game.gameBoard.setSelected(null);
 		return newBoard;
 	}
 }

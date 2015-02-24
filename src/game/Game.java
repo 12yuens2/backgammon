@@ -40,13 +40,15 @@ public class Game {
 	public static int gamesPlayed = 0;
 	public static int maxGames = 5000;
 	
+	public static Board gameBoard;
+	
 	public static void main(String[] args) throws InterruptedException, IOException {
-
+		gameBoard = new Board();
 		Game.gameOver = false;
-		Column.init();
-		gameWindow = new Window();
+		gameBoard.init();
+		gameWindow = new Window(gameBoard);
 		
-		Game.startLocalAIGame(AIPanel.HomuraIndex, AIPanel.HomuraIndex);
+	//	Game.startLocalAIGame(AIPanel.HomuraIndex, AIPanel.HomuraIndex);
 		
 		while (true){
 			while (!hasStarted){
@@ -103,24 +105,24 @@ public class Game {
 				System.exit(0);
 			}
 			Game.reset();
-			Game.startLocalAIGame(AIPanel.HomuraIndex, AIPanel.HomuraIndex);
+		//	Game.startLocalAIGame(AIPanel.HomuraIndex, AIPanel.HomuraIndex);
 		}
 		
 	}
 
 	public static void changeTurn() {
 
-		Column.selectedColumn = null;
+		gameBoard.setSelected(null);
 		Move.message = Move.message.substring(0, Move.message.length() - 1) + ";";
 //		System.out.println(Move.message);
 		Network.addText(Move.message);
 		Game.turnNumber++;
 		if (!Game.gameOver){
-			if(Column.getAll()[0].getPieces().size() == Game.PIECE_NUMBER){
+			if(gameBoard.getAll()[0].getPieces().size() == Game.PIECE_NUMBER){
 				Game.winner = Column.BLACK;
 				Game.gameOver = true;
 
-			} else if (Column.getAll()[25].getPieces().size() == Game.PIECE_NUMBER) {
+			} else if (gameBoard.getAll()[25].getPieces().size() == Game.PIECE_NUMBER) {
 				Game.winner = Column.WHITE;
 				Game.gameOver = true;
 			}
@@ -133,14 +135,14 @@ public class Game {
 			}
 
 			gameWindow.repaint();
-			Move.rollDice();
-			Move.setPossibleMoves();
+			Move.rollDice(gameBoard);
+			Move.setPossibleMoves(gameBoard);
 			if (Move.possibleMoves.isEmpty()){
 				Move.message = Move.message + "(-1|-1);";
 				Game.changeTurn();
 			}
-			Column.selectedColumn = null;
-			Column.setUnHighlighted();
+			gameBoard.setSelected(null);
+			gameBoard.unSelect();
 		}
 	}
 
@@ -151,11 +153,11 @@ public class Game {
 	}
 
 	public static void startGame(){
-		Column.init();
+		gameBoard.init();
 		gameWindow.reset();
-		Column.addPieces();
+		gameBoard.addPieces();
 		Game.turn = Column.WHITE;
-		Move.rollDice();
+		Move.rollDice(gameBoard);
 		if (GameOptionWindow.optionsMenu != null){
 			GameOptionWindow.optionsMenu.dispose();			
 		}

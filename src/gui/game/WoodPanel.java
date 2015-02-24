@@ -1,5 +1,6 @@
 package gui.game;
 
+import game.Board;
 import game.Piece;
 
 import java.awt.Color;
@@ -9,8 +10,8 @@ import java.awt.event.MouseListener;
 import javax.swing.JLabel;
 
 public class WoodPanel extends ColumnPanel {
-	public WoodPanel(int i, boolean faceDown){
-		super(i, faceDown);
+	public WoodPanel(int i, boolean faceDown, Board board){
+		super(i, faceDown, board);
 	}
 	
 	public void paintComponent(Graphics g){

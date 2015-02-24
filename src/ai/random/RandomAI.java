@@ -1,6 +1,7 @@
 package ai.random;
 
 import game.Column;
+import game.Game;
 import game.Move;
 import game.PossibleMove;
 
@@ -19,7 +20,7 @@ public class RandomAI implements AI {
 	public void makeMove() {
 		int chosenMove = generator.nextInt(Move.possibleMoves.size());
 		PossibleMove move = Move.possibleMoves.get(chosenMove);
-		Move.executeMove(move,true);			
+		Move.executeMove(Game.gameBoard,move,true);			
 	}
 
 }

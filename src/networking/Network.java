@@ -1,5 +1,6 @@
 package networking;
 
+import game.Game;
 import game.Move;
 import game.PossibleMove;
 
@@ -62,10 +63,10 @@ public abstract class Network {
 				System.out.println("Badly formatted turn string :(");
 			}
 		}
-		Move.setDice(turnInts[0]);
+		Move.setDice(Game.gameBoard,turnInts[0]);
 		for (int i = 1; i < turnInts.length; i++){
 			PossibleMove move = Move.find(turnInts[i][0],turnInts[i][1]);
-			Move.executeMove(move, false);
+			Move.executeMove(Game.gameBoard,move, false);
 		}
 	}
 	

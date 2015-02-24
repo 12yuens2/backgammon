@@ -43,28 +43,28 @@ public class FutureBoard {
 	public void getPipCount() {
 		pips = 0;
 		opponentPips = 0;
-		if (Game.turn == Column.BLACK) {
-			for (Column c: Column.getAll()) {
-				if (c.getColor() == Column.BLACK) {
+		if (Game.turn == Game.gameBoard.BLACK) {
+			for (Column c: Game.gameBoard.getAll()) {
+				if (c.getColor() == Game.gameBoard.BLACK) {
 					pips+=c.getNumber()*c.getPieces().size();
 				}
-				if (c.getColor() == Column.WHITE){
+				if (c.getColor() == Game.gameBoard.WHITE){
 					opponentPips += (25-c.getNumber())*c.getPieces().size();
 				}
 			}
-			pips+=Column.woodColumns[1].getPieces().size()*25;
-			opponentPips+= Column.woodColumns[0].getPieces().size()*25;
+			pips+=Game.gameBoard.woodColumns[1].getPieces().size()*25;
+			opponentPips+= Game.gameBoard.woodColumns[0].getPieces().size()*25;
 		} else {
-			for (Column c: Column.getAll()) {
-				if (c.getColor() == Column.WHITE) {
+			for (Column c: Game.gameBoard.getAll()) {
+				if (c.getColor() == Game.gameBoard.WHITE) {
 					pips+=(25-c.getNumber())*c.getPieces().size();
 				}
-				if (c.getColor() == Column.BLACK){
+				if (c.getColor() == Game.gameBoard.BLACK){
 					opponentPips += c.getNumber()*c.getPieces().size();
 				}
 			}
-			pips+=Column.woodColumns[0].getPieces().size()*25;
-			opponentPips+= Column.woodColumns[1].getPieces().size()*25;
+			pips+=Game.gameBoard.woodColumns[0].getPieces().size()*25;
+			opponentPips+= Game.gameBoard.woodColumns[1].getPieces().size()*25;
 		}
 		System.out.println(pips + " , " + opponentPips);
 	}

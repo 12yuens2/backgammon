@@ -1,5 +1,6 @@
 package gui.game;
 
+import game.Board;
 import game.Column;
 
 import java.awt.Color;
@@ -15,7 +16,7 @@ public class GamePanel extends JPanel {
 	 */
 	private static final long serialVersionUID = 1L;
 
-	public GamePanel(){
+	public GamePanel(Board board){
 		
 		int colNum = 0;
 		
@@ -29,39 +30,39 @@ public class GamePanel extends JPanel {
 		//bottom
 		c.gridx=13;
 //		c.weightx=1.6;
-		this.add(new EndPanel(colNum, false),c);
+		this.add(new EndPanel(colNum, false, board),c);
 		c.weightx=0.8;
 		colNum++;
 		
 		for (int i = 12; i > 6; i--){
 			c.gridx=i;
-			this.add(new ColumnPanel(colNum, true),c);
+			this.add(new ColumnPanel(colNum, true, board),c);
 			colNum++;
 		}
 		c.gridx = 6;
-		this.add(new WoodPanel(Column.WOOD_BLACK,false),c);
+		this.add(new WoodPanel(Board.WOOD_BLACK,false, board),c);
 		for (int i = 5; i >= 0; i--){
 			c.gridx=i;
-			this.add(new ColumnPanel(colNum, true),c);
+			this.add(new ColumnPanel(colNum, true, board),c);
 			colNum++;
 		}
 		c.gridy=0;
 		//top
 		for (int i = 0; i < 6; i++){
 			c.gridx=i;
-			this.add(new ColumnPanel(colNum, false),c);
+			this.add(new ColumnPanel(colNum, false, board),c);
 			colNum++;
 		}
 		c.gridx = 6;
-		this.add(new WoodPanel(Column.WOOD_WHITE,true),c);
+		this.add(new WoodPanel(Board.WOOD_WHITE,true, board),c);
 		for (int i = 7; i <= 12; i++){
 			c.gridx=i;
-			this.add(new ColumnPanel(colNum, false),c);
+			this.add(new ColumnPanel(colNum, false, board),c);
 			colNum++;
 		}
 		c.gridx=13;
 //		c.weightx=1.6;
-		this.add(new EndPanel(colNum, true),c);
+		this.add(new EndPanel(colNum, true, board),c);
 		c.weightx=0.8;
 		
 		//middle
@@ -80,21 +81,6 @@ public class GamePanel extends JPanel {
 		g.setColor(Color.BLUE);
 
 		g.fillRect(0, 0, this.getWidth(), this.getHeight());
-/*		for (Column c : Column.getAll()){
-			if (c.isSelected()){
-				g.setColor(Color.white);
-				Point p = this.getMousePosition();
-				if (p != null){
-					g.fillOval(p.x-25 ,p.y-25, 50, 50);					
-				}
-			}
-		} */
-	}
-	
-	public void render(){
-		//render background
-		//render columns
-		//render active
 	}
 	
 }

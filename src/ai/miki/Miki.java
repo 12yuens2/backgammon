@@ -11,8 +11,8 @@ public class Miki {
 	private int[] boardState;
 	
 	public void setBoardState() {
-		boardState = new int[Column.getAll().length +2];
-		for (Column c: Column.getAll()) {
+		boardState = new int[Game.gameBoard.getAll().length +2];
+		for (Column c: Game.gameBoard.getAll()) {
 			boardState[c.getNumber()] = c.getPieces().size()*c.getColor();
 		}
 	}

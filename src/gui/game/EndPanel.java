@@ -1,5 +1,6 @@
 package gui.game;
 
+import game.Board;
 import game.Piece;
 
 import java.awt.Color;
@@ -7,8 +8,8 @@ import java.awt.Graphics;
 
 public class EndPanel extends ColumnPanel {
 
-	public EndPanel(int i, boolean faceDown) {
-		super(i, faceDown);
+	public EndPanel(int i, boolean faceDown, Board board) {
+		super(i, faceDown, board);
 	}
 
 	public void paintComponent(Graphics g){

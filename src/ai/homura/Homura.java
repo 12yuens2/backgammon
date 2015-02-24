@@ -55,7 +55,7 @@ public class Homura implements AI {
 		ArrayList<TimelineMove> knownMoves = new ArrayList<>();
 		for (TimelineMove m : this.timeline.timelineMoves){
 			for (PossibleMove move : Move.possibleMoves){
-				if (Arrays.equals(m.getBoardState(), TimelineMove.makeBoardState(Column.getAll())) && m.getFrom() == move.getFrom() && m.getTo() == move.getTo()){
+				if (Arrays.equals(m.getBoardState(), TimelineMove.makeBoardState(Game.gameBoard.getAll())) && m.getFrom() == move.getFrom() && m.getTo() == move.getTo()){
 					knownMoves.add(m);
 				}
 			}
@@ -76,14 +76,14 @@ public class Homura implements AI {
 			
 //			System.out.println(bestMove.getTurn());
 			PossibleMove chosenKnownMove = Move.find(bestMove.getFrom(),bestMove.getTo());
-			Move.executeMove(chosenKnownMove,true);
+			Move.executeMove(Game.gameBoard,chosenKnownMove,true);
 			System.out.println("using known move");
 		} else {
 			int chosenMove = generator.nextInt(Move.possibleMoves.size());
 			PossibleMove move = Move.possibleMoves.get(chosenMove);
-			gameMoves.add(new TimelineMove(Column.getAll(),move.getFrom(),move.getTo()));
+			gameMoves.add(new TimelineMove(Game.gameBoard.getAll(),move.getFrom(),move.getTo()));
 			System.out.println("Homura chan learned a new move");
-			Move.executeMove(move,true);			
+			Move.executeMove(Game.gameBoard,move,true);			
 		}
 	}
 

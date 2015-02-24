@@ -6,6 +6,7 @@ import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
+import game.Board;
 import game.Column;
 import game.Piece;
 
@@ -16,9 +17,9 @@ public class ColumnPanel extends JLabel {
 	boolean faceDown;
 	protected static final int size = 50;
 
-	public ColumnPanel(int i, boolean faceDown){
+	public ColumnPanel(int i, boolean faceDown, Board board){
 		super();
-		this.column = Column.find(i);
+		this.column = board.find(i);
 		this.column.panel = this;
 		this.faceDown = faceDown;
 		this.addMouseListener(new BackGammonListener(this));
@@ -71,7 +72,7 @@ public class ColumnPanel extends JLabel {
 	}
 
 	public void unSelect() {
-		column.unSelect();
+		column.board.unSelect();
 		
 	}
 

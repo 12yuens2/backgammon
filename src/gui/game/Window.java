@@ -1,5 +1,6 @@
 package gui.game;
 
+import game.Board;
 import gui.options.GameMenu;
 
 import java.awt.Dimension;
@@ -12,10 +13,12 @@ import javax.swing.JFrame;
 
 public class Window extends JFrame {
 	GamePanel panel;
+	Board board;
 	
-	public Window(){
+	public Window(Board board){
 		super("CS 1006 Backgammon");
-		panel = new GamePanel();
+		this.board = board;
+		panel = new GamePanel(board);
 		this.add(panel);
 		
 		GameMenu menu = new GameMenu();
@@ -31,7 +34,7 @@ public class Window extends JFrame {
 	
 	public void reset(){
 		this.remove(panel);
-		panel = new GamePanel();
+		panel = new GamePanel(board);
 		this.add(panel);
 		this.pack();
 		this.repaint();
