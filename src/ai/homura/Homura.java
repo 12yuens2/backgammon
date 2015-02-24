@@ -82,6 +82,7 @@ public class Homura implements AI {
 			int chosenMove = generator.nextInt(Move.possibleMoves.size());
 			PossibleMove move = Move.possibleMoves.get(chosenMove);
 			gameMoves.add(new TimelineMove(Column.getAll(),move.getFrom(),move.getTo()));
+			System.out.println("Homura chan learned a new move");
 			Move.executeMove(move,true);			
 		}
 	}

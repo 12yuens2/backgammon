@@ -36,15 +36,17 @@ public class Game {
 	public static boolean blackIsNetwork;
 	
 	public static AI whiteAI, blackAI;
-	public static final long sleepTime = 5;
+	public static final long sleepTime = 0;
 	public static int gamesPlayed = 0;
-	public static int maxGames = 5;
+	public static int maxGames = 5000;
 	
 	public static void main(String[] args) throws InterruptedException, IOException {
 
 		Game.gameOver = false;
 		Column.init();
 		gameWindow = new Window();
+		
+		Game.startLocalAIGame(AIPanel.RandomIndex, AIPanel.HomuraIndex);
 		
 		while (true){
 			while (!hasStarted){
@@ -83,9 +85,15 @@ public class Game {
 			}
 			if (winner == Column.BLACK){
 				System.out.println("Black wins");
+				if (blackAI instanceof Homura){
+					((Homura)blackAI).addWinData();					
+				}
 				blackwins++;
 			} else {
 				System.out.println("White wins");
+				if (blackAI instanceof Homura){
+					((Homura)blackAI).addLoseData();					
+				}
 				whitewins++;
 			}
 			gamesPlayed++;
@@ -95,6 +103,7 @@ public class Game {
 				System.exit(0);
 			}
 			Game.reset();
+			Game.startLocalAIGame(AIPanel.RandomIndex, AIPanel.HomuraIndex);
 		}
 		
 	}
@@ -103,7 +112,7 @@ public class Game {
 
 		Column.selectedColumn = null;
 		Move.message = Move.message.substring(0, Move.message.length() - 1) + ";";
-		System.out.println(Move.message);
+//		System.out.println(Move.message);
 		Network.addText(Move.message);
 		Game.turnNumber++;
 		if (!Game.gameOver){
@@ -115,12 +124,12 @@ public class Game {
 				Game.winner = Column.WHITE;
 				Game.gameOver = true;
 			}
-			System.out.println("Changing turn...");
+//			System.out.println("Changing turn...");
 			Game.turn = (Game.turn == Column.BLACK) ? Column.WHITE : Column.BLACK;
 			if (Game.turn == Column.BLACK){
-				System.out.println("It is now black's turn");				
+		//		System.out.println("It is now black's turn");				
 			} else {
-				System.out.println("It is now white's turn");
+		//		System.out.println("It is now white's turn");
 			}
 
 			gameWindow.repaint();

@@ -119,12 +119,12 @@ public class Move {
 			}			
 		}
 
-		if (!possibleMoves.isEmpty()){
+	/*	if (!possibleMoves.isEmpty()){
 			System.out.println("Possible moves:");
 			for (PossibleMove move : possibleMoves){
 				System.out.println("" + move.getFrom() + " >> " + move.getTo() + " using " + move.getDiceUsed() + ".");
 			}			
-		}
+		} */
 	}
 	
 	public static void executeMove(PossibleMove move, boolean shareToNetwork) {
