@@ -46,7 +46,7 @@ public class Game {
 		Column.init();
 		gameWindow = new Window();
 		
-		Game.startLocalAIGame(AIPanel.RandomIndex, AIPanel.HomuraIndex);
+		Game.startLocalAIGame(AIPanel.HomuraIndex, AIPanel.HomuraIndex);
 		
 		while (true){
 			while (!hasStarted){
@@ -103,7 +103,7 @@ public class Game {
 				System.exit(0);
 			}
 			Game.reset();
-			Game.startLocalAIGame(AIPanel.RandomIndex, AIPanel.HomuraIndex);
+			Game.startLocalAIGame(AIPanel.HomuraIndex, AIPanel.HomuraIndex);
 		}
 		
 	}
