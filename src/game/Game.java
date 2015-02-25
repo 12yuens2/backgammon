@@ -11,6 +11,7 @@ import networking.Server;
 import ai.AI;
 import ai.aoi.Aoi;
 import ai.homura.Homura;
+import ai.miki.Miki;
 import ai.random.RandomAI;
 import gui.game.Window;
 import gui.options.AIPanel;
@@ -43,7 +44,7 @@ public class Game {
 	public static Board gameBoard;
 	
 	public static void main(String[] args) throws InterruptedException, IOException {
-		gameBoard = new Board();
+		gameBoard = new Board(Board.WHITE);
 		Game.gameOver = false;
 		gameBoard.init();
 		gameWindow = new Window(gameBoard);
@@ -56,7 +57,7 @@ public class Game {
 			}
 			System.out.println("starting game...");
 			while (!gameOver){
-				while (Game.turn == Column.WHITE && !Game.gameOver){
+				while (gameBoard.getTurn() == Column.WHITE && !Game.gameOver){
 					if (whiteIsNetwork){
 						Network.run();
 						Thread.sleep(sleepTime);
@@ -70,7 +71,7 @@ public class Game {
 					}
 					gameWindow.repaint();
 				}
-				while (Game.turn == Column.BLACK && !Game.gameOver){
+				while (gameBoard.getTurn() == Column.BLACK && !Game.gameOver){
 					if (blackIsNetwork){
 						Network.run();
 						Thread.sleep(sleepTime);
@@ -116,7 +117,6 @@ public class Game {
 		Move.message = Move.message.substring(0, Move.message.length() - 1) + ";";
 //		System.out.println(Move.message);
 		Network.addText(Move.message);
-		Game.turnNumber++;
 		if (!Game.gameOver){
 			if(gameBoard.getAll()[0].getPieces().size() == Game.PIECE_NUMBER){
 				Game.winner = Column.BLACK;
@@ -127,12 +127,7 @@ public class Game {
 				Game.gameOver = true;
 			}
 //			System.out.println("Changing turn...");
-			Game.turn = (Game.turn == Column.BLACK) ? Column.WHITE : Column.BLACK;
-			if (Game.turn == Column.BLACK){
-		//		System.out.println("It is now black's turn");				
-			} else {
-		//		System.out.println("It is now white's turn");
-			}
+			gameBoard.changeTurn();
 
 			gameWindow.repaint();
 			Move.rollDice(gameBoard);
@@ -156,7 +151,7 @@ public class Game {
 		gameBoard.init();
 		gameWindow.reset();
 		gameBoard.addPieces();
-		Game.turn = Column.WHITE;
+		gameBoard.changeTurn(Board.WHITE);
 		Move.rollDice(gameBoard);
 		if (GameOptionWindow.optionsMenu != null){
 			GameOptionWindow.optionsMenu.dispose();			
@@ -253,6 +248,8 @@ public class Game {
 			return new Homura();
 		case AIPanel.RandomIndex:
 			return new RandomAI();
+		case AIPanel.MikiIndex:
+			return new Miki();
 		}
 		return ai;
 	}

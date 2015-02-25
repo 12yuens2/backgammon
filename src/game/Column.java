@@ -85,7 +85,7 @@ public class Column {
 	
 	public boolean isForwardMove(){
 		Column selected = board.getSelected();
-		
+
 		return (
 				((this.getNumber() == 25 || this.getNumber() == 0) && board.canBearOff() || (this.getNumber() != 25 && this.getNumber() != 0)) && (					
 					(selected.getColor() == WHITE && this.number > selected.number) ||
@@ -177,6 +177,14 @@ public class Column {
 	
 	public boolean isSelected(){
 		return isSelected;
+	}
+
+	public void addPiece(int color) {
+		if (color == Board.BLACK){
+			addPiece(Piece.BLACK);
+		} else {
+			addPiece(Piece.WHITE);
+		}
 	}
 
 }

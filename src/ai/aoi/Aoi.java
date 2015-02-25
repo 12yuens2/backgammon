@@ -51,16 +51,16 @@ public class Aoi implements AI{
 			
 			boardState[c.getNumber()] = c.getPieces().size()*c.getNumber()*c.getColor()*25;
 			
-			if (c.getPieces().size() == 1 && c.getColor() == Game.turn) {
+			if (c.getPieces().size() == 1 && c.getColor() == Game.gameBoard.getTurn()) {
 				boardState[c.getNumber()] += SINGLE_SAME_PIECE_VALUE; 
 			}
-			if (c.getPieces().size() == 1 && c.getColor() != Game.turn) {
+			if (c.getPieces().size() == 1 && c.getColor() != Game.gameBoard.getTurn()) {
 				boardState[c.getNumber()] += SINGLE_DIFF_PIECE_VALUE;
 			}
-			if (c.getPieces().size() == 2 && c.getColor() == Game.turn) {
+			if (c.getPieces().size() == 2 && c.getColor() == Game.gameBoard.getTurn()) {
 				boardState[c.getNumber()] += PAIR_VALUE;
 			}
-			if (c.getPieces().size() > 2 && c.getColor() == Game.turn) {
+			if (c.getPieces().size() > 2 && c.getColor() == Game.gameBoard.getTurn()) {
 				boardState[c.getNumber()] += GREATER_THAN_PAIR_VALUE;
 			}
 			if (c.getNumber() == 0 || c.getNumber() == 25) {
@@ -68,7 +68,7 @@ public class Aoi implements AI{
 			}
 		}
 		for (int i = 0; i <=1; i++){
-			if (Game.gameBoard.woodColumns[i].hasPieces() && Game.gameBoard.woodColumns[i].getColor() == Game.turn){
+			if (Game.gameBoard.woodColumns[i].hasPieces() && Game.gameBoard.woodColumns[i].getColor() == Game.gameBoard.getTurn()){
 				boardState[Game.gameBoard.getAll().length + i] += WOOD_VALUE*Game.gameBoard.woodColumns[i].getPieces().size();
 			}
 		}
@@ -107,7 +107,7 @@ public class Aoi implements AI{
 			newBoard[toIndex] += SINGLE_SAME_PIECE_VALUE;				
 		}
 		if (Game.gameBoard.find(toIndex).getPieces().size() == 1){
-			if (Game.gameBoard.find(toIndex).getColor() != Game.turn){
+			if (Game.gameBoard.find(toIndex).getColor() != Game.gameBoard.getTurn()){
 				newBoard[toIndex] -= SINGLE_DIFF_PIECE_VALUE;
 			} else {
 				newBoard[toIndex] += PAIR_VALUE;

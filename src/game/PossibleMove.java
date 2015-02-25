@@ -1,6 +1,6 @@
 package game;
 
-public class PossibleMove {
+public class PossibleMove implements Cloneable{
 	private int to,from,diceUsed;
 
 	public PossibleMove(int to, int from, int diceUsed) {
@@ -19,6 +19,10 @@ public class PossibleMove {
 
 	public int getDiceUsed() {
 		return diceUsed;
+	}
+	
+	public PossibleMove clone(){
+		return new PossibleMove(this.to, this.from, this.diceUsed);
 	}
 	
 }

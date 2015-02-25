@@ -25,7 +25,7 @@ public class GameMenu extends JMenuBar {
 		menu.add(newGame);
 		JMenu aiMenu = new JMenu("AI Test");
 		this.add(aiMenu);
-		JMenuItem aiGame1 = new JMenuItem("Aoi vs Random");
+		JMenuItem aiGame1 = new JMenuItem("Aoi(W) vs Random(B)");
 		aiGame1.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
@@ -33,5 +33,13 @@ public class GameMenu extends JMenuBar {
 			}
 		});
 		aiMenu.add(aiGame1);
+		JMenuItem aiGame2 = new JMenuItem("Aoi(W) vs Miki(B)");
+		aiGame2.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				Game.startLocalAIGame(AIPanel.AoiIndex, AIPanel.MikiIndex);
+			}
+		});
+		aiMenu.add(aiGame2);
 	}
 }

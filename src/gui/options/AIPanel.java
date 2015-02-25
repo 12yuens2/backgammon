@@ -17,10 +17,11 @@ public class AIPanel extends JPanel {
 	private static JRadioButton whiteButton, blackButton, observerButton;
 	private static JComboBox<String> aiList1, aiList2;
 	
-	static final String[] aiNames = {"Random-chan", "Homura-chan", "Aoi-chan"};
+	static final String[] aiNames = {"Random-chan", "Homura-chan", "Aoi-chan", "Miki-chan"};
 	public static final int RandomIndex = 0;
 	public static final int HomuraIndex = 1;
 	public static final int AoiIndex = 2;
+	public static final int MikiIndex = 3;
 	
 	public AIPanel(){
 		JLabel l1 = new JLabel("Choose AI to play against:");

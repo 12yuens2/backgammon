@@ -1,73 +1,88 @@
 package ai.miki;
 
+import game.Board;
 import game.Column;
 import game.Game;
+import game.Move;
+import game.PossibleMove;
 
 import java.util.ArrayList;
 
-public class FutureBoard {
+public class FutureBoard extends Board {
 
-	public static final int MAX_DEPTH = 4;
-	
-	private ArrayList<FutureBoard> boards = new ArrayList<>();
-	private int depth;
 	private int pips, opponentPips;
-	private double ratioOfPips;
-	
-	/*RIP
-	 * private int pips, opponentPips;
-	private double ratioOfPips, strategicModifer;
-	
-	private static final double STRATEGIC_CONSTANT = 0.5;
-	
-	public int getPips() {
-		return pips;
-	}
-	public void setPips(int pips) {
-		this.pips = pips;
-	}
-	public int getOpponentPips() {
-		return opponentPips;
-	}
-	public void setOpponentPips(int opponentPips) {
-		this.opponentPips = opponentPips;
-	}*/
-	
+	ArrayList<FutureBoard> futureBoards;	
+	private int playerColor;
+	public static final int MAX_DEPTH = 4;
 
-	
-	/*public void modifyStrategy() {
-		ratioOfPips = pips/(opponentPips*1.0);
-		strategicModifer = STRATEGIC_CONSTANT/(ratioOfPips*1.0);
-	}*/
-	
-	public void getPipCount() {
-		pips = 0;
-		opponentPips = 0;
-		if (Game.turn == Game.gameBoard.BLACK) {
-			for (Column c: Game.gameBoard.getAll()) {
-				if (c.getColor() == Game.gameBoard.BLACK) {
-					pips+=c.getNumber()*c.getPieces().size();
-				}
-				if (c.getColor() == Game.gameBoard.WHITE){
-					opponentPips += (25-c.getNumber())*c.getPieces().size();
-				}
+	public FutureBoard(Board board, int depth, int playerColor) {
+		super(board.getTurn());
+		this.init();
+		this.playerColor = playerColor;
+		for (int i = 0; i < columns.length; i++){
+			for (int j = 0; j < board.getAll()[i].getPieces().size() - 1; j++){
+				columns[i].addPiece(board.getAll()[i].getColor());
 			}
-			pips+=Game.gameBoard.woodColumns[1].getPieces().size()*25;
-			opponentPips+= Game.gameBoard.woodColumns[0].getPieces().size()*25;
-		} else {
-			for (Column c: Game.gameBoard.getAll()) {
-				if (c.getColor() == Game.gameBoard.WHITE) {
-					pips+=(25-c.getNumber())*c.getPieces().size();
-				}
-				if (c.getColor() == Game.gameBoard.BLACK){
-					opponentPips += c.getNumber()*c.getPieces().size();
-				}
-			}
-			pips+=Game.gameBoard.woodColumns[0].getPieces().size()*25;
-			opponentPips+= Game.gameBoard.woodColumns[1].getPieces().size()*25;
 		}
-		System.out.println(pips + " , " + opponentPips);
+
+		for (int i = 0; i < woodColumns.length; i++){
+			for (int j = 0; j < board.getAll()[i].getPieces().size(); j++){
+				woodColumns[i].addPiece(board.getAll()[i].getPieces().get(0).getColor());
+			}
+		}
+
+		ArrayList<PossibleMove> moves = new ArrayList<>();
+		
+		calculatePips();
+		if (depth == 1){
+			Move.setPossibleMoves(this);
+			for (PossibleMove move : Move.possibleMoves){
+				moves.add(move.clone());
+			}
+			for (PossibleMove move : moves){
+				FutureBoard possibleBoard = new FutureBoard(this, depth + 1, playerColor);
+				possibleBoard.calculatePips();
+				System.out.println("EXECUTING IMAGINARY MOVE");	
+				Move.executeMove(possibleBoard, move, false);
+				System.out.println("EXECUTED IMAGINARY MOVE");
+				Game.gameWindow.repaint();
+			}
+		} else if (depth < MAX_DEPTH) {
+			for (int i = 1; i <= 6; i++){
+				for (int j = 1; j <= 6; j++){
+					int[] tempDice = {i,j};
+					Move.setDice(this, tempDice);
+					Move.setPossibleMoves(this);
+					for (PossibleMove move : moves){
+						FutureBoard possibleBoard = new FutureBoard(this, depth + 1, playerColor);
+						possibleBoard.calculatePips();
+						System.out.println("EXECUTING IMAGINARY MOVE");	
+						Move.executeMove(possibleBoard, move, false);
+						System.out.println("EXECUTED IMAGINARY MOVE");
+						Game.gameWindow.repaint();
+
+					}
+				}
+			}
+		}
 	}
-	
-	
+
+	public void calculatePips(){
+		for (int i = 1; i < columns.length -1; i++){
+			if (columns[i].getColor() == Board.BLACK){
+				if (playerColor == Board.BLACK){
+					pips += columns[i].getNumber()*columns[i].getPieces().size();
+				} else {
+					opponentPips += columns[i].getNumber()*columns[i].getPieces().size();
+				}
+			} else if (columns[i].getColor() == Board.WHITE){
+				if (playerColor == Board.WHITE){
+					pips += (25 - columns[i].getNumber())*columns[i].getPieces().size();
+				} else {
+					opponentPips += (25 - columns[i].getNumber())*columns[i].getPieces().size();
+				}
+			}
+		}
+	}
+
 }

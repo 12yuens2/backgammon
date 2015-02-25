@@ -44,7 +44,11 @@ public class Move {
 	}
 	
 	public static boolean hasValidMoves(Board board, Column c){
-		if (c.getColor() == Game.turn){
+		if (c.getColor() == board.getTurn()){
+			Column temp = null;
+			if (board.getSelected() != null){
+				temp = board.getSelected();
+			}
 			board.setSelected(c);
 			for (int move : Move.dice){
 				int x = c.getNumber() + move*c.getColor();
@@ -68,12 +72,15 @@ public class Move {
 				
 			}
 			board.setSelected(null);	
+			if (temp != null){
+				board.setSelected(temp);
+			}
 		}
 		return false;
 	}
 
 
-	public static void setPossibleMoves(Board board){
+	public static ArrayList<PossibleMove> setPossibleMoves(Board board){
 		possibleMoves.clear();
 		for (Column c : board.woodColumns){
 			if (hasValidMoves(board, c)){
@@ -87,7 +94,7 @@ public class Move {
 				}
 			}
 		}
-		if (possibleMoves.isEmpty()) {
+		if (possibleMoves.isEmpty() && board.getWood(board.getTurn()).isEmpty() ) {
 			for (Column c: board.getAll()){
 				if (hasValidMoves(board, c)){
 					for (int move : Move.dice){
@@ -118,16 +125,18 @@ public class Move {
 				}
 			}			
 		}
-
-	/*	if (!possibleMoves.isEmpty()){
+/*
+		if (!possibleMoves.isEmpty()){
 			System.out.println("Possible moves:");
 			for (PossibleMove move : possibleMoves){
 				System.out.println("" + move.getFrom() + " >> " + move.getTo() + " using " + move.getDiceUsed() + ".");
 			}			
 		} */
+		return possibleMoves;
 	}
 	
 	public static void executeMove(Board board, PossibleMove move, boolean shareToNetwork) {
+		System.out.println(board.equals(Game.gameBoard));
 		//assume valid move is passed here
 		Column from = board.findFrom(move);
 		Column to = board.findTo(move);
@@ -140,8 +149,10 @@ public class Move {
 		}
 
 		to.addPiece(from.RemovePiece());
-
-		Move.consumeMove(board, move,shareToNetwork);		
+		
+		if (board.equals(Game.gameBoard)){
+			Move.consumeMove(board, move,shareToNetwork);
+		}
 	}
 
 	private static void consumeMove(Board board, PossibleMove move, boolean shareToNetwork) {
@@ -164,7 +175,9 @@ public class Move {
 		Move.setPossibleMoves(board);
 		
 		if (possibleMoves.isEmpty() || (dice[0] == 0 && dice[1] == 0 )){
-			Game.changeTurn();
+			if (board.equals(Game.gameBoard)){
+				Game.changeTurn();				
+			}
 		}
 	}
 

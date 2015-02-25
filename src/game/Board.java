@@ -3,8 +3,10 @@ package game;
 import java.util.ArrayList;
 
 public class Board {
-	private Column[] columns;
+	protected Column[] columns;
 	public Column[] woodColumns;
+	
+	private int turn;
 	
 	public static final int EMPTY = 0;
 	public static final int BLACK = -1;
@@ -15,9 +17,22 @@ public class Board {
 
 	private Column selectedColumn;
 	
-	public Board(){
+	public Board(int turn){
 		columns = new Column[26];
 		woodColumns = new Column[2];
+		this.turn = turn;
+	}
+	
+	public void changeTurn(){
+		if (turn == BLACK){
+			turn = WHITE;
+		} else {
+			turn = BLACK;
+		}
+	}
+	
+	public int getTurn(){
+		return turn;
 	}
 	
 	public Column getSelected(){
@@ -28,6 +43,14 @@ public class Board {
 		return columns;
 	}
 
+	public Column getWood(int color){
+		if (color == Column.BLACK){
+			return woodColumns[0];
+		} else {
+			return woodColumns[1];
+		}
+	}
+	
 	public void init(){
 		for (int i = 0; i < columns.length; i++){
 			columns[i] = new Column(i,this);
@@ -159,6 +182,10 @@ public class Board {
 
 	public void setSelected(Column column) {
 		this.selectedColumn = column;
+	}
+
+	public void changeTurn(int turn) {
+		this.turn = turn;
 	}
 		
 }
