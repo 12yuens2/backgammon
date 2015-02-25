@@ -36,7 +36,7 @@ public class Game {
 	public static boolean blackIsNetwork;
 	
 	public static AI whiteAI, blackAI;
-	public static final long sleepTime = 0;
+	public static final long sleepTime = 10;
 	public static int gamesPlayed = 0;
 	public static int maxGames = 5000;
 	
