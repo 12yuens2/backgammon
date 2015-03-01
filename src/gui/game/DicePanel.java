@@ -1,5 +1,6 @@
 package gui.game;
 
+import game.Board;
 import game.Game;
 import game.Move;
 
@@ -11,9 +12,11 @@ import javax.swing.JLabel;
 
 public class DicePanel extends JLabel {
 	private int color;
+	private Board board;
 	
-	public DicePanel(int color){
+	public DicePanel(Board board,int color){
 		this.color = color;
+		this.board = board;
 	}
 	
 	public void paintComponent(Graphics g){
@@ -24,7 +27,7 @@ public class DicePanel extends JLabel {
 			g.setFont(new Font(null, Font.PLAIN, 18));
 			int w = this.getWidth();
 			int h = this.getHeight();
-			switch(Move.dice[0]){
+			switch(board.getDice()[0]){
 				case 1:
 					g.drawString("1", 0, h);
 					break;
@@ -44,7 +47,7 @@ public class DicePanel extends JLabel {
 					g.drawString("6", 0, h);
 					break;
 			}
-			switch(Move.dice[1]){
+			switch(board.getDice()[1]){
 			case 1:
 				g.drawString("1", w/2, h);
 				break;

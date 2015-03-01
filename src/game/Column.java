@@ -96,7 +96,7 @@ public class Column {
 	}
 		
 	public boolean isLegalMove(){
-		for (int move : Move.dice){
+		for (int move : board.getDice()){
 			if (move == this.getMoveNumber()){
 				return true;
 			}

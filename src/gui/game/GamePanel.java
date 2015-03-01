@@ -70,10 +70,10 @@ public class GamePanel extends JPanel {
 		c.gridx=2;
 		c.gridwidth=2;
 		c.weighty=0.1;
-		this.add(new DicePanel(Column.BLACK),c);
+		this.add(new DicePanel(board,Column.BLACK),c);
 
 		c.gridx=9;
-		this.add(new DicePanel(Column.WHITE),c);
+		this.add(new DicePanel(board,Column.WHITE),c);
 		
 	}
 	

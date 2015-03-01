@@ -6,21 +6,19 @@ import java.util.Random;
 public class Move {
 	public static String message = " ";
 
-	public static int[] dice = {0,0};
-	public static int[] doubles = {0,0};
+//	public static int[] dice = {0,0};
+//	public static int[] doubles = {0,0};
 	private static Random random = new Random();
 
 	public static ArrayList<PossibleMove> possibleMoves = new ArrayList<>();
 
 	public static void setDice(Board board, int[] dices){
-		dice = dices;
-
-		if (dice[0] == dice[1]){
-			doubles[0] = dice[0];
-			doubles[1] = dice[1];
+		board.setDice(dices);
+		if (dices[0] == dices[1]){
+			board.setDoubles(dices.clone());
 		} else {
-			doubles[0] = 0;
-			doubles[1] = 0;
+			int[] doubles = {0,0};
+			board.setDoubles(doubles);
 		}
 		
 		Move.setPossibleMoves(board);
@@ -28,6 +26,11 @@ public class Move {
 
 	public static void rollDice(Board board) {
 
+		int[] dice = {random.nextInt(5) + 1,random.nextInt(5) + 1 };
+		int[] doubles = {0,0};
+		if (dice[0] == dice[1]){
+			doubles = dice.clone();
+		}
 		doubles[0] = 0;
 		doubles[1] = 0;
 
@@ -39,8 +42,11 @@ public class Move {
 			doubles[0] = dice[0];
 			doubles[1] = dice[1];
 		}
+		
+		board.setDice(dice);
+		board.setDoubles(doubles);
+		
 		Move.setPossibleMoves(board);
-		//		System.out.println(dice[0] + " " + dice[1] + " (" + doubles[0] + " " + doubles[1] + ")");
 	}
 	
 	public static boolean hasValidMoves(Board board, Column c){
@@ -50,7 +56,7 @@ public class Move {
 				temp = board.getSelected();
 			}
 			board.setSelected(c);
-			for (int move : Move.dice){
+			for (int move : board.getDice()){
 				int x = c.getNumber() + move*c.getColor();
 				if (x >= 0 && x < board.getAll().length){
 					if (board.find(c.getNumber() + move*c.getColor()).isValidMove()){
@@ -84,7 +90,7 @@ public class Move {
 		possibleMoves.clear();
 		for (Column c : board.woodColumns){
 			if (hasValidMoves(board, c)){
-				for (int move : Move.dice){
+				for (int move : board.getDice()){
 					int x = c.getNumber() + move*c.getColor();
 					if (x >= 0 && x < board.getAll().length){
 						if (board.find(c.getNumber() + move*c.getColor()).isValidMove()){
@@ -97,7 +103,7 @@ public class Move {
 		if (possibleMoves.isEmpty() && board.getWood(board.getTurn()).isEmpty() ) {
 			for (Column c: board.getAll()){
 				if (hasValidMoves(board, c)){
-					for (int move : Move.dice){
+					for (int move : board.getDice()){
 						int x = c.getNumber() + move*c.getColor();
 						if (x >= 0 && x < board.getAll().length){
 							if (board.find(c.getNumber() + move*c.getColor()).isValidMove() ){
@@ -125,18 +131,55 @@ public class Move {
 				}
 			}			
 		}
-/*
-		if (!possibleMoves.isEmpty()){
-			System.out.println("Possible moves:");
-			for (PossibleMove move : possibleMoves){
-				System.out.println("" + move.getFrom() + " >> " + move.getTo() + " using " + move.getDiceUsed() + ".");
-			}			
-		} */
-		return possibleMoves;
+
+		return sanitizeMoves(board);
 	}
 	
+	private static ArrayList<PossibleMove> sanitizeMoves(Board board) {
+		//return Move.possibleMoves;
+		if (possibleMoves.isEmpty()){
+			return possibleMoves;
+		}
+
+		ArrayList<PossibleMove> tempMoves = new ArrayList<>();
+		for (PossibleMove move : Move.possibleMoves){
+			tempMoves.add(move.clone());
+		}
+		int[] tempDice = board.getDice().clone();
+		
+
+		
+		boolean allMovesSame = true;
+		int commonMove = possibleMoves.get(0).getDiceUsed();
+		for (PossibleMove move : possibleMoves){
+			if (move.getDiceUsed() != commonMove){
+				allMovesSame = false;
+			}
+		}
+		ArrayList<PossibleMove> newMoves = new ArrayList<>();
+		
+		if (!allMovesSame){
+			return possibleMoves;
+		} else {
+			for (PossibleMove move : Move.possibleMoves){
+				int futureIndex = move.getFrom() + (board.getDice()[0] + board.getDice()[1])*board.getTurn() ;
+				if (futureIndex > 0 && futureIndex < board.getAll().length){
+					if (board.getAll()[futureIndex].getColor() != board.getTurn()*-1){
+						newMoves.add(move);
+					}
+				}
+			}
+		}
+		
+		if (newMoves.isEmpty()){
+			return Move.possibleMoves;
+		} else {
+			return newMoves;
+		}
+		
+	}
+
 	public static void executeMove(Board board, PossibleMove move, boolean shareToNetwork) {
-		System.out.println(board.equals(Game.gameBoard));
 		//assume valid move is passed here
 		Column from = board.findFrom(move);
 		Column to = board.findTo(move);
@@ -156,13 +199,12 @@ public class Move {
 	}
 
 	private static void consumeMove(Board board, PossibleMove move, boolean shareToNetwork) {
-		for (int i = 0; i < dice.length; i++){
-			if (dice[i] == move.getDiceUsed()){
-				dice[i] = 0;
-				for (int j = 0; j < doubles.length; j++){
-					if (doubles[i] != 0){
-						dice[i] = doubles[i];
-						doubles[i] = 0;
+		for (int i = 0; i < board.getDice().length; i++){
+			if (board.getDice()[i] == move.getDiceUsed()){
+				board.consumeDice(i);
+				for (int j = 0; j < board.getDoubles().length; j++){
+					if (board.getDoubles()[i] != 0){
+						board.setDiceFromDouble(i);
 						break;
 					}
 				}
@@ -174,7 +216,7 @@ public class Move {
 		}
 		Move.setPossibleMoves(board);
 		
-		if (possibleMoves.isEmpty() || (dice[0] == 0 && dice[1] == 0 )){
+		if (possibleMoves.isEmpty() || (board.getDice()[0] == 0 && board.getDice()[1] == 0 )){
 			if (board.equals(Game.gameBoard)){
 				Game.changeTurn();				
 			}

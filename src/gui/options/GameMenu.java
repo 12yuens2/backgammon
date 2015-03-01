@@ -41,5 +41,13 @@ public class GameMenu extends JMenuBar {
 			}
 		});
 		aiMenu.add(aiGame2);
+		JMenuItem aiGame3 = new JMenuItem("Random(W) vs Miki(B)");
+		aiGame3.addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				Game.startLocalAIGame(AIPanel.RandomIndex, AIPanel.MikiIndex);
+			}
+		});
+		aiMenu.add(aiGame3);
 	}
 }

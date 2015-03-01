@@ -8,6 +8,9 @@ public class Board {
 	
 	private int turn;
 	
+	private int[] dice;
+	private int[] doubles;
+	
 	public static final int EMPTY = 0;
 	public static final int BLACK = -1;
 	public static final int WHITE = 1;
@@ -16,6 +19,22 @@ public class Board {
 	public static final int WOOD_BLACK = 27;
 
 	private Column selectedColumn;
+	
+	public void setDice(int[] dice){
+		this.dice = dice;
+	}
+	
+	public int[] getDice(){
+		return dice;
+	}
+	
+	public void setDoubles(int[] doubles){
+		this.doubles = doubles;
+	}
+	
+	public int[] getDoubles(){
+		return doubles;
+	}
 	
 	public Board(int turn){
 		columns = new Column[26];
@@ -90,6 +109,20 @@ public class Board {
 
 		columns[24].addPiece(Piece.BLACK); columns[24].addPiece(Piece.BLACK);
 
+	}
+	
+	public void addPieces(Board other){
+		for (int i = 0; i < columns.length; i++){
+			for (int j = 0; j < other.getAll()[i].getPieces().size() - 1; j++){
+				columns[i].addPiece(other.getAll()[i].getColor());
+			}
+		}
+
+		for (int i = 0; i < woodColumns.length; i++){
+			for (int j = 0; j < other.getAll()[i].getPieces().size(); j++){
+				woodColumns[i].addPiece(other.getAll()[i].getPieces().get(0).getColor());
+			}
+		}
 	}
 	
 	public Column findFrom(PossibleMove move){
@@ -187,5 +220,17 @@ public class Board {
 	public void changeTurn(int turn) {
 		this.turn = turn;
 	}
+
+	public void consumeDice(int i) {
+		this.dice[i] = 0;
+	}
+	
+	public void consumeDouble(int i){
+		this.doubles[i] = 0;
+	}
 		
+	public void setDiceFromDouble(int i){
+		this.dice[i] = this.doubles[i];
+		this.doubles[i] = 0;
+	}
 }

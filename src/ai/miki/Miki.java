@@ -13,24 +13,54 @@ import game.PossibleMove;
 public class Miki implements AI {
 	
 	Random generator;
+	ArrayList<FutureBoard> futureBoards;
 	
 	public Miki(){
 		generator = new Random();		
 	}
 
 	public void makeMove() {
-		int[] tempDice = Move.dice.clone();
 		
-		FutureBoard boardTree = new FutureBoard(Game.gameBoard, 1, Game.gameBoard.getTurn());
+		futureBoards = new ArrayList<>();
+		Move.setPossibleMoves(Game.gameBoard);
+		ArrayList<PossibleMove> boardMoves = new ArrayList<>();
 		
-		Move.setDice(Game.gameBoard, tempDice);
+		for (PossibleMove move : Move.possibleMoves){
+			boardMoves.add(move.clone());
+		}
+	
+		for (PossibleMove move : boardMoves){
+			FutureBoard newBoard = new FutureBoard(move, Game.gameBoard, 1, Game.gameBoard.getTurn());
+			futureBoards.add(newBoard);
+		}
+
+		PossibleMove bestMove = evaluteMove();
+//		System.out.println("From " + FutureBoard.NUMBEROFBOARDS + " boards, the best move is " + bestMove.getFrom() + " > " + bestMove.getTo() + " using " + bestMove.getDiceUsed() + ".");
 		
 		Move.setPossibleMoves(Game.gameBoard);
-		int chosenMove = generator.nextInt(Move.possibleMoves.size());
-		PossibleMove move = Move.possibleMoves.get(chosenMove);
-		System.out.println("Making real move");
-		Move.executeMove(Game.gameBoard,move,true);
-		
 
+		Move.executeMove(Game.gameBoard,bestMove,true);
+		
+		try {
+			Thread.sleep(50);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		FutureBoard.NUMBEROFBOARDS = 0;
+	}
+
+	private PossibleMove evaluteMove() {
+		
+		PossibleMove bestMove = null;
+		double bestValue = Integer.MIN_VALUE;
+		for (FutureBoard board : this.futureBoards){
+			if (board.evaluate() > bestValue){
+				bestValue = board.evaluate();
+				bestMove = board.getMove();
+			}
+		}
+		
+		return bestMove;
 	}
 }

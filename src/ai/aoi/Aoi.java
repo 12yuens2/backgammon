@@ -98,7 +98,7 @@ public class Aoi implements AI{
 			if (Game.gameBoard.getSelected().getPieces().size() == 3){
 				newBoard[fromIndex] -= GREATER_THAN_PAIR_VALUE;
 				newBoard[fromIndex] += PAIR_VALUE;
-			}			
+			}
 		}		
 		
 		//change TO column value
