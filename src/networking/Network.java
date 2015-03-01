@@ -121,14 +121,13 @@ public abstract class Network {
 	}
 	
 	public static String getHostName(){
-		return "testing";
-/*		InetAddress h;
+		InetAddress h;
 		try {
 			h = InetAddress.getLocalHost();
 			String s = h.getCanonicalHostName();
 			return ("" + InetAddress.getByName(s));
 		} catch (UnknownHostException e) {
 			return "???";
-		} */
+		} 
 	}
 }

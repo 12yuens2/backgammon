@@ -172,8 +172,8 @@ public class FutureBoard extends Board {
 	public double evaluate() {
 		double childValue = 0;
 		if(!futureBoards.isEmpty()){
-			System.out.println("\tEvaluating children of "+ this);
-			System.out.println(futureBoards.size());
+			//System.out.println("\tEvaluating children of "+ this);
+			//System.out.println("from "+futureBoards.size()+" boards");
 			for (FutureBoard board : futureBoards){
 				childValue += board.evaluate();
 			}

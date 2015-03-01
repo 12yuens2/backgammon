@@ -37,9 +37,9 @@ public class Game {
 	public static boolean blackIsNetwork;
 	
 	public static AI whiteAI, blackAI;
-	public static final long sleepTime = 10;
+	public static final long sleepTime = 0;
 	public static int gamesPlayed = 0;
-	public static int maxGames = 5000;
+	public static int maxGames = 100;
 	
 	public static Board gameBoard;
 	
@@ -49,7 +49,7 @@ public class Game {
 		gameBoard.init();
 		gameWindow = new Window(gameBoard);
 		
-	//	Game.startLocalAIGame(AIPanel.HomuraIndex, AIPanel.HomuraIndex);
+		Game.startLocalAIGame(AIPanel.AoiIndex, AIPanel.MikiIndex);
 		
 		while (true){
 			while (!hasStarted){
@@ -106,7 +106,7 @@ public class Game {
 				System.exit(0);
 			}
 			Game.reset();
-		//	Game.startLocalAIGame(AIPanel.HomuraIndex, AIPanel.HomuraIndex);
+			Game.startLocalAIGame(AIPanel.AoiIndex, AIPanel.MikiIndex);
 		}
 		
 	}
