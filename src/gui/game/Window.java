@@ -2,6 +2,7 @@ package gui.game;
 
 import game.Board;
 import gui.options.GameMenu;
+import gui.sprites.SpriteSheet;
 
 import java.awt.Dimension;
 import java.awt.event.MouseEvent;
@@ -18,6 +19,7 @@ public class Window extends JFrame {
 	public Window(Board board){
 		super("CS 1006 Backgammon");
 		this.board = board;
+		SpriteSheet.init();
 		panel = new GamePanel(board);
 		this.add(panel);
 		
@@ -27,7 +29,7 @@ public class Window extends JFrame {
 
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.pack();
-		this.setVisible(false);
+		this.setVisible(true);
 
 		
 	}

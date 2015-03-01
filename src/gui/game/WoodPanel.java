@@ -1,11 +1,14 @@
 package gui.game;
 
 import game.Board;
+import game.Column;
 import game.Piece;
+import gui.sprites.SpriteSheet;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JLabel;
 
@@ -15,26 +18,28 @@ public class WoodPanel extends ColumnPanel {
 	}
 	
 	public void paintComponent(Graphics g){
+		BufferedImage woodSprite = SpriteSheet.getWood();
+		g.drawImage(woodSprite,0,0,this.getWidth(),this.getHeight(),null);
 		if (this.isSelected()){
 			g.setColor(Color.YELLOW);
-		} else {
-			g.setColor(Color.ORANGE);			
+			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		}
-
-		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		
 		for (int i = 0; i < column.getPieces().size(); i++){
-			if (column.getPieces().get(i).getColor() == Piece.WHITE){
-				g.setColor(Color.white);
+			int pieceSize = this.getWidth();
+			BufferedImage pieceSprite;
+			if (column.getColor() == Column.WHITE){
+				pieceSprite = SpriteSheet.getWhite();
 			} else {
-				g.setColor(Color.BLACK);
+				pieceSprite = SpriteSheet.getBlack();
 			}
 			int y = 0;
 			if (this.faceDown){
-				y = this.getHeight()-(i+1)*size;
+				y = this.getHeight()-(i+1)*pieceSize;
 			} else {
-				y = i*size;
+				y = i*pieceSize;
 			}
-			g.fillOval(0, y, size, size);
+			g.drawImage(pieceSprite,0,y,pieceSize,pieceSize,null);
 		} 
 	}
 }

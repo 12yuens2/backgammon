@@ -2,11 +2,13 @@ package gui.game;
 
 import game.Board;
 import game.Column;
+import gui.sprites.SpriteSheet;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.image.BufferedImage;
 
 import javax.swing.JPanel;
 
@@ -19,54 +21,70 @@ public class GamePanel extends JPanel {
 	public GamePanel(Board board){
 		
 		int colNum = 0;
-		
 		this.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.fill = GridBagConstraints.BOTH;
 		c.weightx=0.8;
 		c.weighty=0.8;
-				
-		c.gridy=2;
-		//bottom
-		c.gridx=13;
-//		c.weightx=1.6;
-		this.add(new EndPanel(colNum, false, board),c);
+		
+		c.gridx=0;
+		c.gridy=0;
+		c.gridheight=5;
+		c.weightx=0.15;
+		this.add(new WoodPaddingPanel(),c);
+		c.gridx=15;
+		this.add(new WoodPaddingPanel(),c);
 		c.weightx=0.8;
+		c.gridheight=1;
+		
+		c.gridy = 0;
+		c.gridx = 1;
+		c.gridwidth=14;
+		c.weighty=0.05;
+		this.add(new WoodPaddingPanel(),c);
+		c.gridy=4;
+		this.add(new WoodPaddingPanel(),c);
+		c.gridwidth=1;
+		c.weighty=0.8;
+		
+
+		//bottom
+		c.gridy=3;
+		c.gridx=14;
+		this.add(new EndPanel(colNum, false, board),c);
 		colNum++;
 		
-		for (int i = 12; i > 6; i--){
+		for (int i = 13; i > 7; i--){
 			c.gridx=i;
 			this.add(new ColumnPanel(colNum, true, board),c);
 			colNum++;
 		}
-		c.gridx = 6;
+		c.gridx = 7;
 		this.add(new WoodPanel(Board.WOOD_BLACK,false, board),c);
-		for (int i = 5; i >= 0; i--){
+		for (int i = 6; i >= 1; i--){
 			c.gridx=i;
 			this.add(new ColumnPanel(colNum, true, board),c);
 			colNum++;
 		}
-		c.gridy=0;
+		c.gridy=1;
 		//top
-		for (int i = 0; i < 6; i++){
+		for (int i = 1; i < 7; i++){
 			c.gridx=i;
 			this.add(new ColumnPanel(colNum, false, board),c);
 			colNum++;
 		}
-		c.gridx = 6;
+		c.gridx = 7;
 		this.add(new WoodPanel(Board.WOOD_WHITE,true, board),c);
-		for (int i = 7; i <= 12; i++){
+		for (int i = 8; i <= 13; i++){
 			c.gridx=i;
 			this.add(new ColumnPanel(colNum, false, board),c);
 			colNum++;
 		}
-		c.gridx=13;
-//		c.weightx=1.6;
+		c.gridx=14;
 		this.add(new EndPanel(colNum, true, board),c);
-		c.weightx=0.8;
 		
 		//middle
-		c.gridy=1;
+		c.gridy=2;
 		c.gridx=2;
 		c.gridwidth=2;
 		c.weighty=0.1;
@@ -78,9 +96,17 @@ public class GamePanel extends JPanel {
 	}
 	
 	public void paintComponent(Graphics g){
-		g.setColor(Color.BLUE);
-
-		g.fillRect(0, 0, this.getWidth(), this.getHeight());
+		int sizePerSprite = 256;
+		BufferedImage boardSprite = SpriteSheet.getBoard();
+		int x = sizePerSprite, y = sizePerSprite;
+		while (x - sizePerSprite < this.getWidth()){
+			while (y - sizePerSprite < this.getHeight()){
+				g.drawImage(boardSprite,x-sizePerSprite,y-sizePerSprite,sizePerSprite,sizePerSprite,null);				
+				y+= sizePerSprite;
+			}
+			y = sizePerSprite;
+			x+= sizePerSprite;
+		}
 	}
 	
 }

@@ -5,17 +5,18 @@ import java.awt.Graphics;
 import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.image.BufferedImage;
 
 import game.Board;
 import game.Column;
 import game.Piece;
+import gui.sprites.SpriteSheet;
 
 import javax.swing.JLabel;
 
 public class ColumnPanel extends JLabel {
 	Column column;
 	boolean faceDown;
-	protected static final int size = 50;
 
 	public ColumnPanel(int i, boolean faceDown, Board board){
 		super();
@@ -28,42 +29,55 @@ public class ColumnPanel extends JLabel {
 	}
 
 	public void paintComponent(Graphics g){
+
+		BufferedImage colSprite;
 		if (column.getNumber() % 2 == 0){
-			g.setColor(Color.green);
+			if (column.getNumber() > 12 ){
+				colSprite = SpriteSheet.getGreenColFlipped();				
+			} else {
+				colSprite = SpriteSheet.getGreenCol();				
+			}
+
 		} else {
-			g.setColor(Color.red);
+			if (column.getNumber() > 12 ){
+				colSprite = SpriteSheet.getRedColFlipped();	
+			} else {
+				colSprite = SpriteSheet.getRedCol();				
+			}
 		}
+		g.drawImage(colSprite, 0, 0,this.getWidth(),this.getHeight(), null);
+		
 		if (column.isSelected()){
 			g.setColor(Color.LIGHT_GRAY);
+			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		}
-		g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		if (column.isHighlighted){
 			g.setColor(new Color(0.1f, 0.1f, 1.0f, 0.9f));
 			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 		}
+		int pieceSize = this.getWidth();
+		BufferedImage pieceSprite;
+		if (column.getColor() == Column.WHITE){
+			pieceSprite = SpriteSheet.getWhite();
+		} else {
+			pieceSprite = SpriteSheet.getBlack();
+		}
 		for (int i = 0; i < column.getPieces().size(); i++){
-			if (column.getPieces().get(i).getColor() == Piece.WHITE){
-				g.setColor(Color.white);
-			} else {
-				g.setColor(Color.BLACK);
-			}
 			int y = 0;
 			if (this.faceDown){
-				y = this.getHeight()-(i+1)*size;
+				y = this.getHeight()-(i+1)*pieceSize;
 				if ( y < 0){
-					if (y - size < 0){
-						y = (int) ( this.getHeight() - size*((i+1)%(this.getHeight()/(size))) - size*Math.pow(0.5, (int) (i/(this.getHeight()/size))) );
+					if (y - pieceSize < 0){
+						y = (int) ( this.getHeight() - pieceSize*((i+1)%(this.getHeight()/(pieceSize))) - pieceSize*Math.pow(0.5, (int) (i/(this.getHeight()/pieceSize))) );
 					}
 				}
 			} else {
-				y = i*size;
-				if (y + size >  this.getHeight()){
-					y = (int) ( size*(i%(this.getHeight()/(size))) + size*Math.pow(0.5, (int) (i/(this.getHeight()/size))) );
+				y = i*pieceSize;
+				if (y + pieceSize >  this.getHeight()){
+					y = (int) ( pieceSize*(i%(this.getHeight()/(pieceSize))) + pieceSize*Math.pow(0.5, (int) (i/(this.getHeight()/pieceSize))) );
 				}
 			}
-			g.fillOval(0, y, size, size);
-			g.setColor(Color.gray);
-			g.drawOval(0, y, size, size);
+			g.drawImage(pieceSprite, 0, y, pieceSize, pieceSize, null);
 		} 
 	}
 
