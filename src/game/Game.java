@@ -86,14 +86,29 @@ public class Game {
 					gameWindow.repaint();
 				}
 			}
+			
+			if (blackIsNetwork || whiteIsNetwork ){
+				Network.run();
+			}
+			
 			if (winner == Column.BLACK){
 				System.out.println("Black wins");
+				if (blackIsNetwork){
+					Network.addText("you-win; bye");
+					Network.run();
+					Network.close();
+				}
 				if (blackAI instanceof Homura){
-					((Homura)blackAI).addWinData();					
+					((Homura)blackAI).addWinData();
 				}
 				blackwins++;
 			} else {
 				System.out.println("White wins");
+				if (whiteIsNetwork){
+					Network.addText("you-win; bye");
+					Network.run();
+					Network.close();
+				}
 				if (blackAI instanceof Homura){
 					((Homura)blackAI).addLoseData();					
 				}

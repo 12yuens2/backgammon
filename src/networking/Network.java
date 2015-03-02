@@ -25,7 +25,8 @@ public abstract class Network {
 	public static final int port = 40013;
 	protected static InputStream socketInput;
 	protected static OutputStream socketOutput;
-
+	protected static Socket socket;
+	
 	public static boolean isActive;
 	
 	static String sendingText;
@@ -33,20 +34,25 @@ public abstract class Network {
 	
 	private static BufferedReader in = new BufferedReader(new InputStreamReader(System.in),Network.bufferSize);
 
-	public static void init(Socket s) throws IOException{
-		s.setSoTimeout(Network.soTimeout);
-		s.setTcpNoDelay(true);
-		socketInput = s.getInputStream();
-		socketOutput = s.getOutputStream();
+	public static void init(Socket socket) throws IOException{
+		Network.socket = socket;
+		socket.setSoTimeout(Network.soTimeout);
+		socket.setTcpNoDelay(true);
+		socketInput = socket.getInputStream();
+		socketOutput = socket.getOutputStream();
 
 	}
 
-	public static void addText(String s){
-		sendingText = s;
+	public static void addText(String networkMessage){
+		sendingText = networkMessage;
 	}
 	
-	public static void processText(String s){
-		String processedText = s
+	public static void processText(String networkMessage){
+		if (networkMessage.equals("you-win; bye")){
+			Network.close();
+			return;
+		}
+		String processedText = networkMessage
 				.replaceAll(":",",")
 				.replaceAll(";","")
 				.replaceAll("\\(","")
@@ -135,4 +141,13 @@ public abstract class Network {
 			return "???";
 		} 
 	}
+	
+	public static void close(){
+		try {
+			socket.close();
+		} catch (IOException e) {
+			System.err.println("IO error occured when closing connection.");
+		}
+	}
+	
 }
