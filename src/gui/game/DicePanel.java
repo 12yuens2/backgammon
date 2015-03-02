@@ -26,14 +26,17 @@ public class DicePanel extends JLabel {
 			if (board.getDice() == null){
 				return;
 			}
-			g.setColor(Color.black);
-			g.fillRect(0, 0, this.getWidth(), this.getHeight());
 			int w = this.getWidth();
 			int h = this.getHeight();
 			BufferedImage dice1 = SpriteSheet.getDice(board.getDice()[0]);
 			BufferedImage dice2 = SpriteSheet.getDice(board.getDice()[1]);
-			g.drawImage(dice1, 0, 0, w/2, h, null);
-			g.drawImage(dice2, w/2, 0, w/2, h, null);
+			if (h > w/2){
+				g.drawImage(dice1, 0, 0, w/2, w/2, null);
+				g.drawImage(dice2, w/2, 0, w/2, w/2, null);								
+			} else {
+				g.drawImage(dice1, 0, 0, h, h, null);
+				g.drawImage(dice2, w/2, 0, h, h, null);				
+			}
 		}
 	}
 }

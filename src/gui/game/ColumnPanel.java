@@ -24,8 +24,6 @@ public class ColumnPanel extends JLabel {
 		this.column.panel = this;
 		this.faceDown = faceDown;
 		this.addMouseListener(new BackGammonListener(this));
-		this.addMouseMotionListener(new PaintMouseMotionListener(this));
-		this.addMouseListener(new PaintMouseListener(this));
 	}
 
 	public void paintComponent(Graphics g){

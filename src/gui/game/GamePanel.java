@@ -85,18 +85,18 @@ public class GamePanel extends JPanel {
 		
 		//middle
 		c.gridy=2;
-		c.gridx=2;
+		c.gridx=3;
 		c.gridwidth=2;
-		c.weighty=0.1;
+		c.weighty=0.2;
 		this.add(new DicePanel(board,Column.BLACK),c);
 
-		c.gridx=9;
+		c.gridx=10;
 		this.add(new DicePanel(board,Column.WHITE),c);
 		
 	}
 	
 	public void paintComponent(Graphics g){
-		int sizePerSprite = 256;
+		int sizePerSprite = 128;
 		BufferedImage boardSprite = SpriteSheet.getBoard();
 		int x = sizePerSprite, y = sizePerSprite;
 		while (x - sizePerSprite < this.getWidth()){

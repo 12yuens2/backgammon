@@ -10,11 +10,37 @@ import javax.imageio.ImageIO;
 public class SpriteSheet {
 	static BufferedImage spriteSheet;
 	static int size = 256;
-	static String filename = "src/gui/sprites/SpriteSheet.jpeg";
+	static String filename = "src/gui/sprites/SpriteSheet.png";
+	static BufferedImage pieceSpriteBlack = null;
+	static BufferedImage pieceSpriteWhite = null;
+	static BufferedImage pieceEndWhite = null;
+	static BufferedImage pieceEndBlack = null;
+	static BufferedImage boardSprite = null;
+	static BufferedImage woodSprite = null;
+	static BufferedImage endSprite = null;
+	static BufferedImage redColSprite = null;
+	static BufferedImage redColSpriteFlipped = null;
+	static BufferedImage greenColSprite = null;
+	static BufferedImage greenColSpriteFlipped = null;
+	static BufferedImage[] diceSprites = new BufferedImage[7];
 	
 	public static void init(){
 		try {
 			spriteSheet = ImageIO.read(new File(filename));
+			pieceSpriteBlack = getSprite(0,0);
+			pieceSpriteWhite = getSprite(1,0);
+			greenColSprite = getSprite(1,1,1,7);
+			greenColSpriteFlipped = getSprite(3,1,1,7);
+			redColSprite = getSprite(0,1,1,7);
+			redColSpriteFlipped = getSprite(2,1,1,7);
+			boardSprite = getSprite(4,1);
+			woodSprite = getSprite(4,0);
+			for (int i = 0; i < diceSprites.length; i++ ){
+				diceSprites[i] = getSprite(5,i);
+			}
+			pieceEndWhite = spriteSheet.getSubimage(3*size, size/4, size, size/4);
+			pieceEndBlack = spriteSheet.getSubimage(3*size, 0, size, size/4);
+			endSprite = getSprite(6,1,1,7);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -29,50 +55,50 @@ public class SpriteSheet {
 	}
 
 	public static BufferedImage getBlack(){
-		return getSprite(0,0);
+		return pieceSpriteBlack;
 	}
 
 	public static BufferedImage getWhite(){
-		return getSprite(1,0);
+		return pieceSpriteWhite;
 	}
 	
 	public static BufferedImage getGreenColFlipped(){
-		return getSprite(3,1,1,7);
+		return greenColSpriteFlipped;
 	}
 	
 	public static BufferedImage getRedColFlipped(){
-		return getSprite(2,1,1,7);
+		return redColSpriteFlipped;
 	}
 	
 	public static BufferedImage getRedCol(){
-		return getSprite(0,1,1,7);
+		return redColSprite;
 	}
 	
 	public static BufferedImage getGreenCol(){
-		return getSprite(1,1,1,7);
+		return greenColSprite;
 	}
 	
 	public static BufferedImage getBoard(){
-		return getSprite(4,1);
+		return boardSprite;
 	}
 
 	public static BufferedImage getWood() {
-		return getSprite(4,0);
+		return woodSprite;
 	}
 
 	public static BufferedImage getDice(int value){
-		return getSprite(5,value);
+		return diceSprites[value];
 	}
 	
 	public static BufferedImage getWhiteEnd() {
-		return spriteSheet.getSubimage(5*size, size/4, size, size/4);
+		return pieceEndWhite;
 	}
 	
 	public static BufferedImage getBlackEnd() {
-		return spriteSheet.getSubimage(5*size, 0, size, size/4);
+		return pieceEndBlack;
 	}
 
 	public static Image getEnd() {
-		return getSprite(6,1,1,7);
+		return endSprite;
 	}
 }

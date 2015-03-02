@@ -26,7 +26,7 @@ public class Window extends JFrame {
 		GameMenu menu = new GameMenu();
 		this.setJMenuBar(menu);		
 		this.setPreferredSize(new Dimension(800,800) );
-
+		
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
 		this.pack();
 		this.setVisible(true);
