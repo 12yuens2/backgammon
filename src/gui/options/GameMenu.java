@@ -10,6 +10,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
+import ai.AI;
+
 public class GameMenu extends JMenuBar {
 	public GameMenu(){
 		JMenu menu = new JMenu("Game");
@@ -29,7 +31,7 @@ public class GameMenu extends JMenuBar {
 		aiGame1.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				Game.startLocalAIGame(AIPanel.AoiIndex, AIPanel.RandomIndex);
+				Game.startLocalAIGame(AI.AoiIndex, AI.RandomIndex);
 			}
 		});
 		aiMenu.add(aiGame1);
@@ -37,7 +39,7 @@ public class GameMenu extends JMenuBar {
 		aiGame2.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				Game.startLocalAIGame(AIPanel.AoiIndex, AIPanel.MikiIndex);
+				Game.startLocalAIGame(AI.AoiIndex, AI.MikiIndex);
 			}
 		});
 		aiMenu.add(aiGame2);
@@ -45,7 +47,7 @@ public class GameMenu extends JMenuBar {
 		aiGame3.addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				Game.startLocalAIGame(AIPanel.RandomIndex, AIPanel.MikiIndex);
+				Game.startLocalAIGame(AI.RandomIndex, AI.MikiIndex);
 			}
 		});
 		aiMenu.add(aiGame3);

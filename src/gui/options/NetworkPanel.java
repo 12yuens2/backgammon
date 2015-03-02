@@ -13,14 +13,11 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextField;
 
+import ai.AI;
 import networking.Network;
 
 public class NetworkPanel extends JPanel {
 
-	static final String[] aiNames = {"Random-chan", "Homura-chan", "Aoi-chan"};
-	public static final int RandomIndex = 0;
-	public static final int HomuraIndex = 1;
-	public static final int AoiIndex = 2;
 	private static JComboBox aiList;
 	
 	static JRadioButton startServerButton;
@@ -50,7 +47,7 @@ public class NetworkPanel extends JPanel {
 		
 		JLabel l1 = new JLabel("Choose AI to send:");
 		this.add(l1);
-		aiList = new JComboBox<String>(aiNames);
+		aiList = new JComboBox<String>(AI.aiNames);
 		this.add(aiList);
 		aiList.setSelectedIndex(0);
 		aiList.addActionListener(new ActionListener(){

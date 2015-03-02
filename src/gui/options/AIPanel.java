@@ -12,21 +12,17 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import ai.AI;
+
 public class AIPanel extends JPanel {
 	
 	private static JRadioButton whiteButton, blackButton, observerButton;
 	private static JComboBox<String> aiList1, aiList2;
-	
-	static final String[] aiNames = {"Random-chan", "Homura-chan", "Aoi-chan", "Miki-chan"};
-	public static final int RandomIndex = 0;
-	public static final int HomuraIndex = 1;
-	public static final int AoiIndex = 2;
-	public static final int MikiIndex = 3;
-	
+		
 	public AIPanel(){
 		JLabel l1 = new JLabel("Choose AI to play against:");
 		this.add(l1);
-		aiList1 = new JComboBox<String>(aiNames);
+		aiList1 = new JComboBox<String>(AI.aiNames);
 		this.add(aiList1);
 		aiList1.setSelectedIndex(0);
 		aiList1.addActionListener(new ActionListener(){
@@ -40,7 +36,7 @@ public class AIPanel extends JPanel {
 		});
 		JLabel l2 = new JLabel("Choose second AI to play against (Only for observe mode):");
 		this.add(l2);
-		aiList2 = new JComboBox<String>(aiNames);
+		aiList2 = new JComboBox<String>(AI.aiNames);
 		this.add(aiList2);
 		aiList2.setSelectedIndex(0);
 		aiList2.addActionListener(new ActionListener(){

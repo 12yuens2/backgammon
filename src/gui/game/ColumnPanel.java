@@ -29,30 +29,19 @@ public class ColumnPanel extends JLabel {
 	public void paintComponent(Graphics g){
 
 		BufferedImage colSprite;
-		if (column.getNumber() % 2 == 0){
-			if (column.getNumber() > 12 ){
-				colSprite = SpriteSheet.getGreenColFlipped();				
-			} else {
-				colSprite = SpriteSheet.getGreenCol();				
-			}
-
+		boolean isTop = column.getNumber() > 12;
+		boolean isGreen = column.getNumber() % 2 == 0;
+		if (column.isSelected()){
+				colSprite = isTop ? SpriteSheet.getSelectedColFlipped() : SpriteSheet.getSelectedCol();
+		} else if (column.isHighlighted){
+				colSprite = isTop ? SpriteSheet.getHighlightedColFlipped() : SpriteSheet.getHighlightedCol();
+		} else if (isGreen){
+				colSprite = isTop ? SpriteSheet.getGreenColFlipped() : SpriteSheet.getGreenCol();				
 		} else {
-			if (column.getNumber() > 12 ){
-				colSprite = SpriteSheet.getRedColFlipped();	
-			} else {
-				colSprite = SpriteSheet.getRedCol();				
-			}
+				colSprite = isTop ? SpriteSheet.getRedColFlipped() : SpriteSheet.getRedCol();
 		}
 		g.drawImage(colSprite, 0, 0,this.getWidth(),this.getHeight(), null);
-		
-		if (column.isSelected()){
-			g.setColor(Color.LIGHT_GRAY);
-			g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		}
-		if (column.isHighlighted){
-			g.setColor(new Color(0.1f, 0.1f, 1.0f, 0.9f));
-			g.fillRect(0, 0, this.getWidth(), this.getHeight());
-		}
+
 		int pieceSize = this.getWidth();
 		BufferedImage pieceSprite;
 		if (column.getColor() == Column.WHITE){

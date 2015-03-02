@@ -2,9 +2,6 @@ package game;
 
 import java.io.IOException;
 import java.net.UnknownHostException;
-
-import javax.swing.JTextField;
-
 import networking.Client;
 import networking.Network;
 import networking.Server;
@@ -14,7 +11,6 @@ import ai.homura.Homura;
 import ai.miki.Miki;
 import ai.random.RandomAI;
 import gui.game.Window;
-import gui.options.AIPanel;
 import gui.options.GameOptionWindow;
 
 public class Game {
@@ -48,9 +44,7 @@ public class Game {
 		Game.gameOver = false;
 		gameBoard.init();
 		gameWindow = new Window(gameBoard);
-		
-//		Game.startLocalAIGame(AIPanel.AoiIndex, AIPanel.MikiIndex);
-		
+
 		while (true){
 			while (!hasStarted){
 				Thread.sleep(sleepTime*2);
@@ -121,7 +115,6 @@ public class Game {
 				System.exit(0);
 			}
 			Game.reset();
-//			Game.startLocalAIGame(AIPanel.AoiIndex, AIPanel.MikiIndex);
 		}
 		
 	}
@@ -262,13 +255,13 @@ public class Game {
 	public static AI makeAI(int type){
 		AI ai = null;
 		switch(type){
-		case AIPanel.AoiIndex:
+		case AI.AoiIndex:
 			return new Aoi();
-		case AIPanel.HomuraIndex:
+		case AI.HomuraIndex:
 			return new Homura();
-		case AIPanel.RandomIndex:
+		case AI.RandomIndex:
 			return new RandomAI();
-		case AIPanel.MikiIndex:
+		case AI.MikiIndex:
 			return new Miki();
 		}
 		return ai;

@@ -11,17 +11,14 @@ public class SpriteSheet {
 	static BufferedImage spriteSheet;
 	static int size = 256;
 	static String filename = "src/gui/sprites/SpriteSheet.png";
-	static BufferedImage pieceSpriteBlack = null;
-	static BufferedImage pieceSpriteWhite = null;
-	static BufferedImage pieceEndWhite = null;
-	static BufferedImage pieceEndBlack = null;
-	static BufferedImage boardSprite = null;
-	static BufferedImage woodSprite = null;
-	static BufferedImage endSprite = null;
-	static BufferedImage redColSprite = null;
-	static BufferedImage redColSpriteFlipped = null;
-	static BufferedImage greenColSprite = null;
-	static BufferedImage greenColSpriteFlipped = null;
+	static BufferedImage pieceSpriteBlack, pieceSpriteWhite;
+	static BufferedImage pieceEndWhite, pieceEndBlack;
+	static BufferedImage boardSprite, woodSprite;
+	static BufferedImage endSprite;
+	static BufferedImage redColSprite, redColSpriteFlipped;
+	static BufferedImage greenColSprite, greenColSpriteFlipped;
+	static BufferedImage selectedColSprite, selectedColSpriteFlipped;
+	static BufferedImage highlightedColSprite, highlightedColSpriteFlipped;
 	static BufferedImage[] diceSprites = new BufferedImage[7];
 	
 	public static void init(){
@@ -33,7 +30,11 @@ public class SpriteSheet {
 			greenColSpriteFlipped = getSprite(3,1,1,7);
 			redColSprite = getSprite(0,1,1,7);
 			redColSpriteFlipped = getSprite(2,1,1,7);
-			boardSprite = getSprite(4,1);
+			selectedColSprite = getSprite(8,1,1,7);
+			selectedColSpriteFlipped = getSprite(9,1,1,7);
+			highlightedColSprite = getSprite(4,1,1,7);
+			highlightedColSpriteFlipped = getSprite(7,1,1,7);
+			boardSprite = getSprite(6,0);
 			woodSprite = getSprite(4,0);
 			for (int i = 0; i < diceSprites.length; i++ ){
 				diceSprites[i] = getSprite(5,i);
@@ -100,5 +101,21 @@ public class SpriteSheet {
 
 	public static Image getEnd() {
 		return endSprite;
+	}
+
+	public static BufferedImage getSelectedCol() {
+		return selectedColSprite;
+	}
+
+	public static BufferedImage getSelectedColFlipped() {
+		return selectedColSpriteFlipped;
+	}
+	
+	public static BufferedImage getHighlightedCol(){
+		return highlightedColSprite;
+	}
+	
+	public static BufferedImage getHighlightedColFlipped(){
+		return highlightedColSpriteFlipped;
 	}
 }

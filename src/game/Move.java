@@ -199,17 +199,21 @@ public class Move {
 	}
 
 	private static void consumeMove(Board board, PossibleMove move, boolean shareToNetwork) {
+		boolean gotDice = false;
 		for (int i = 0; i < board.getDice().length; i++){
-			if (board.getDice()[i] == move.getDiceUsed()){
-				board.consumeDice(i);
-				for (int j = 0; j < board.getDoubles().length; j++){
-					if (board.getDoubles()[i] != 0){
-						board.setDiceFromDouble(i);
-						break;
-					}
-				}
-				break;
+			if (board.getDoubles()[i] == move.getDiceUsed()){
+				board.setDiceFromDouble(i);
+				gotDice = true;
+				break;				
 			}
+		}
+		if (!gotDice){
+			for (int i = 0; i < board.getDice().length; i++){
+				if (board.getDice()[i] == move.getDiceUsed()){
+					board.consumeDice(i);
+					break;
+				}
+			}			
 		}
 		if (shareToNetwork){
 			message = message + "(" + move.getFrom() + "|" + move.getTo() + "),";
