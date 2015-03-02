@@ -128,11 +128,18 @@ public class Game {
 			gameBoard.changeTurn();
 
 			gameWindow.repaint();
-			Move.rollDice(gameBoard);
-			Move.setPossibleMoves(gameBoard);
-			if (Move.possibleMoves.isEmpty()){
-				Move.message = Move.message + "(-1|-1);";
-				Game.changeTurn();
+			if (
+					(Game.blackIsNetwork && gameBoard.getTurn() == Board.BLACK) ||
+					(Game.whiteIsNetwork && gameBoard.getTurn() == Board.WHITE)
+					){
+				System.out.println("waiting for other player...");
+			} else {
+				Move.rollDice(gameBoard);
+				Move.setPossibleMoves(gameBoard);
+				if (Move.possibleMoves.isEmpty()){
+					Move.message = Move.message + "(-1|-1);";
+					Game.changeTurn();
+				}				
 			}
 			gameBoard.setSelected(null);
 			gameBoard.unSelect();
