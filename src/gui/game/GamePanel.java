@@ -94,6 +94,9 @@ public class GamePanel extends JPanel {
 		c.gridwidth=1;
 		this.add(new WoodPaddingPanel(false),c);
 		
+		c.gridx = 14;
+		this.add(new WoodPaddingPanel(false),c);
+		
 		c.gridx=10;
 		c.gridwidth=2;
 		this.add(new DicePanel(board,Column.WHITE),c);

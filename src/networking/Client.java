@@ -5,12 +5,15 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 
 public class Client extends Network {
-	public static void main(String[] args) throws UnknownHostException, IOException{
-		start("pc2-042-l", Server.port);
-	}
-	
-	public static void start(String hostname, int portNumber) throws UnknownHostException, IOException{
-		Socket call = new Socket(hostname, portNumber);
+
+	public static void start(String hostname, int portNumber) throws IOException{
+		Socket call;
+		try{
+			call = new Socket(hostname, portNumber);
+		} catch (UnknownHostException e){
+			System.err.println("The host could not be reached.");
+			return;
+		}
 
 		init(call);
 		
