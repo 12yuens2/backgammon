@@ -115,7 +115,6 @@ public class Game {
 
 		gameBoard.setSelected(null);
 		Move.message = Move.message.substring(0, Move.message.length() - 1) + ";";
-//		System.out.println(Move.message);
 		Network.addText(Move.message);
 		if (!Game.gameOver){
 			if(gameBoard.getAll()[0].getPieces().size() == Game.PIECE_NUMBER){
@@ -126,7 +125,6 @@ public class Game {
 				Game.winner = Column.WHITE;
 				Game.gameOver = true;
 			}
-//			System.out.println("Changing turn...");
 			gameBoard.changeTurn();
 
 			gameWindow.repaint();

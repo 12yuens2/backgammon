@@ -231,4 +231,11 @@ public class Move {
 		}
 		return null;
 	}
+
+	public static void passTurn(Board board) {
+		int[] zeroDice = {0,0};
+		board.setDice(zeroDice);
+		board.setDoubles(zeroDice);
+		Game.changeTurn();
+	}
 }
