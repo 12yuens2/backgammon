@@ -225,7 +225,9 @@ public class Move {
 
 	public static PossibleMove find(int from, int to) {
 		for (PossibleMove move : possibleMoves){
+			System.out.println(move.getFrom() + " > " + move.getTo() + "using " + move.getDiceUsed());
 			if (move.getFrom() == from && move.getTo() == to){
+				System.out.println("found move!");
 				return move;
 			}
 		}

@@ -51,8 +51,9 @@ public abstract class Network {
 				.replaceAll(";","")
 				.replaceAll("\\(","")
 				.replaceAll("\\)","")
-				.replace("\\-", "|")
+				.replaceFirst("\\-", "|")
 				.trim();
+		System.out.println(processedText);
 		String[] turn = processedText.split(",");
 		int[][] turnInts = new int[turn.length][2];
 		for (int i = 0; i < turn.length; i++){
@@ -67,6 +68,7 @@ public abstract class Network {
 		for (int i = 1; i < turnInts.length; i++){
 			if (turnInts[i][0] == -1 && turnInts[i][1] == -1){
 				Move.passTurn(Game.gameBoard);
+				return;
 			}
 			PossibleMove move = Move.find(turnInts[i][0],turnInts[i][1]);
 			Move.executeMove(Game.gameBoard,move, false);
