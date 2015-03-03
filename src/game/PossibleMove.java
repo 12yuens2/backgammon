@@ -1,5 +1,9 @@
 package game;
 
+/**
+ * A possible move in the game given the dice rolls.
+ *
+ */
 public class PossibleMove implements Cloneable{
 	private int to,from,diceUsed;
 

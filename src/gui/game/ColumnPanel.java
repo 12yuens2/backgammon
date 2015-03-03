@@ -1,15 +1,12 @@
 package gui.game;
 
-import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.MouseInfo;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
 import game.Board;
 import game.Column;
-import game.Piece;
 import gui.sprites.SpriteSheet;
 
 import javax.swing.JLabel;

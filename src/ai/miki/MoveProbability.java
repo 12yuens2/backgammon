@@ -2,6 +2,11 @@ package ai.miki;
 
 import java.util.HashMap;
 
+/**
+ * A list of probabilities that each move can occur.
+ * Unused.
+ *
+ */
 public class MoveProbability {
 	
 	//nth Index of the array is P(X=n)

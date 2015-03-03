@@ -5,6 +5,10 @@ import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+/**
+ * The server side of the network.
+ *
+ */
 public class Server extends Network {
 	public static final int port = 40013;
 	private static boolean isPlaying;

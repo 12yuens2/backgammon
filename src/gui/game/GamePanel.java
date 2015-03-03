@@ -4,7 +4,6 @@ import game.Board;
 import game.Column;
 import gui.sprites.SpriteSheet;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;

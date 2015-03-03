@@ -5,13 +5,18 @@ import game.Piece;
 
 import java.io.Serializable;
 
+/**
+ * Serializable class that is contained in the Timeline file.
+ * Contains the move that was played, plus the wins and losses of 
+ * the particular move.
+ *
+ */
 public class TimelineMove implements Serializable {
 	/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
 	private int[] boardState;
-	//private int turn;
 	private int from;
 	private int to;
 	private int wins;

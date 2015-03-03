@@ -1,23 +1,38 @@
 package game;
 
-import java.util.ArrayList;
-
+/**
+ * The representation of the board used by the main game.
+ *
+ */
 public class Board {
 	protected Column[] columns;
 	public Column[] woodColumns;
 	
 	private int turn;
 	
+	/**
+	 * The dice that the board currently holds.
+	 */
 	private int[] dice;
 	private int[] doubles;
 	
-	public static final int EMPTY = 0;
+	/**
+	 * Integers to represent the turn
+	 */
 	public static final int BLACK = -1;
 	public static final int WHITE = 1;
 
+	/**
+	 * Constants to represent the unique number of the bar.
+	 */
 	public static final int WOOD_WHITE = 26;
 	public static final int WOOD_BLACK = 27;
 
+	/**
+	 * Used by the player to make moves using the gui.
+	 * Used by the AI to evalute moves.
+	 * Used by the game logic to determine possible moves.
+	 */
 	private Column selectedColumn;
 	
 	public void setDice(int[] dice){
@@ -81,6 +96,9 @@ public class Board {
 		}
 	}
 
+	/**
+	 * Populates the board using the default board state.
+	 */
 	public void addPieces(){
 
 		columns[1].addPiece(Piece.WHITE); columns[1].addPiece(Piece.WHITE);
@@ -111,6 +129,11 @@ public class Board {
 
 	}
 	
+	/**
+	 * Sets the board state by using another board as a reference point.
+	 * Used for AI calculations.
+	 * @param other the other board.
+	 */
 	public void addPieces(Board other){
 		for (int i = 0; i < columns.length; i++){
 			for (int j = 0; j < other.getAll()[i].getPieces().size() - 1; j++){
@@ -125,6 +148,11 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * Finds a column in the board based on a move.
+	 * @param move the move.
+	 * @return the Column that is used.
+	 */
 	public Column findFrom(PossibleMove move){
 		if (move.getFrom() == 0){
 			return woodColumns[1];
@@ -134,11 +162,21 @@ public class Board {
 			return columns[move.getFrom()];
 		}
 	}
-	
+
+	/**
+	 * Finds a column in the board based on a move.
+	 * @param move the move.
+	 * @return the Column that is used.
+	 */
 	public Column findTo(PossibleMove move){
 		return columns[move.getTo()];
 	}
 	
+	/**
+	 * Finds a column based on its column number.
+	 * @param i the column number.
+	 * @return the Column that has the unique number.
+	 */
 	public Column find(int i) {
 		if (i >= 0 && i < columns.length){
 			return columns[i];			
@@ -151,7 +189,11 @@ public class Board {
 		}
 
 	}
-				
+
+	/**
+	 * Checks if the selected column in this board is allowed to bear off.
+	 * @return whether of not bearing off is possible.
+	 */
 	public boolean canBearOff(){
 		boolean canBearOff = true;
 		if (selectedColumn.getColor() == Column.BLACK){
@@ -180,7 +222,10 @@ public class Board {
 		return canBearOff;
 	}
 	
-
+	/**
+	 * Sets a column in this board highlighted based on a column number.
+	 * @param from the column number.
+	 */
 	public void setHighlighted(int from) {
 		for (Column c : columns){
 			for (PossibleMove move : Move.possibleMoves){
@@ -191,6 +236,10 @@ public class Board {
 		}
 	}
 	
+	/**
+	 * Checks whether this board has pieces that can move off the bar.
+	 * @return whether or not wood moves are possible.
+	 */
 	public boolean hasWoodMoves() {
 		for (Column c: woodColumns) {
 			if (Move.hasValidMoves(this, c)) {

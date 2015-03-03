@@ -2,15 +2,12 @@ package gui.game;
 
 import game.Board;
 import game.Column;
-import game.Piece;
 import gui.sprites.SpriteSheet;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 
-import javax.swing.JLabel;
 
 public class WoodPanel extends ColumnPanel {
 	public WoodPanel(int i, boolean faceDown, Board board){

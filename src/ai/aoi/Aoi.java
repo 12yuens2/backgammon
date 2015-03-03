@@ -8,27 +8,31 @@ import game.Move;
 import game.PossibleMove;
 import ai.AI;
 
+/**
+ * AI that calculates the value of the resulting board to 
+ * decide which move is the best.
+ */
 public class Aoi implements AI{
 	
+	//these values are ones we manually decided for Aoi to evaluate the board
+	//she always tries to aim for a high value board
 	public static final int SINGLE_SAME_PIECE_VALUE = -10;
 	public static final int SINGLE_DIFF_PIECE_VALUE = -100;
 	public static final int PAIR_VALUE = 25;
+	public static final int PIP_VALUE = 25;
 	public static final int GREATER_THAN_PAIR_VALUE = 10;
 	public static final int END_VALUE = 75;
 	public static final int WOOD_VALUE = -50;
 	
 	private ArrayList<PossibleBoard> possibleBoards = new ArrayList<>();
 	private int[] currentBoard;
-	
-	public Aoi(){
-		
-	}
 
 	public void makeMove() {
 		
 		currentBoard = getBoardState();
 		possibleBoards = new ArrayList<>();
 		
+		//for every possible move make a new board
 		for (PossibleMove move : Move.possibleMoves) {
 			int[] board = getNewBoardState(move);
 			possibleBoards.add(new PossibleBoard(board, move));
@@ -36,6 +40,7 @@ public class Aoi implements AI{
 		
 		PossibleBoard bestBoard = null;
 		int bestBoardValue = Integer.MIN_VALUE;
+		//from all the boards made, get the board with the best value
 		for (PossibleBoard board: possibleBoards) {
 			if (board.getValue() > bestBoardValue) {
 				bestBoardValue = board.getValue();
@@ -45,11 +50,15 @@ public class Aoi implements AI{
 		Move.executeMove(Game.gameBoard,bestBoard.getMove(),true);
 	}
 	
+	/**
+	 * Turns the board state into a set of values for each column.
+	 * @return an array which represents the value of the board.
+	 */
 	public int[] getBoardState() {
 		int[] boardState = new int[Game.gameBoard.getAll().length + 2];
 		for (Column c: Game.gameBoard.getAll()) {
 			
-			boardState[c.getNumber()] = c.getPieces().size()*c.getNumber()*c.getColor()*25;
+			boardState[c.getNumber()] = c.getPieces().size()*c.getNumber()*c.getColor()*PIP_VALUE;
 			
 			if (c.getPieces().size() == 1 && c.getColor() == Game.gameBoard.getTurn()) {
 				boardState[c.getNumber()] += SINGLE_SAME_PIECE_VALUE; 
@@ -75,6 +84,11 @@ public class Aoi implements AI{
 		return boardState;
 	}
 
+	/**
+	 * Evaluates the impact of a move on the value of the board.
+	 * @param move the move to be evaluated.
+	 * @return an array representing the new board state.
+	 */
 	private int[] getNewBoardState(PossibleMove move) {
 		int[] newBoard = currentBoard.clone();
 		

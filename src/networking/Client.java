@@ -4,6 +4,10 @@ import java.io.IOException;
 import java.net.Socket;
 import java.net.UnknownHostException;
 
+/**
+ * The client side of the network implementation.
+ *
+ */
 public class Client extends Network {
 
 	public static void start(String hostname, int portNumber) throws IOException{

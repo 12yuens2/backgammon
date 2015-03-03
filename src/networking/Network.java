@@ -14,12 +14,13 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
+/**
+ * The network implementation.
+ *
+ */
 public abstract class Network {
 
-	final static int chatPort   =  4242; // the port number to be used
 	final static int soTimeout  =    10; // ms to wait for socket read
-	final static int readRetry  =    10; // # re-try of handshake
-	final static int sleepTime  =   200; // ms to sleep - 200 is fine
 	final static int bufferSize =   128; // # chars in line 
 
 	public static final int port = 40013;
@@ -52,6 +53,9 @@ public abstract class Network {
 			Network.close();
 			return;
 		}
+		/**
+		 * Uses regular expressions to convert the received text into a better format.
+		 */
 		String processedText = networkMessage
 				.replaceAll(":",",")
 				.replaceAll(";","")
@@ -59,7 +63,6 @@ public abstract class Network {
 				.replaceAll("\\)","")
 				.replaceFirst("\\-", "|")
 				.trim();
-		System.out.println(processedText);
 		String[] turn = processedText.split(",");
 		int[][] turnInts = new int[turn.length][2];
 		for (int i = 0; i < turn.length; i++){
@@ -81,6 +84,10 @@ public abstract class Network {
 		}
 	}
 	
+	/**
+	 * Writes to the network if there is a new message, and checks for received data.
+	 * @throws IOException
+	 */
 	public static void run() throws IOException {
 		if (isActive){
 			recievedText = readLine();
@@ -89,14 +96,12 @@ public abstract class Network {
 				sendingText = null;
 			}
 			if (recievedText != null){
-				System.out.println("NEW MOVE RECIEVED: \n" + recievedText);
+				System.out.println("New move received: " + recievedText);
 				processText(recievedText);
 			}			
 		}
 	}
 
-	
-	
 	public static void writeLine(String line) {
 		if (line == null || line.length() < 0){
 			return;
@@ -105,13 +110,12 @@ public abstract class Network {
 		try {
 			int l = line.length();
 			if (l > Network.bufferSize) {
-				//	report("line too long (" + l + ") truncated to " + Numbers.bufferSize);
 				l = Network.bufferSize;
 			}
 			socketOutput.write(line.getBytes(), 0, l);
 		}
 		catch (java.io.IOException e) {
-			//	error("sendLine() problem " + e.getClass().getName());
+			System.err.println("There was a problem writing to the network.");			
 		}
 	}
 

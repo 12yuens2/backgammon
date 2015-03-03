@@ -13,6 +13,10 @@ import ai.random.RandomAI;
 import gui.game.Window;
 import gui.options.GameOptionWindow;
 
+/**
+ * The main game class.
+ *
+ */
 public class Game {
 
 	public static int turn = 0;
@@ -45,6 +49,7 @@ public class Game {
 		gameBoard.init();
 		gameWindow = new Window(gameBoard);
 
+		// The main game loop.
 		while (true){
 			while (!hasStarted){
 				Thread.sleep(sleepTime*2);
@@ -144,6 +149,7 @@ public class Game {
 			} else {
 				Move.rollDice(gameBoard);
 				Move.setPossibleMoves(gameBoard);
+				// If there are no valid moves, pass the turn.
 				if (Move.possibleMoves.isEmpty()){
 					Move.message = Move.message + "(-1|-1);";
 					Game.changeTurn();
@@ -198,7 +204,6 @@ public class Game {
 	}
 
 	public static void startNetworkGame(int aiType, int port) {
-		//stuff here
 		blackIsNetwork = true;
 		if (aiType != -1){	
 			whiteIsHuman = false;
@@ -207,20 +212,20 @@ public class Game {
 			whiteIsHuman = true;	
 		}
 		
-		
 		try {
 			Server.start(port);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 		startGame();
 	}
 
+	/**
+	 * Joins a network game as a client.
+	 * In this implementation, white will always be the server, and black will always be the client.
+	 */
 	public static void joinNetworkGame(int aiType, int port, String hostName) {
-		//stuff here
-		//WHITE IS SERVER, BLACK IS CLIENT
 		whiteIsNetwork = true;
 		if (aiType != -1){
 			blackIsHuman = false;

@@ -9,6 +9,10 @@ import java.util.Random;
 
 import ai.AI;
 
+/**
+ * A random AI that makes a random move each time.
+ *
+ */
 public class RandomAI implements AI {
 
 	Random generator;

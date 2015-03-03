@@ -16,6 +16,11 @@ import game.Game;
 import game.Move;
 import game.PossibleMove;
 
+/**
+ * Brute force AI that uses known moves from a file to decide
+ * which move is the best.
+ *
+ */
 public class Homura implements AI {
 	
 	private final String timelinePath = "src/ai/homura/timeline.bgdata";
@@ -42,11 +47,6 @@ public class Homura implements AI {
 				timeline = new Timeline();
 			}
 		}
-		
-		for (TimelineMove t : timeline.timelineMoves){
-//			System.out.println(t.getFrom() + " > " + t.getTo() + " BS:" + t.getBoardState() + " W: " + t.getWins() + " L: " + t.getLoses() );
-		}
-//		System.exit(0);
 	}
 	
 
@@ -68,13 +68,10 @@ public class Homura implements AI {
 			for (TimelineMove m : knownMoves){
 
 				if (m.getValue() > bestValue){
-//					System.out.println(m.getValue());
 					bestValue = m.getValue();
 					bestMove = m;
 				}
 			}
-			
-//			System.out.println(bestMove.getTurn());
 			PossibleMove chosenKnownMove = Move.find(bestMove.getFrom(),bestMove.getTo());
 			Move.executeMove(Game.gameBoard,chosenKnownMove,true);
 			System.out.println("using known move");

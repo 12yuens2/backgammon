@@ -3,7 +3,6 @@ package gui.game;
 import gui.sprites.SpriteSheet;
 
 import java.awt.Graphics;
-import java.awt.image.BufferedImage;
 
 import javax.swing.JLabel;
 

@@ -1,5 +1,9 @@
 package game;
 
+/**
+ * Representation of a piece.
+ *
+ */
 public class Piece {
 	public static final boolean BLACK = true;
 	public static final boolean WHITE = false;

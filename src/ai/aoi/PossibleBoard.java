@@ -2,6 +2,10 @@ package ai.aoi;
 
 import game.PossibleMove;
 
+/**
+ * A future board state used by Aoi to evalute.
+ *
+ */
 public class PossibleBoard {
 
 	private int[] boardState;
@@ -19,6 +23,7 @@ public class PossibleBoard {
 		this.boardState = board;
 		this.move = move;
 	}
+	
 	public int getValue() {
 		int value = 0;
 		for (int i : boardState){

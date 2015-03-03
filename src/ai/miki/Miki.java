@@ -10,13 +10,19 @@ import game.Game;
 import game.Move;
 import game.PossibleMove;
 
+/**
+ * Tree based AI that calculates which move to make
+ * based on the value of future boards that arise
+ * from making that move.
+ *
+ */
 public class Miki implements AI {
 	
-	Random generator;
+
 	ArrayList<FutureBoard> futureBoards;
 	
 	public Miki(){
-		generator = new Random();		
+
 	}
 
 	public void makeMove() {
@@ -35,21 +41,17 @@ public class Miki implements AI {
 		}
 
 		PossibleMove bestMove = evaluteMove();
-//		System.out.println("From " + FutureBoard.NUMBEROFBOARDS + " boards, the best move is " + bestMove.getFrom() + " > " + bestMove.getTo() + " using " + bestMove.getDiceUsed() + ".");
 		
 		Move.setPossibleMoves(Game.gameBoard);
-
 		Move.executeMove(Game.gameBoard,bestMove,true);
 		
-		try {
-			Thread.sleep(50);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 		FutureBoard.NUMBEROFBOARDS = 0;
 	}
 
+	/**
+	 * Searches for the best move using each of the future boards.
+	 * @return the best PossibleMove.
+	 */
 	private PossibleMove evaluteMove() {
 		
 		PossibleMove bestMove = null;
@@ -60,7 +62,6 @@ public class Miki implements AI {
 				bestMove = board.getMove();
 			}
 		}
-		
 		return bestMove;
 	}
 }

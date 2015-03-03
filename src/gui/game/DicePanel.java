@@ -1,12 +1,8 @@
 package gui.game;
 
 import game.Board;
-import game.Game;
-import game.Move;
 import gui.sprites.SpriteSheet;
 
-import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 

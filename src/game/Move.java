@@ -3,13 +3,17 @@ package game;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ * A class to control game logic, such as: 
+ * Setting possible moves
+ * Rolling dice
+ * Passing the turn
+ *
+ */
 public class Move {
+
 	public static String message = " ";
-
-//	public static int[] dice = {0,0};
-//	public static int[] doubles = {0,0};
 	private static Random random = new Random();
-
 	public static ArrayList<PossibleMove> possibleMoves = new ArrayList<>();
 
 	public static void setDice(Board board, int[] dices){
@@ -49,6 +53,12 @@ public class Move {
 		Move.setPossibleMoves(board);
 	}
 	
+	/**
+	 * Checks if a column in a board has valid moves.
+	 * @param board the board to be checked.
+	 * @param c the column in the board.
+	 * @return the existance of valid moves.
+	 */
 	public static boolean hasValidMoves(Board board, Column c){
 		if (c.getColor() == board.getTurn()){
 			Column temp = null;
@@ -86,6 +96,11 @@ public class Move {
 	}
 
 
+	/**
+	 * Finds all possible moves in a board.
+	 * @param board the board to check.
+	 * @return a list of all possible moves.
+	 */
 	public static ArrayList<PossibleMove> setPossibleMoves(Board board){
 		possibleMoves.clear();
 		for (Column c : board.woodColumns){
@@ -100,6 +115,8 @@ public class Move {
 				}
 			}
 		}
+		//If there are moves from the bar, they must be played first.
+		//If there is a piece on the bar, it must be moved first.
 		if (possibleMoves.isEmpty() && board.getWood(board.getTurn()).isEmpty() ) {
 			for (Column c: board.getAll()){
 				if (hasValidMoves(board, c)){
@@ -135,8 +152,13 @@ public class Move {
 		return sanitizeMoves(board);
 	}
 	
+	/**
+	 * Removes moves based on fringe cases that would be invalid
+	 * under the full rule set.
+	 * @param board
+	 * @return
+	 */
 	private static ArrayList<PossibleMove> sanitizeMoves(Board board) {
-		//return Move.possibleMoves;
 		if (possibleMoves.isEmpty()){
 			return possibleMoves;
 		}
@@ -146,8 +168,6 @@ public class Move {
 			tempMoves.add(move.clone());
 		}
 		int[] tempDice = board.getDice().clone();
-		
-
 		
 		boolean allMovesSame = true;
 		int commonMove = possibleMoves.get(0).getDiceUsed();
@@ -180,7 +200,7 @@ public class Move {
 	}
 
 	public static void executeMove(Board board, PossibleMove move, boolean shareToNetwork) {
-		//assume valid move is passed here
+		// Assume a valid move is passed here.
 		Column from = board.findFrom(move);
 		Column to = board.findTo(move);
 		if (to.getPieces().size() == 1){
@@ -198,6 +218,13 @@ public class Move {
 		}
 	}
 
+	/**
+	 * Removes a die from the board.
+	 * @param board the board.
+	 * @param move the move to get the die from.
+	 * @param shareToNetwork Whether or not to share this move to the network.
+	 * shareToNetwork should be false when executing moves received from the network.
+	 */
 	private static void consumeMove(Board board, PossibleMove move, boolean shareToNetwork) {
 		boolean gotDice = false;
 		for (int i = 0; i < board.getDice().length; i++){
@@ -229,9 +256,7 @@ public class Move {
 
 	public static PossibleMove find(int from, int to) {
 		for (PossibleMove move : possibleMoves){
-			System.out.println(move.getFrom() + " > " + move.getTo() + "using " + move.getDiceUsed());
 			if (move.getFrom() == from && move.getTo() == to){
-				System.out.println("found move!");
 				return move;
 			}
 		}

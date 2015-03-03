@@ -1,12 +1,13 @@
 package game;
 
 import gui.game.ColumnPanel;
-
-import java.awt.Color;
 import java.util.ArrayList;
 
 public class Column {
 
+	/**
+	 * Constants for the state of each column.
+	 */
 	public static final int EMPTY = 0;
 	public static final int BLACK = -1;
 	public static final int WHITE = 1;
@@ -55,9 +56,10 @@ public class Column {
 		return !pieces.isEmpty();
 	}
 
-	/*
-	 * -1 is the error
-	 * rest is boolean
+	/**
+	 * Gets the state of the Column.
+	 * @see Column#EMPTY
+	 * @return One of the constants representing the state of the column.
 	 */
 	public int getColor(){
 		if (this.pieces.isEmpty()){
@@ -138,9 +140,13 @@ public class Column {
 		}
 	}
 	
+	/**
+	 * Selects the column if valid.
+	 */
 	public void select(){
 		Game.gameWindow.repaint();
 		if (board.getSelected() != null){
+			
 			for (PossibleMove move : Move.possibleMoves){
 				if (this.getNumber() == move.getTo() && board.getSelected().getNumber() == move.getFrom()){
 					Move.executeMove(this.board,move, true);
@@ -150,13 +156,15 @@ public class Column {
 					return;
 				}
 			}
-			if (this.matchesColor()){
+			if (this.matchesColor() && ( Game.blackIsHuman && this.board.getTurn() == Board.BLACK || Game.whiteIsHuman && this.board.getTurn() == Board.WHITE ) ){
 				board.unSelect();
 				this.select();
 			}
 		} else {
+			// If there is a move that originates from a column, it is selectable.
 			for (PossibleMove move : Move.possibleMoves){
-				if (this.getNumber() == move.getFrom()){
+				if (this.getNumber() == move.getFrom() && 
+						( Game.blackIsHuman && this.board.getTurn() == Board.BLACK || Game.whiteIsHuman && this.board.getTurn() == Board.WHITE )){
 					board.setSelected(this);
 					this.isSelected = true;
 					board.setHighlighted(move.getFrom());
